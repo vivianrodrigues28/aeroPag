@@ -1,0 +1,10 @@
+body{
+    background-color: #84aea4;
+}
+
+#btns_lembrete{
+    display: flex;
+    margin: 20px;
+    margin-top: 50px;
+    justify-content: space-between;
+}
