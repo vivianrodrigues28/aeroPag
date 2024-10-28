@@ -39,13 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'paginas.apps.PaginasConfig',
-    'cadastros.apps.CadastrosConfig',
+    'lembretes.apps.LembretesConfig',
     'usuarios.apps.UsuariosConfig',
+    'tarifas.apps.TarifasConfig',
+    'avioes.apps.AvioesConfig',
+    'clientes.apps.ClientesConfig',
     'crispy_forms',
     'crispy_bootstrap4',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,5 +141,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'inicio'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'  
+LOGOUT_REDIRECT_URL = 'inicio'

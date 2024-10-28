@@ -25,13 +25,12 @@
 
     <form action="" method="post">
         {% csrf_token %}
-
         {{ form|crispy }}
-
         <button type="submit" class="btn btn-primary">
             Entrar
         </button>
     </form>
+    
     {% endif %}
 </div>
 {% endblock %}

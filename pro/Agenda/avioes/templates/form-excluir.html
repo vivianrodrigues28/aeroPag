@@ -1,0 +1,7 @@
+<h1>Excluir Avião</h1>
+<p>Tem certeza de que deseja excluir "{{ object.avi_prefixo_do_aviao }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'listar-avioes' %}">Cancelar</a>

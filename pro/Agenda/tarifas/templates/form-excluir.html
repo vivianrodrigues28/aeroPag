@@ -1,0 +1,7 @@
+<h1>Excluir Tarifa</h1>
+<p>Tem certeza de que deseja excluir "{{ object.tar_tipo }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'listar-tarifas' %}">Cancelar</a>
