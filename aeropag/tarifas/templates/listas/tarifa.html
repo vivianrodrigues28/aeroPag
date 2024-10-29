@@ -1,0 +1,57 @@
+{% extends 'modelo.html' %}
+{% load static %}
+
+{% block titulo %}
+    Lista de Tarifas
+{% endblock %}
+
+{% block conteudo %}
+<div class="container">
+    <h3>Lista de Tarifas Registradas</h3>
+
+    <hr>
+
+    <div id="btns_tarifa">
+        <div>
+            <a href="{% url 'criar-tarifa' %}" class="btn btn-primary" style="text-align: left !important;">Adicionar Nova Tarifa</a>
+        </div>
+        <!-- Aqui você pode adicionar botões de filtro se necessário -->
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Valor Doméstico</th>
+                    <th>Valor Internacional</th>
+                    <th>Grupo</th>
+                    <th>Ton Min</th>
+                    <th>Ton Max</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarifa in object_list %}
+                <tr>
+                    <td>{{ tarifa.tar_tipo }}</td>
+                    <td>{{ tarifa.tar_valor_domestico }}</td>
+                    <td>{{ tarifa.tar_valor_internacional }}</td>
+                    <td>{{ tarifa.tar_grupo }}</td>
+                    <td>{{ tarifa.tar_ton_min }}</td>
+                    <td>{{ tarifa.tar_ton_max }}</td>
+                    <td>
+                        <a href="{% url 'editar-tarifa' tarifa.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
+                        <a href="{% url 'deletar-tarifa' tarifa.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">Nenhuma tarifa registrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

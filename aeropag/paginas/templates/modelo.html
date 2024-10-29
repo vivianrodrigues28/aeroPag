@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block titulo %}
+                Modelo
+            {% endblock %}
+        </title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    </head>
+    <body>
+        {% block menu %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'inicio' %}">Início</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'listar-lembretes' %}">Lembretes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'listar-clientes' %}">Clientes</a>
+              </li>
+              
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'listar-tarifas' %}">Tarifas</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'listar-avioes' %}">Aviões</a>  <!-- Link para o aplicativo avioes -->
+                </li>
+              </ul>
+              <div class="my-2 my-lg-0">
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-success">Login</a>
+                <a href="{% url 'registrar' %}" class="btn btn-outline-success">Cadastre-se</a>
+                {% endif %}
+              </div>
+            </div>
+        </nav>
+        {% endblock %}
+
+        {% block conteudo %}
+        <div class="container">
+            <h3>Template de Modelo</h3>
+            <p>Conteúdo do Site</p>
+        </div>
+        {% endblock %}
+
+        {% block rodape %}
+        <nav class="navbar fixed-bottom navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Fixed bottom</a>
+            <span class="navbar-text">
+                Navbar text with an inline element
+            </span>
+        </nav>
+        {% endblock %}
+
+        <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+        {% block scripts %}
+        
+        {% endblock %}
+    </body>
+</html>
