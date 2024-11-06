@@ -119,27 +119,13 @@
             color: #6c757d;
         }
 
-        /* Gráficos */
-        .charts-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
+        
         .chart {
             width: 45%;
             height: 200px;
         }
 
-        /* Notificações */
-        .alert-panel {
-            width: 100%;
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
+        
 
         .alert-panel .alert {
             width: 24%;
@@ -168,21 +154,12 @@
             color: white;
         }
 
-        /* Botões de ação rápida */
-        .quick-actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
+        
 
         .quick-actions .btn {
             width: 48%;
         }
 
-        /* Atividades Recentes */
-        .recent-activities {
-            margin-top: 30px;
-        }
 
         .recent-activities table {
             width: 100%;
@@ -193,6 +170,12 @@
             padding: 10px;
             border: 1px solid #ddd;
             text-align: center;
+        }
+
+         /* Modo escuro */
+         body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
         }
         /* Posicionar os botões à direita, próximos ao cabeçalho */
 .quick-actions {
@@ -298,69 +281,39 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Gráficos -->
-            <div class="charts-container">
-                <div class="chart" id="chart1">
-                    <canvas id="grafico1"></canvas>
-                </div>
-                <div class="chart" id="chart2">
-                    <canvas id="grafico2"></canvas>
-                </div>
-            </div>
-
-            
-
-            <!-- Botões de Ação Rápida -->
-            <div class="quick-actions">
-                <button class="btn btn-primary btn-sm">Gerar Relatório</button>
-    
-            </div>
-
-
-            <!-- Atividades Recentes -->
-            <div class="recent-activities">
-                <h4>Atividades Recentes</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Data</th>
-                            <th>Descrição</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>06/11/2024</td>
-                            <td>Relatório de tarifas atualizado.</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>05/11/2024</td>
-                            <td>Cliente X realizou pagamento.</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>04/11/2024</td>
-                            <td>Documentos de aeronave Y recebidos.</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
         {% endblock %}
     </div>
 
-    <!-- Rodapé -->
-    <footer class="footer">
-        <p>&copy; 2024 AeroPag. Todos os direitos reservados.</p>
-    </footer>
 
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/simple-datatables@7.1.2/dist/umd/simple-datatables.js' %}"></script>
     <script>
+
+         // Ativar tema salvo no localStorage
+         document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').textContent = '☀️';
+            }
+        });
+
+        // Alternar tema claro e escuro
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('theme-toggle');
+
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙';
+            }
+        }
         // Código para alternar entre modo claro e escuro
         function toggleTheme() {
             const body = document.body;
