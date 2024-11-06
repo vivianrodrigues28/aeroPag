@@ -16,3 +16,4 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 class IndexView(TemplateView):
     login_url = reverse_lazy('login')
     template_name = "index.html"
+
