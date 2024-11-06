@@ -38,3 +38,5 @@ class LembreteList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Lembrete.objects.filter(usuario=self.request.user)  # Filtrando pelos lembretes do usuário logado
+
+
