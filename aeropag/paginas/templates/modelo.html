@@ -2,80 +2,198 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            {% block titulo %}
-                Modelo
-            {% endblock %}
-        </title>
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-    </head>
-    <body>
-        {% block menu %}
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'inicio' %}">Início</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'listar-lembretes' %}">Lembretes</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'listar-clientes' %}">Clientes</a>
-              </li>
-              
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'listar-tarifas' %}">Tarifas</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'listar-avioes' %}">Aviões</a>  <!-- Link para o aplicativo avioes -->
-                </li>
-              </ul>
-              <div class="my-2 my-lg-0">
-                {% if request.user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-danger">Logout</button>
-                </form>
-                {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-success">Login</a>
-                <a href="{% url 'registrar' %}" class="btn btn-outline-success">Cadastre-se</a>
-                {% endif %}
-              </div>
-            </div>
-        </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block titulo %}
+            Modelo
         {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <style>
+        /* Estilos Gerais */
+        body {
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            flex-direction: column;
+            background-color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
 
-        {% block conteudo %}
-        <div class="container">
-            <h3>Template de Modelo</h3>
-            <p>Conteúdo do Site</p>
-        </div>
-        {% endblock %}
+        /* Barra do Cabeçalho */
+        .header-bar {
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            height: 60px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-        {% block rodape %}
-        <nav class="navbar fixed-bottom navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Fixed bottom</a>
-            <span class="navbar-text">
-                Navbar text with an inline element
-            </span>
-        </nav>
-        {% endblock %}
+        /* Ícone do Menu */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-        <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        /* Menu Lateral */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            z-index: 998;
+        }
 
-        {% block scripts %}
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+
+        /* Conteúdo Principal */
+        .content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        .content.shifted {
+            margin-left: 250px;
+        }
+
+        /* Ícone de tema */
+        #theme-toggle {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Transições para o tema */
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-bar">
+    <span class="menu-icon" onclick="toggleSidebar()">☰</span>
+    <span id="theme-toggle" onclick="toggleTheme()">
+        <!-- Ícone de Sol (SVG minimalista) -->
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon" style="display: inline;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <!-- Ícone de Lua (SVG minimalista) -->
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon" style="display: none;">
+            <path d="M21 12.79A9 9 0 0 1 11.21 3 7.5 7.5 0 1 0 21 12.79z"></path>
+        </svg>
+    </span>
+</header>
+
+<!-- Menu Lateral -->
+<nav class="sidebar" id="sidebar">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">Início</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar-lembretes' %}">Lembretes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar-clientes' %}">Clientes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar-tarifas' %}">Tarifas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar-avioes' %}">Aviões</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'inicio' %}">Sair</a>
+      </li>
+    </ul>
+</nav>
+
+<!-- Conteúdo Principal -->
+<div class="content" id="content">
+    {% block conteudo %}
+    <h3>Conteúdo principal aqui</h3>
+    {% endblock %}
+</div>
+
+<script>
+    // Função para alternar o menu lateral
+    function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        var content = document.getElementById("content");
         
-        {% endblock %}
-    </body>
+        sidebar.classList.toggle("open");
+        content.classList.toggle("shifted");
+    }
+
+    // Carregar o tema salvo no localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            document.getElementById("sun-icon").style.display = "none";
+            document.getElementById("moon-icon").style.display = "inline";
+        }
+    });
+
+    // Função para alternar o tema
+    function toggleTheme() {
+        var body = document.body;
+        var sunIcon = document.getElementById("sun-icon");
+        var moonIcon = document.getElementById("moon-icon");
+        
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+            sunIcon.style.display = "none";
+            moonIcon.style.display = "inline";
+            localStorage.setItem("theme", "dark");
+        } else {
+            sunIcon.style.display = "inline";
+            moonIcon.style.display = "none";
+            localStorage.setItem("theme", "light");
+        }
+    }
+</script>
+
+</body>
 </html>
