@@ -152,9 +152,13 @@
 <!-- Conteúdo Principal -->
 <div class="content" id="content">
     {% block conteudo %}
-    <h3>Conteúdo principal aqui</h3>
+    
     {% endblock %}
 </div>
+
+<main class="container my-4">
+  {% block content %}{% endblock %}
+</main>
 
 <script>
     // Função para alternar o menu lateral

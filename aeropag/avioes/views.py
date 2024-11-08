@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Aviao
-from .forms import AviaoForm  
+from .forms import AviaoForm 
 
 class AviaoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')

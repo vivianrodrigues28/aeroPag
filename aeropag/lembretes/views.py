@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Lembrete
-
+from django.contrib.auth.decorators import login_required
 class LembreteCreate(LoginRequiredMixin, CreateView):
     model = Lembrete
     fields = ['titulo', 'descricao', 'obs', 'relevancia', 'data']

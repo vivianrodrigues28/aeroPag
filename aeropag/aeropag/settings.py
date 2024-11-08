@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'clientes.apps.ClientesConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    'rest_framework',
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
