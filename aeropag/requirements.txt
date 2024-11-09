@@ -1,3 +1,7 @@
 django
 django-crispy-forms
 django-crispy-bootstrap4
+django-bootstrap4
+crispy-bootstrap4
+bootstrap4
+djangorestframework
