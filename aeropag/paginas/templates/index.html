@@ -23,19 +23,34 @@
             padding: 0;
         }
 
-        /* Estilo do logo na barra de navegação */
-        .navbar-brand img {
-            width: 50px;
-            height: 50px;
-            margin-top: -15px;
+        /* Ajuste da barra de navegação */
+        .navbar {
+            padding: 10px 20px; /* Aumentando o padding para dar mais espaço, mas mantendo proporcional */
+            height: 60px; /* Definindo uma altura fixa para a navbar */
         }
 
         .navbar-brand h5 {
-            font-family: 'Poppins', sans-serif;  /* Aplica a mesma fonte no título AeroPag */
+            font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            font-size: 24px;
+            font-size: 22px; /* Ajustando o tamanho da fonte do título */
             color: #007bff; /* Cor azul para o título */
             margin: 0;
+        }
+
+        .logo {
+            width: 130px; /* Ajuste do tamanho da logo para ser um pouco menor */
+            height: auto;
+        }
+
+        /* Ajustando os botões da barra de navegação */
+        .navbar .btn {
+            font-size: 0.9em; /* Font-size menor para os botões */
+            padding: 5px 15px; /* Menor padding para os botões */
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
         }
 
         /* Estilo da seção de conteúdo */
@@ -47,6 +62,7 @@
             background-color: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            margin-bottom: 30px; /* Espaçamento entre as seções */
         }
 
         .right-text {
@@ -64,104 +80,92 @@
             color: #007bff;
         }
 
-        h2 {
-            font-size: 2.5em;
-            color: #333;
-            font-weight: 600;
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
         }
 
-        h5 {
-            font-size: 1.2em;
-            font-weight: 400;
-        }
-
-        .btn-saiba-mais {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 12px;
+        .btn-outline-primary:hover {
             background-color: #007bff;
             color: white;
-            text-align: center;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .btn-saiba-mais:hover {
-            background-color: #0056b3;
-            transform: translateY(-5px);
+        /* Seção explicativa */
+        .section-explanatory {
+            padding: 50px 20px;
+            margin-bottom: 30px; /* Espaçamento entre as seções */
         }
 
-        /* Estilo dos cards */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-body {
-            text-align: center;
-            padding: 30px;
-        }
-
-        .card-title {
+        .section-explanatory h2 {
+            font-size: 2.5em;
             font-weight: 600;
             color: #333;
-            margin-top: 15px;
         }
 
-        .card-text {
+        .section-explanatory p {
             font-size: 1.1em;
             color: #555;
         }
 
-        .section-text h4 {
-            font-size: 1.5em;
+        /* Ajustes para a seção de serviços */
+        #services {
+            padding: 50px 20px;
         }
 
-        .section-text p {
-            font-size: 1.1em;
-            color: #555;
+        .section-heading {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #333;
         }
 
-        /* Efeito de rolagem suave */
-        html {
-            scroll-behavior: smooth;
+        .section-subheading {
+            font-size: 1.2em;
+            color: #777;
+            margin-bottom: 40px; /* Espaçamento abaixo do subtítulo */
         }
 
-        /* Estilo para o fundo das seções */
-        #funcionalidades {
-            background-color: #e0f7fa;
-            padding: 50px 0;
-            border-top: 5px solid #007bff;
-            display: none; /* Inicialmente escondido */
+        .row .col-md-4 {
+            margin-bottom: 40px; /* Espaçamento entre as colunas */
         }
+
+        .fa-stack {
+            margin-bottom: 20px;
         
+        }
+        /* Animação para mover a imagem para cima e para baixo */
+        .left-image {
+            width: 400px;
+            height: auto;
+            animation: floatUpDown 3s ease-in-out infinite; /* Animação de movimento vertical */
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0); /* Posição inicial e final */
+            }
+            50% {
+                transform: translateY(-20px); /* Move para cima */
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- Navbar com logo e nome à esquerda e botões à direita -->
-<nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#" style="display: flex; align-items: center;">
-            <img src="{% static 'img/copia.png' %}" alt="Logo" style="margin-right: 10px;">
-            <h5 style="margin: 0;" id="Barra">AeroPag</h5>
-        </a>
-        <div class="d-flex">
-            <a href="{% url 'login' %}" class="btn btn-outline-success me-2">Login</a>
-            <a href="{% url 'registrar' %}" class="btn btn-outline-success">Cadastre-se</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
+            </a>
+            
+            <!-- Botões de Login e Cadastro -->
+            <div class="d-flex ms-auto">
+                <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+                <a href="{% url 'registrar' %}" class="btn btn-outline-primary">Cadastre-se</a>
+            </div>
         </div>
-    </div>
-</nav>
-
+    </nav>
+    
 <!-- Seção com imagem e texto alinhados horizontalmente -->
 <div class="content">
     <img src="{% static 'img/copia.png' %}" alt="Imagem Lateral" class="left-image">
@@ -169,62 +173,50 @@
         <h3>Bem-vindo ao AeroPag</h3>
         <br>
         <p>AeroPag é o sistema ideal para proprietários de aeronaves gerenciarem o pagamento de taxas e tarifas de forma eficiente e segura. Registre suas informações e tenha controle total sobre as suas cobranças.</p>
-        <a href="#funcionalidades" class="btn-saiba-mais" onclick="toggleFuncionalidades()">Saiba mais</a>
     </div>
 </div>
-
-<!-- Seção de Cards com Funcionalidades -->
-<div id="funcionalidades" class="container text-center">
-    <h2>Funcionalidades do AeroPag</h2>
-    <br>
-    <div class="row">
-        <!-- Card 1 -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-calendar-check fa-3x"></i>
-                    <h5 class="card-title">Gestão de Taxas</h5>
-                    <p class="card-text">Gerencie suas taxas de voo de forma rápida e eficiente. Registre e acompanhe os pagamentos diretamente pelo sistema.</p>
-                </div>
-            </div>
+<br>
+<br>
+<br>
+<br>
+<!-- Services -->
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Serviços</h2>
+            <h3 class="section-subheading text-muted">Gestão eficiente de tarifas, cobranças e muito mais!</h3>
         </div>
-        <!-- Card 2 -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-file-alt fa-3x"></i>
-                    <h5 class="card-title">Controle de Documentos</h5>
-                    <p class="card-text">Faça o upload e o controle dos documentos relacionados à sua aeronave, garantindo a conformidade e a segurança.</p>
-                </div>
+        <div class="row text-center">
+            <!-- Serviço 1: Organize as Tabelas de Aviões -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-plane fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Organização de Aviões</h4>
+                <p class="text-muted">Gerencie as tabelas dos aviões de forma prática, com controle sobre os dados de cada aeronave e sua respectiva tarifa.</p>
             </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <i class="fas fa-chart-line fa-3x"></i>
-                    <h5 class="card-title">Relatórios Detalhados</h5>
-                    <p class="card-text">Receba relatórios detalhados sobre suas cobranças e pagamentos, com gráficos e dados organizados.</p>
-                </div>
+            <!-- Serviço 2: Gerenciamento de Cobranças -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-credit-card fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Cobranças Ágeis</h4>
+                <p class="text-muted">AeroPag facilita o gerenciamento das cobranças de tarifas, com geração de extratos e envio de boletos de forma eficiente.</p>
+            </div>
+            <!-- Serviço 3: Acompanhamento de Clientes -->
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-users fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Acompanhamento de Clientes</h4>
+                <p class="text-muted">Acompanhe os dados dos seus clientes, com informações detalhadas sobre cada um, garantindo o controle total sobre as transações.</p>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    
-    // Função para alternar a visibilidade da seção de funcionalidades
-    function toggleFuncionalidades() {
-        var funcionalidades = document.getElementById('funcionalidades');  // Pegando a seção de funcionalidades
-        if (funcionalidades.style.display === "none" || funcionalidades.style.display === "") {  // Verificando se está escondido
-            funcionalidades.style.display = "block";  // Se estiver escondido, mostra a seção
-        } else {
-            funcionalidades.style.display = "none";  // Se estiver visível, esconde a seção
-        }
-    }
-
-
-</script>
+</section>
 
 </body>
 </html>

@@ -12,6 +12,8 @@
     </title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         /* Estilos Gerais */
         body {
@@ -24,54 +26,56 @@
             margin: 0;
         }
 
-        /* Barra do Cabeçalho */
-        .header-bar {
-            width: 100%;
-            background-color: #343a40;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            z-index: 999;
-            height: 60px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+       /* Barra do Cabeçalho */
+.header-bar {
+    width: 100%;
+    background-color: #ff4b85;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    height: 60px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
         /* Ícone do Menu */
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
         }
+/* Estilo do Menu Lateral */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #ff4b85;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+    z-index: 998;
+}
 
-        /* Menu Lateral */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #343a40;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            transition: left 0.3s ease;
-            padding-top: 60px;
-            z-index: 998;
-        }
+/* Distância entre os itens do menu */
+.sidebar .nav-item {
+    margin-bottom: 15px; /* Distância entre os itens */
+}
 
-        .sidebar.open {
-            left: 0;
-        }
+/* Hover nos itens do menu */
+.sidebar .nav-item .nav-link:hover {
+    background-color: #f7b8d7;
+    padding-left: 15px; /* Aumenta o padding à esquerda no hover */
+}
 
-        .sidebar .nav-link {
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .sidebar .nav-link:hover {
-            background-color: #495057;
-        }
+/* Modificação no menu ao estar aberto */
+.sidebar.open {
+    left: 0;
+}
 
         /* Conteúdo Principal */
         .content {
@@ -99,12 +103,93 @@
             color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
+
+        /* Contêiner para o botão de menu e a logomarca */
+.menu-logo-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo do botão de menu */
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Estilo da logomarca */
+.logo {
+    width: 130px; /* Ajuste do tamanho da logo */
+    height: auto;
+}
+
+.navbar {
+    padding: 0.5rem 1rem; /* Ajuste de padding para manter o layout discreto */
+}
+
+.form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.input-group {
+    width: 450px; /* Tamanho fixo para a barra de pesquisa */
+   
+}
+
+.form-control {
+    border-radius: 20px;
+    padding-left: 30px;  /* Espaço para o ícone */
+}
+
+.input-group-append .btn {
+    border-radius: 50%;
+    padding: 8px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.input-group-append .btn:hover {
+    background-color: #f8f9fa; /* Efeito de hover suave */
+}
+
+.bi-search {
+    font-size: 18px; /* Tamanho do ícone */
+    color: #6c757d;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #007bff;
+}
+
+
+
+        
     </style>
 </head>
 <body>
 
 <header class="header-bar">
-    <span class="menu-icon" onclick="toggleSidebar()">☰</span>
+    <div class="menu-logo-container">
+        <!-- Botão de Menu -->
+        <span class="menu-icon" onclick="toggleSidebar()">☰</span>
+
+        <!-- Logomarca -->
+        <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
+    </div>
+    <form class="form-inline ml-auto">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Pesquisar">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    
     <span id="theme-toggle" onclick="toggleTheme()">
         <!-- Ícone de Sol (SVG minimalista) -->
         <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon" style="display: inline;">
@@ -128,26 +213,50 @@
 <!-- Menu Lateral -->
 <nav class="sidebar" id="sidebar">
     <ul class="nav flex-column">
+        <!-- Item Início com ícone de casa -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">Início</a>
+            <a class="nav-link" href="{% url 'dashboard' %}">
+                <i class="bi bi-house-door"></i> Início
+            </a>
         </li>
+
+        <!-- Item Lembretes com ícone de calendário -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'listar-lembretes' %}">Lembretes</a>
+            <a class="nav-link" href="{% url 'listar-lembretes' %}">
+                <i class="bi bi-calendar"></i> Lembretes
+            </a>
         </li>
+
+        <!-- Item Clientes com ícone de pessoa -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'listar-clientes' %}">Clientes</a>
+            <a class="nav-link" href="{% url 'listar-clientes' %}">
+                <i class="bi bi-person"></i> Clientes
+            </a>
         </li>
+
+        <!-- Item Tarifas com ícone de moeda -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'listar-tarifas' %}">Tarifas</a>
+            <a class="nav-link" href="{% url 'listar-tarifas' %}">
+                <i class="bi bi-wallet"></i> Tarifas
+            </a>
         </li>
+
+        <!-- Item Aviões com ícone de avião -->
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'listar-avioes' %}">Aviões</a>
+            <a class="nav-link" href="{% url 'listar-avioes' %}">
+                <i class="bi bi-airplane-engines"></i> Aviões
+            </a>
         </li>
+
+        <!-- Opção Sair sem botão -->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'inicio' %}">Sair</a>
-      </li>
+            <a class="nav-link" href="{% url 'inicio' %}">
+                <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+        </li>
     </ul>
 </nav>
+
 
 <!-- Conteúdo Principal -->
 <div class="content" id="content">
@@ -161,14 +270,35 @@
 </main>
 
 <script>
-    // Função para alternar o menu lateral
+    // Função para alternar o menu lateral com base no tamanho da tela
     function toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
         var content = document.getElementById("content");
-        
-        sidebar.classList.toggle("open");
-        content.classList.toggle("shifted");
+
+        // Só fecha o menu se a tela for menor que 1948 pixels ou se o menu já estiver aberto
+        if (window.innerWidth < 1948 || sidebar.classList.contains("open")) {
+            sidebar.classList.toggle("open");
+            content.classList.toggle("shifted");
+        }
     }
+
+    // Função para abrir o menu automaticamente em telas maiores (>= 1948px)
+    function checkScreenSize() {
+        var sidebar = document.getElementById("sidebar");
+        var content = document.getElementById("content");
+
+        if (window.innerWidth >= 1948) {
+            sidebar.classList.add("open");
+            content.classList.add("shifted");
+        } else {
+            sidebar.classList.remove("open");
+            content.classList.remove("shifted");
+        }
+    }
+
+    // Executa a verificação do tamanho da tela ao carregar a página e ao redimensionar
+    document.addEventListener("DOMContentLoaded", checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
     // Carregar o tema salvo no localStorage
     document.addEventListener("DOMContentLoaded", function() {
@@ -184,7 +314,7 @@
         var body = document.body;
         var sunIcon = document.getElementById("sun-icon");
         var moonIcon = document.getElementById("moon-icon");
-        
+
         body.classList.toggle("dark-mode");
 
         if (body.classList.contains("dark-mode")) {
@@ -198,6 +328,7 @@
         }
     }
 </script>
+
 
 </body>
 </html>

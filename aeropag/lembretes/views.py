@@ -5,6 +5,34 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Lembrete
 from django.contrib.auth.decorators import login_required
+# lembretes/views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Lembrete
+from django.http import JsonResponse
+from .models import Lembrete
+
+def editar_lembrete(request, id):
+    if request.method == 'POST':
+        lembrete = Lembrete.objects.get(id=id)
+        titulo = request.POST.get('titulo')
+        obs = request.POST.get('obs')
+        lembrete.titulo = titulo
+        lembrete.obs = obs
+        lembrete.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'fail'}, status=400)
+
+
+def excluir_lembrete(request, id):
+    # Obtém o lembrete com base no ID fornecido
+    lembrete = get_object_or_404(Lembrete, pk=id)
+
+    # Exclui o lembrete
+    lembrete.delete()
+
+    # Redireciona para a lista de lembretes após a exclusão
+    return redirect('listar-lembretes')
+
 class LembreteCreate(LoginRequiredMixin, CreateView):
     model = Lembrete
     fields = ['titulo', 'descricao', 'obs', 'relevancia', 'data']

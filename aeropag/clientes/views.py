@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from .forms import ClienteForm  
 from django.shortcuts import render
 from .models import Cliente
+from django.shortcuts import get_object_or_404
 
 class ClienteCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')

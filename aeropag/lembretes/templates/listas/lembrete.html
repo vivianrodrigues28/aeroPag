@@ -1,9 +1,8 @@
-
 {% extends 'modelo.html' %}
 
 {% load static %}
+
 {% block titulo %}
-   
 {% endblock %}
 
 {% block conteudo %}
@@ -12,7 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <style>
-    h3{
+    h3 {
         text-align-last: center;
     }
     body {
@@ -41,35 +40,63 @@
         color: #007bff; /* Cor ao passar o mouse */
         text-decoration: none; /* Remove underline ao passar o mouse */
     }
+    /* Ajuste para garantir que o filtro dropdown não fique cortado */
+    .btn-group {
+        width: 100%; /* Faz o botão de filtro ocupar toda a largura disponível */
+        display: block; /* Faz o grupo de botões ocupar a largura inteira */
+    }
+    .dropdown-menu {
+        min-width: 200px; /* Garante que o dropdown tenha largura suficiente */
+    }
+    /* Garantir que o menu do dropdown se expanda completamente */
+.dropdown-menu {
+    max-height: none;     /* Remove a limitação de altura */
+    overflow-y: visible;  /* Impede a rolagem interna */
+    min-width: 200px;     /* Define uma largura mínima, caso necessário */
+}
+@media (max-width: 576px) {
+    .dropdown-menu {
+        max-height: none; /* Garante que o menu vai se expandir completamente em telas pequenas */
+        overflow-y: visible;
+    }
+}
+
 </style>
 
 <div class="container">
     <h3>Lista de Lembretes Registrados</h3>
-
+    <div class="container">
+        <!-- Botão de dropdown -->
+        <div class="btn-group me-0" style="position: relative; display: inline-block;">
+            <button type="button" id="dropdownButton" class="btn btn-minimalista dropdown-toggle p-0">
+                <i class="fas fa-bars"></i> <!-- Ícone de três traços -->
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu" style="display: none;">
+                <li><a class="dropdown-item" href="?filtro_data=hoje">De hoje</a></li>
+                <li><a class="dropdown-item" href="?filtro_data=prox_semana">Dessa semana</a></li>
+                <li><a class="dropdown-item" href="?filtro_data=ante_semana">Da Semana Passada</a></li>
+                <li><a class="dropdown-item" href="?filtro_data=ante_tudo">Lembretes Passados</a></li>
+                <li><a class="dropdown-item" href="?filtro_data=prox_mes">Desse mês</a></li>
+                <li><a class="dropdown-item" href="?filtro_data=tudo">Todos</a></li>
+            </ul>
+        </div>
+    </div>
+    
     
     <div class="table-responsive">
-        <table class="table"> 
+        <table class="table">
             <thead>
-              <tr>
-                <th scope="col">
-                    <div class="btn-group me-2">
-                        <button type="button" class="btn btn-minimalista dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bars"></i> <!-- Ícone de três traços -->
-                        </button>
-                        <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="?filtro_data=hoje">De hoje</a></li> 
-                           <li><a class="dropdown-item" href="?filtro_data=prox_semana">Dessa semana</a></li>
-                           <li><a class="dropdown-item" href="?filtro_data=ante_semana">Da Semana Passada</a></li>
-                           <li><a class="dropdown-item" href="?filtro_data=ante_tudo">Lembretes Passados</a></li>
-                            <li><a class="dropdown-item" href="?filtro_data=prox_mes">Desse mês</a></li>
-                            <li><a class="dropdown-item" href="?filtro_data=tudo">Todos</a></li>
-                        </ul>
-                    </div>
-                </th>
-                <th scope="col">Título</th>
-                <th scope="col">OBS</th>
-                <th scope="col">Data</th>
-              </tr>
+                <tr>
+                    <th scope="col">
+                       
+                            
+                        
+                    </th>
+                    <th scope="col">Título</th>
+                    <th scope="col">OBS</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Ações</th>
+                </tr>
             </thead>
             <tbody>
                 {% for lembrete in object_list %}
@@ -78,13 +105,15 @@
                     <td>{{ lembrete.obs }}</td>
                     <td>{{ lembrete.data }}</td>
                     <td>
-                        <a href="{% url 'editar-lembrete' lembrete.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
-                        <a href="{% url 'excluir-lembrete' lembrete.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                        <!-- Botão de Editar -->
+                        <button class="btn btn-warning btn-sm" title="Editar" data-lembrete-id="{{ lembrete.pk }}" data-lembrete-titulo="{{ lembrete.titulo }}" data-lembrete-obs="{{ lembrete.obs }}" id="editar-lembrete-{{ lembrete.pk }}">Editar</button>
+                        <!-- Botão de Excluir -->
+                        <button class="btn btn-danger btn-sm" title="Excluir" data-lembrete-id="{{ lembrete.pk }}" id="excluir-lembrete-{{ lembrete.pk }}">x</button>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="text-center">Nenhum lembrete registrado.</td>
+                    <td colspan="5" class="text-center">Nenhum lembrete registrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -96,6 +125,140 @@
     </div>
 </div>
 
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExcluirLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja excluir este lembrete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Edição -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Lembrete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-editar-lembrete" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="obs" class="form-label">Observações</label>
+                        <textarea class="form-control" id="obs" name="obs" rows="3" required></textarea>
+                    </div>
+                    <input type="hidden" id="lembrete-id" name="lembrete_id">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Importação do JavaScript do Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Excluir Lembrete
+    $('button[id^="excluir-lembrete-"]').click(function() {
+        var lembreteId = $(this).data('lembrete-id');
+        
+        // Exibe a modal de confirmação
+        $('#modalExcluir').modal('show');
+        
+        // Ao confirmar a exclusão
+        $('#confirmar-exclusao').click(function() {
+            // Faz a requisição AJAX para excluir o lembrete
+            $.ajax({
+                url: '/excluir-lembrete/' + lembreteId + '/',  // URL para a exclusão
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                success: function(response) {
+                    // Se a exclusão for bem-sucedida, remove a linha da tabela
+                    $('#excluir-lembrete-' + lembreteId).closest('tr').remove();
+                    $('#modalExcluir').modal('hide'); // Fecha a modal
+                },
+                error: function(xhr, status, error) {
+                    alert('Erro ao excluir o lembrete');
+                }
+            });
+        });
+    });
+
+    // Editar Lembrete
+    $('button[id^="editar-lembrete-"]').click(function() {
+        var lembreteId = $(this).data('lembrete-id');
+        var titulo = $(this).data('lembrete-titulo');
+        var obs = $(this).data('lembrete-obs');
+
+        // Preenche os campos do formulário de edição com os dados do lembrete
+        $('#titulo').val(titulo);
+        $('#obs').val(obs);
+        $('#lembrete-id').val(lembreteId);
+
+        // Exibe a modal de edição
+        $('#modalEditar').modal('show');
+    });
+
+    // Enviar o formulário de edição
+    $('#form-editar-lembrete').submit(function(event) {
+        event.preventDefault(); // Previne o envio normal do formulário
+
+        var lembreteId = $('#lembrete-id').val();
+        var titulo = $('#titulo').val();
+        var obs = $('#obs').val();
+
+        $.ajax({
+            url:  '/editar-lembrete/' + lembreteId + '/',  // URL para a edição
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'titulo': titulo,
+                'obs': obs,
+            },
+            success: function(response) {
+                // Atualiza os dados na tabela após edição
+                $('button[id="editar-lembrete-' + lembreteId + '"]').closest('tr').find('td').eq(0).text(titulo);
+                $('button[id="editar-lembrete-' + lembreteId + '"]').closest('tr').find('td').eq(1).text(obs);
+                $('#modalEditar').modal('hide'); // Fecha a modal
+            },
+            error: function(xhr, status, error) {
+                alert('Erro ao editar o lembrete');
+            }
+        });
+    });
+});
+ // Alternar o dropdown
+ document.getElementById("dropdownButton").addEventListener("click", function() {
+        var dropdownMenu = document.getElementById("dropdownMenu");
+        
+        // Verificar se o menu está visível
+        if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
+            dropdownMenu.style.display = "block";  // Exibir o menu
+        } else {
+            dropdownMenu.style.display = "none";  // Ocultar o menu
+        }
+    });
+</script>
+
 {% endblock %}
