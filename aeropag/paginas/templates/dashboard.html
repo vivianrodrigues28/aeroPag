@@ -6,105 +6,80 @@
 {% block content %}
 
 <div class="container-fluid mt-5">
-    
-    <div class="row">
-        <!-- Cards de Dados -->
-        <div class="col-lg-8">
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                <!-- Card 1: Quantidade total de aviões -->
-                <div class="col">
-                    <a href="{% url 'listar-avioes' %}" class="text-decoration-none">
-                        <div class="card text-center shadow custom-card-level bg-primary text-white">
-                            <div class="card-body">
-                                <i class="fas fa-plane-departure fa-2x mb-3"></i>
-                                <h5 class="card-title">Total de Aviões</h5>
-                                <p class="display-6 font-weight-bold">{{ total_avioes|default:"0" }}</p>
-                                <small>Registrados na base de dados</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 2: Quantidade de lembretes -->
-                <div class="col">
-                    <a href="{% url 'listar-lembretes' %}" class="text-decoration-none">
-                        <div class="card text-center shadow custom-card-level bg-success text-white">
-                            <div class="card-body">
-                                <i class="fas fa-bell fa-2x mb-3"></i>
-                                <h5 class="card-title">Lembretes</h5>
-                                <p class="display-6 font-weight-bold">{{ total_lembretes|default:"0" }}</p>
-                                <small>Lembretes ativos</small>
-                                
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         
+        <!-- Card 1: Quantidade total de aviões -->
+        <div class="col">
+            <a href="{% url 'listar-avioes' %}" class="text-decoration-none">
+                <div class="card text-center shadow custom-card-level bg-primary text-white">
+                    <div class="card-body">
+                        <i class="fas fa-plane-departure fa-3x mb-3"></i> <!-- Ícone maior para chamar atenção -->
+                        <h5 class="card-title">Total de Aviões</h5>
+                        <p class="display-6 font-weight-bold">{{ total_avioes|default:"0" }}</p>
+                        <small>Registrados na base de dados</small>
+                    </div>
+                </div>
+            </a>
+        </div>
 
-    <!-- Tabela de Clientes -->
-    <div class="mt-5">
-        <h3 class="text-center mb-3 custom-font">Clientes Cadastrados</h3>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover align-middle custom-table-3d">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cliente in lista_clientes %}
-                        <tr>
-                            <td>{{ cliente.cli_nome }}</td>
-                            <td>{{ cliente.cli_email }}</td>
-                            <td>{{ cliente.cli_telefone }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">Nenhum cliente cadastrado</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- Card 2: Quantidade de lembretes -->
+        <div class="col">
+            <a href="{% url 'listar-lembretes' %}" class="text-decoration-none">
+                <div class="card text-center shadow custom-card-level bg-success text-white">
+                    <div class="card-body">
+                        <i class="fas fa-bell fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <h5 class="card-title">Lembretes</h5>
+                        <p id="totalLembretesCard" class="display-6 font-weight-bold">{{ total_lembretes|default:"0" }}</p>
+                        <small>Lembretes ativos</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 3: Cobranças -->
+        <div class="col">
+            <a href="" class="text-decoration-none">
+                <div class="card text-center shadow custom-card-level bg-warning text-white">
+                    <div class="card-body">
+                        <i class="fas fa-money-bill-wave fa-3x mb-3 text-white"></i>
+                        <h5 class="card-title">Cobranças</h5>
+                        <p class="display-6 font-weight-bold">{{ total_cobrancas|default:"0" }}</p>
+                        <small class="text-white">Cobranças ativas</small>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
-    <!-- Tabela de Tarifas Ativas -->
-    <div class="mt-5">
-        <h3 class="text-center mb-3 custom-font">Tarifas Ativas</h3>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover align-middle custom-table-3d">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Valor Doméstico</th>
-                        <th>Valor Internacional</th>
-                        <th>Grupo</th>
-                        <th>Tonelagem Mínima</th>
-                        <th>Tonelagem Máxima</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for tarifa in lista_tarifas %}
-                        <tr>
-                            <td>{{ tarifa.tar_tipo }}</td>
-                            <td>{{ tarifa.tar_valor_domestico }}</td>
-                            <td>{{ tarifa.tar_valor_internacional }}</td>
-                            <td>{{ tarifa.tar_grupo }}</td>
-                            <td>{{ tarifa.tar_ton_min }}</td>
-                            <td>{{ tarifa.tar_ton_max }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center text-muted">Nenhuma tarifa cadastrada</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Linha para os cards de baixo, centralizados -->
+    <div class="row justify-content-center g-4 mt-4">
+        
+        <!-- Card 4: Clientes cadastrados -->
+        <div class="col-md-4">
+            <a href="{% url 'listar-clientes' %}" class="text-decoration-none">
+                <div class="card text-center shadow custom-card-level bg-info text-white">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <h5 class="card-title">Clientes Cadastrados</h5>
+                        <p class="display-6 font-weight-bold">{{ total_clientes|default:"0" }}</p>
+                        <small>Clientes ativos</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 5: Tarifas Ativas -->
+        <div class="col-md-4">
+            <a href="{% url 'listar-tarifas' %}" class="text-decoration-none">
+                <div class="card text-center shadow custom-card-level bg-danger text-white">
+                    <div class="card-body">
+                        <i class="fas fa-dollar-sign fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <h5 class="card-title">Tarifas Ativas</h5>
+                        <p class="display-6 font-weight-bold">{{ total_tarifas|default:"0" }}</p>
+                        <small>Tarifas registradas</small>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -113,66 +88,49 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 {% block extra_css %}
-    <style>
-        /* Efeito de Nivelamento de Fundo nos Cards */
-        .custom-card-level {
-            background: linear-gradient(145deg, #6c757d, #343a40);
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+<style>
+    /* Efeito de Nivelamento de Fundo nos Cards */
+    .custom-card-level {
+        background: linear-gradient(145deg, #6c757d, #343a40);
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Suaviza a borda e melhora o efeito de sombra */
+    }
 
-        .custom-card-level:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
+    .custom-card-level:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Efeito de elevação */
+    }
 
-        /* Estilo de Hover para os Cards */
-        .card-body {
-            transition: background-color 0.3s ease;
-        }
+    /* Efeito de Hover nos Ícones */
+    .card-body:hover i {
+        transform: scale(1.2); /* Aumenta o ícone ao passar o mouse */
+        transition: transform 0.3s ease;
+    }
 
-        .card:hover .card-body {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
+    /* Estilo de Hover para os Cards */
+    .card-body {
+        transition: background-color 0.3s ease;
+    }
 
-        /* Efeito 3D nas Tabelas */
-        .custom-table-3d {
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
+    .card:hover .card-body {
+        background-color: rgba(0, 0, 0, 0.05); /* Mudança suave na cor de fundo */
+    }
 
-        .custom-table-3d thead {
-            background: linear-gradient(145deg, #343a40, #6c757d);
-            color: #fff;
-        }
-
-        .custom-table-3d tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            transform: translateY(-5px);
-        }
-
-        /* Fonte personalizada nos títulos das tabelas */
-        .table-dark th {
-            font-family: 'Poppins', sans-serif;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* Fonte personalizada para os títulos h3 */
-        .custom-font {
-            font-family: 'Poppins', sans-serif;
-            font-weight: bold;
-            color: #343a40;
-            font-size: 1.5rem;
-        }
-        
-
-        /* Importando a fonte Poppins do Google Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
-    </style>
+    /* Fonte personalizada para os títulos dos cards */
+    .card-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+    }
     
+    /* Ajuste de tamanho dos ícones */
+    .fa-3x {
+        font-size: 3rem;
+    }
+
+    /* Importando a fonte Poppins do Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+</style>
 {% endblock %}
 
 {% endblock %}

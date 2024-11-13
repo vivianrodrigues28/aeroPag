@@ -9,6 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 
+
 # View para listar lembretes com filtros de data
 def listar_lembretes(request):
     filtro_data = request.GET.get('filtro_data', 'tudo')

@@ -25,58 +25,59 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-
-       /* Barra do Cabeçalho */
-.header-bar {
-    width: 100%;
-    background-color: #ff4b85;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    z-index: 999;
-    height: 60px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
+    
+        /* Barra do Cabeçalho */
+        .header-bar {
+            width: 100%;
+            background-color: rgb(63, 192, 171);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            height: 60px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    
         /* Ícone do Menu */
         .menu-icon {
             font-size: 24px;
             cursor: pointer;
         }
-/* Estilo do Menu Lateral */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #ff4b85;
-    color: white;
-    position: fixed;
-    top: 0;
-    left: -250px;
-    transition: left 0.3s ease;
-    padding-top: 60px;
-    z-index: 998;
-}
-
-/* Distância entre os itens do menu */
-.sidebar .nav-item {
-    margin-bottom: 15px; /* Distância entre os itens */
-}
-
-/* Hover nos itens do menu */
-.sidebar .nav-item .nav-link:hover {
-    background-color: #f7b8d7;
-    padding-left: 15px; /* Aumenta o padding à esquerda no hover */
-}
-
-/* Modificação no menu ao estar aberto */
-.sidebar.open {
-    left: 0;
-}
-
+    
+        /* Estilo do Menu Lateral */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: rgb(63, 192, 171);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            z-index: 998;
+        }
+    
+        /* Distância entre os itens do menu */
+        .sidebar .nav-item {
+            margin-bottom: 15px; /* Distância entre os itens */
+        }
+    
+        /* Hover nos itens do menu */
+        .sidebar .nav-item .nav-link:hover {
+            background-color: white;
+            padding-left: 15px; /* Aumenta o padding à esquerda no hover */
+        }
+    
+        /* Modificação no menu ao estar aberto */
+        .sidebar.open {
+            left: 0;
+        }
+    
         /* Conteúdo Principal */
         .content {
             margin-left: 0;
@@ -84,11 +85,11 @@
             padding: 20px;
             margin-top: 60px;
         }
-
+    
         .content.shifted {
             margin-left: 250px;
         }
-
+    
         /* Ícone de tema */
         #theme-toggle {
             cursor: pointer;
@@ -96,119 +97,149 @@
             width: 24px;
             height: 24px;
         }
-
+    
         /* Transições para o tema */
         .dark-mode {
             background-color: #121212;
             color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
-
+    
         /* Contêiner para o botão de menu e a logomarca */
-.menu-logo-container {
-    display: flex;
-    align-items: center;
-}
-
-/* Estilo do botão de menu */
-.menu-icon {
-    font-size: 24px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-/* Estilo da logomarca */
-.logo {
-    width: 130px; /* Ajuste do tamanho da logo */
-    height: auto;
-}
-
-.navbar {
-    padding: 0.5rem 1rem; /* Ajuste de padding para manter o layout discreto */
-}
-
-.form-inline {
-    display: flex;
-    align-items: center;
-}
-
-.input-group {
-    width: 450px; /* Tamanho fixo para a barra de pesquisa */
-   
-}
-
-.form-control {
-    border-radius: 20px;
-    padding-left: 30px;  /* Espaço para o ícone */
-}
-
-.input-group-append .btn {
-    border-radius: 50%;
-    padding: 8px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.input-group-append .btn:hover {
-    background-color: #f8f9fa; /* Efeito de hover suave */
-}
-
-.bi-search {
-    font-size: 18px; /* Tamanho do ícone */
-    color: #6c757d;
-}
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #007bff;
-}
-
-
-
+        .menu-logo-container {
+            display: flex;
+            align-items: center;
+        }
+    
+        /* Estilo do botão de menu */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 30px;
+        }
+    
+        /* Estilo da logomarca */
+        .logo {
+            width: 130px; /* Ajuste do tamanho da logo */
+            height: auto;
+            margin-right: 20px; /* Ajusta o espaçamento entre a logo e o botão de menu */
+            padding-top: 10px; /* Adiciona um pequeno deslocamento para baixo */
+            
+        }
+    
+        /* Estilos da barra de navegação */
+        .navbar {
+            padding: 0.5rem 1rem; /* Ajuste de padding para manter o layout discreto */
+        }
+    
+        .form-inline {
+            display: flex;
+            align-items: center;
+        }
+        
+    
+        .input-group {
+            width: 450px; /* Tamanho fixo para a barra de pesquisa */
+        }
+    
+        .form-control {
+            border-radius: 20px;
+            padding-left: 30px;  /* Espaço para o ícone */
+        }
+    
+        .input-group-append .btn {
+            border-radius: 50%;
+            padding: 8px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    
+        .input-group-append .btn:hover {
+            background-color: #f8f9fa; /* Efeito de hover suave */
+        }
+    
+        .bi-search {
+            font-size: 18px; /* Tamanho do ícone */
+            color: #6c757d;
+        }
+    
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #007bff;
+        }
+    
+        /* Ajustes nos ícones de tema */
+        #sun-icon, #moon-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+    
+        /* Ajuste para o ícone de lua e sol */
+        #theme-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        /* Efeito de hover nos ícones de tema */
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
         
     </style>
+    
 </head>
 <body>
 
-<header class="header-bar">
-    <div class="menu-logo-container">
-        <!-- Botão de Menu -->
-        <span class="menu-icon" onclick="toggleSidebar()">☰</span>
-
-        <!-- Logomarca -->
-        <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
-    </div>
-    <form class="form-inline ml-auto">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Pesquisar">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">
-              <i class="bi bi-search"></i>
-            </button>
-          </div>
-        </div>
-      </form>
+    <header class="header-bar">
+        <div class="menu-logo-container">
+            <!-- Botão de Menu -->
+            <span class="menu-icon" onclick="toggleSidebar()">☰</span>
     
-    <span id="theme-toggle" onclick="toggleTheme()">
-        <!-- Ícone de Sol (SVG minimalista) -->
-        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon" style="display: inline;">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <!-- Ícone de Lua (SVG minimalista) -->
-        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon" style="display: none;">
-            <path d="M21 12.79A9 9 0 0 1 11.21 3 7.5 7.5 0 1 0 21 12.79z"></path>
-        </svg>
-    </span>
-</header>
+            <!-- Logomarca -->
+            <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
+        </div>
+    
+        <div class="search-container">
+            <!-- Barra de Pesquisa -->
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="bi bi-search"></i> <!-- Ícone de Pesquisa -->
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="header-icons">
+            <!-- Tema de Ícones -->
+            <span id="theme-toggle" onclick="toggleTheme()" class="theme-toggle">
+                <!-- Ícone de Sol -->
+                <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon" style="display: inline;">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <!-- Ícone de Lua -->
+                <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon" style="display: none;">
+                    <path d="M21 12.79A9 9 0 0 1 11.21 3 7.5 7.5 0 1 0 21 12.79z"></path>
+                </svg>
+            </span>
+    
+            
+        </div>
+    </header>
+    
 
 <!-- Menu Lateral -->
 <nav class="sidebar" id="sidebar">

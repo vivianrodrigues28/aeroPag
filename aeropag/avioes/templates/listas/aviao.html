@@ -2,63 +2,57 @@
 {% load static %}
 
 {% block titulo %}
-    
+    Lista de Aviões
 {% endblock %}
 
 {% block conteudo %}
-<!-- Importação do CSS do Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <style>
-    h3 {
-        text-align: center; /* Centraliza o título */
-    }
     body {
-        background-color: #e9eaeb; /* Cor de fundo suave */
+        background-color: #e9eaeb;
     }
     .container {
-        margin-top: 30px; /* Margem superior para espaçamento */
-        padding: 20px; /* Padding para a área do container */
-        border-radius: 8px; /* Bordas arredondadas */
-        background-color: white; /* Cor de fundo branca para o container */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     h3 {
-        color: #343a40; /* Cor do título */
-        margin-bottom: 20px; /* Espaçamento abaixo do título */
-    }
-    .table th, .table td {
-        background-color: white; /* Cor de fundo clara para as células da tabela */
-        color: #343a40; /* Cor do texto */
+        color: #343a40;
+        text-align: center;
+        margin-bottom: 20px;
     }
 </style>
 
 <div class="container">
     <h3>Lista de Aviões Registrados</h3>
-
-    <hr>
-
+    
     <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Prefixo do Avião</th>
+                    <th>Prefixo</th>
                     <th>Toneladas</th>
                     <th>Grupo</th>
-                    <th>Opções</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for aviao in object_list %}
                 <tr>
-                    <td>{{ aviao.avi_prefixo_do_aviao }}</td>
-                    <td>{{ aviao.avi_toneladas }}</td>
-                    <td>{{ aviao.avi_grupo }}</td>
+                    <td>{{ aviao.prefixo }}</td>
+                    <td>{{ aviao.toneladas }}</td>
+                    <td>{{ aviao.grupo }}</td>  <!-- Alterado de cliente para grupo -->
                     <td>
-                        <a href="{% url 'editar-aviao' aviao.avi_codigo %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
-                        <a href="{% url 'excluir-aviao' aviao.avi_codigo %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                        <button class="btn btn-warning btn-sm" title="Editar" data-aviao-id="{{ aviao.pk }}" data-prefixo="{{ aviao.prefixo }}" data-grupo="{{ aviao.grupo }}" data-toneladas="{{ aviao.toneladas }}" id="editar-aviao-{{ aviao.pk }}">Editar</button>
+
+                        <button class="btn btn-danger btn-sm" title="Excluir" data-aviao-id="{{ aviao.pk }}" id="excluir-aviao-{{ aviao.pk }}">Excluir</button>
                     </td>
+                    
+                    
                 </tr>
                 {% empty %}
                 <tr>
@@ -74,6 +68,131 @@
     </div>
 </div>
 
-<!-- Importação do JavaScript do Bootstrap -->
+<!-- Modal de Exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExcluirLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja excluir este avião?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Edição -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Avião</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-editar-aviao" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="prefixo" class="form-label">Prefixo</label>
+                        <input type="text" class="form-control" id="prefixo" name="prefixo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="grupo" class="form-label">Grupo</label>
+                        <input type="text" class="form-control" id="grupo" name="grupo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="toneladas" class="form-label">Toneladas</label>
+                        <input type="number" class="form-control" id="toneladas" name="toneladas" required>
+                    </div>
+                    <input type="hidden" id="aviao-id" name="aviao_id">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script> 
+    $(document).ready(function() {
+        // Excluir Avião
+        $('button[id^="excluir-aviao-"]').click(function() {
+            var aviaoId = $(this).data('aviao-id');
+            
+            // Exibe a modal de confirmação
+            $('#modalExcluir').modal('show');
+            
+            // Ao confirmar a exclusão
+            $('#confirmar-exclusao').click(function() {
+                $.ajax({
+                    url: '/avioes/' + aviaoId + '/delete/',  
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    },
+                    success: function(response) {
+                        $('#excluir-aviao-' + aviaoId).closest('tr').remove();
+                        $('#modalExcluir').modal('hide'); 
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erro ao excluir o avião');
+                    }
+                });
+            });
+        });
+    
+        // Editar Avião
+        $('button[id^="editar-aviao-"]').click(function() {
+            var aviaoId = $(this).data('aviao-id');
+            var prefixo = $(this).data('prefixo');
+            var grupo = $(this).data('grupo');
+            var toneladas = $(this).data('toneladas');
+    
+            $('#prefixo').val(prefixo);
+            $('#grupo').val(grupo);
+            $('#toneladas').val(toneladas);
+            $('#aviao-id').val(aviaoId);
+    
+            $('#modalEditar').modal('show');
+        });
+    
+        // Enviar o formulário de edição
+        $('#form-editar-aviao').submit(function(event) {
+            event.preventDefault(); 
+    
+            var aviaoId = $('#aviao-id').val();
+            var prefixo = $('#prefixo').val();
+            var grupo = $('#grupo').val();
+            var toneladas = $('#toneladas').val();
+    
+            $.ajax({
+                url: '/avioes/' + aviaoId + '/edit/',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'prefixo': prefixo,
+                    'grupo': grupo,
+                    'toneladas': toneladas,
+                },
+                success: function(response) {
+                    $('button[id="editar-aviao-' + aviaoId + '"]').closest('tr').find('td').eq(0).text(prefixo);
+                    $('button[id="editar-aviao-' + aviaoId + '"]').closest('tr').find('td').eq(1).text(toneladas);
+                    $('button[id="editar-aviao-' + aviaoId + '"]').closest('tr').find('td').eq(2).text(grupo);
+                    $('#modalEditar').modal('hide'); 
+                },
+                error: function(xhr, status, error) {
+                    alert('Erro ao editar o avião');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

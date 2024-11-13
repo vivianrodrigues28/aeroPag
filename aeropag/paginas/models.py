@@ -45,5 +45,19 @@ class Tarifa(models.Model):
 
 
 
+class Atividade(models.Model):
+    descricao = models.CharField(max_length=255)
+    data = models.DateTimeField()
+
+    def __str__(self):
+        return self.descricao
+
+class Evento(models.Model):
+    nome = models.CharField(max_length=255)
+    data = models.DateTimeField()
+
+    def __str__(self):
+        return self.nome
+
 
 
