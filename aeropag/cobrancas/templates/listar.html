@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Cobranças</title>
+</head>
+<body>
+    <h1>Listar Cobranças</h1>
+    <a href="{% url 'criar_cobranca' %}">Nova Cobrança</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tarifa</th>
+                <th>Quantidade</th>
+                <th>Total</th>
+                <th>Data</th>
+                <th>Código Avião</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cobranca in cobrancas %}
+            <tr>
+                <td>{{ cobranca.codigo_cobranca }}</td>
+                <td>{{ cobranca.codigo_tarifa }}</td>
+                <td>{{ cobranca.quantidade }}</td>
+                <td>{{ cobranca.total }}</td>
+                <td>{{ cobranca.data }}</td>
+                <td>{{ cobranca.codigo_aviao }}</td>
+                <td>
+                    <a href="{% url 'editar_cobranca' cobranca.id %}">Editar</a>
+                    <a href="{% url 'excluir_cobranca' cobranca.id %}">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

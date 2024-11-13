@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Cobrança</title>
+</head>
+<body>
+    <h1>Cadastro de Cobrança</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'listar_cobrancas' %}">Voltar para Lista</a>
+</body>
+</html>

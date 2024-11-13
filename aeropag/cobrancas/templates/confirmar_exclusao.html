@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Cobrança</title>
+</head>
+<body>
+    <h1>Tem certeza que deseja excluir a cobrança {{ cobranca.codigo_cobranca }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar Exclusão</button>
+    </form>
+    <a href="{% url 'listar_cobrancas' %}">Cancelar</a>
+</body>
+</html>
