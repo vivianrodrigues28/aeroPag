@@ -1,11 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Aviao(models.Model):
     avi_codigo = models.AutoField(primary_key=True)
     avi_prefixo_do_aviao = models.CharField(max_length=50)
     avi_toneladas = models.DecimalField(max_digits=10, decimal_places=2)
     avi_grupo = models.IntegerField()
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, related_name='cobrancas_usuario')
     
     def __str__(self):
         return self.avi_prefixo_do_aviao
@@ -40,11 +42,11 @@ class Cobranca(models.Model):
             return self.quantidade_horas * self.tar.valor_internacional
 
     def save(self, *args, **kwargs):
-        # Verificar se a tonelagem está dentro dos limites da tarifa
+       
         if not (self.tar.ton_min <= self.avi.tonelada<= self.tar.ton_max):
             raise ValueError('A tonelagem do avião está fora dos limites permitidos para esta tarifa.')
 
-        # Calcular o valor total com base no tipo de voo e horas
+   
         self.valor_total = self.calcular_valor()
         super().save(*args, **kwargs)
 

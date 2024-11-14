@@ -5,7 +5,7 @@
     <title>Excluir Cobrança</title>
 </head>
 <body>
-    <h1>Tem certeza que deseja excluir a cobrança {{ cobranca.codigo_cobranca }}?</h1>
+    <h1>Tem certeza que deseja excluir a cobrança {{ cobranca.cob_codigo }}?</h1>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Confirmar Exclusão</button>

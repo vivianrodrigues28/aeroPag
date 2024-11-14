@@ -6,7 +6,7 @@ class Aviao(models.Model):
     avi_prefixo_do_aviao = models.CharField(max_length=50)
     avi_toneladas = models.DecimalField(max_digits=10, decimal_places=2)
     avi_grupo = models.IntegerField()
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, related_name='avioes_usuario')
     
     
     def __str__(self):

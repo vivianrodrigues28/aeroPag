@@ -10,28 +10,21 @@
     <table>
         <thead>
             <tr>
-                <th>Código</th>
-                <th>Tarifa</th>
-                <th>Quantidade</th>
-                <th>Total</th>
-                <th>Data</th>
-                <th>Código Avião</th>
-                <th>Ações</th>
+                <th>Nome do Avião</th>
+                <th>Tabela de Tarifas</th>
+                <th>Quantidade de Horas</th>
+                <th>Valor Total</th>
+                <th>Detalhes</th>
             </tr>
         </thead>
         <tbody>
             {% for cobranca in cobrancas %}
             <tr>
-                <td>{{ cobranca.codigo_cobranca }}</td>
-                <td>{{ cobranca.codigo_tarifa }}</td>
-                <td>{{ cobranca.quantidade }}</td>
-                <td>{{ cobranca.total }}</td>
-                <td>{{ cobranca.data }}</td>
-                <td>{{ cobranca.codigo_aviao }}</td>
-                <td>
-                    <a href="{% url 'editar_cobranca' cobranca.id %}">Editar</a>
-                    <a href="{% url 'excluir_cobranca' cobranca.id %}">Excluir</a>
-                </td>
+                <td>{{ cobranca.avi.codigo }}</td>
+                <td>{{ cobranca.tar.codigo }}</td>
+                <td>{{ cobranca.quantidade_horas }}</td>
+                <td>R$ {{ cobranca.valor_total }}</td>
+                <td><a href="{% url 'detalhes_cobranca' cobranca.id %}">Ver Detalhes</a></td>
             </tr>
             {% endfor %}
         </tbody>
