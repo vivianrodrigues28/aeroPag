@@ -2,49 +2,50 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cobranca
 from .forms import CobrancaForm
 
-
-def listar_cobrancas(request):
+# Função para listar as cobranças
+def CobrancaList(request):
     cobrancas = Cobranca.objects.all()
-    return render(request, 'cobrancas/listar.html', {'cobrancas': cobrancas})
+    return render(request, 'cobranca/listar.html', {'cobrancas': cobrancas})
 
-
-def criar_cobranca(request):
+# Função para criar uma nova cobrança
+def CobrancaCreate(request):
     if request.method == 'POST':
         form = CobrancaForm(request.POST)
         if form.is_valid():
-            cobranca = form.save(commit=False)
             try:
-                cobranca.save() 
+                cobranca = form.save(commit=False)
+                cobranca.save()
                 return redirect('listar_cobrancas')
-            except ValueError as e:
-                form.add_error(None, e) 
+            except Exception as e:
+                form.add_error(None, f"Erro ao salvar a cobrança: {str(e)}")
     else:
         form = CobrancaForm()
-    return render(request, 'cobrancas/form.html', {'form': form})
+    return render(request, 'form.html', {'form': form})
 
-
-def editar_cobranca(request, id):
+# Função para atualizar uma cobrança existente
+def CobrancaUpdate(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
         form = CobrancaForm(request.POST, instance=cobranca)
         if form.is_valid():
-            form.save()
-            return redirect('listar_cobrancas')
+            try:
+                form.save()
+                return redirect('listar_cobrancas')
+            except Exception as e:
+                form.add_error(None, f"Erro ao atualizar a cobrança: {str(e)}")
     else:
         form = CobrancaForm(instance=cobranca)
-    return render(request, 'cobrancas/form.html', {'form': form})
+    return render(request, 'templates/form.html', {'form': form})
 
-
-def excluir_cobranca(request, id):
+# Função para excluir uma cobrança
+def CobrancaDelete(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
         cobranca.delete()
         return redirect('listar_cobrancas')
-    return render(request, 'cobrancas/confirmar_exclusao.html', {'cobranca': cobranca})
+    return render(request, 'templates/confirmar_exclusão.html', {'cobranca': cobranca})
 
-
-def detalhes_cobranca(request, id):
+# Função para ver os detalhes de uma cobrança
+def CobrancaDetails(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
-    return render(request, 'cobrancas/detalhes.html', {'cobranca': cobranca})
-
-# Create your views here.
+    return render(request, 'detalhes.html', {'cobranca': cobranca})

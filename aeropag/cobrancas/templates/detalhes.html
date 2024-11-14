@@ -11,6 +11,6 @@
     <p>Tipo de Voo: {{ cobranca.tar.tipo}}</p>
     <p>Quantidade de Horas: {{ cobranca.quantidade_horas }}</p>
     <p>Valor Total: R$ {{ cobranca.valor_total }}</p>
-    <a href="{% url 'listar_cobrancas' %}">Voltar para lista</a>
+    <a href="{% url 'listar_cobrancas'.pk %}">Voltar para lista</a>
 </body>
 </html>
