@@ -43,18 +43,16 @@
             <tbody>
                 {% for aviao in object_list %}
                 <tr>
-                    <td>{{ aviao.prefixo }}</td>
-                    <td>{{ aviao.toneladas }}</td>
-                    <td>{{ aviao.grupo }}</td>  <!-- Alterado de cliente para grupo -->
+                    <td>{{ aviao.avi_prefixo_do_aviao }}</td>
+                    <td>{{ aviao.avi_toneladas }}</td>
+                    <td>{{ aviao.avi_grupo }}</td>
+                    <!-- Coluna Ações dentro da mesma linha -->
                     <td>
-                        <button class="btn btn-warning btn-sm" title="Editar" data-aviao-id="{{ aviao.pk }}" data-prefixo="{{ aviao.prefixo }}" data-grupo="{{ aviao.grupo }}" data-toneladas="{{ aviao.toneladas }}" id="editar-aviao-{{ aviao.pk }}">Editar</button>
-
+                        <button class="btn btn-warning btn-sm" title="Editar" data-aviao-id="{{ aviao.pk }}" data-prefixo="{{ aviao.avi_prefixo_do_aviao }}" data-grupo="{{ aviao.avi_grupo }}" data-toneladas="{{ aviao.avi_toneladas }}" id="editar-aviao-{{ aviao.pk }}">Editar</button>
                         <button class="btn btn-danger btn-sm" title="Excluir" data-aviao-id="{{ aviao.pk }}" id="excluir-aviao-{{ aviao.pk }}">Excluir</button>
                     </td>
-                    
-                    
                 </tr>
-                {% empty %}
+                {% empty %}   
                 <tr>
                     <td colspan="4" class="text-center">Nenhum avião registrado.</td>
                 </tr>
@@ -122,6 +120,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script> 
+
     $(document).ready(function() {
         // Excluir Avião
         $('button[id^="excluir-aviao-"]').click(function() {

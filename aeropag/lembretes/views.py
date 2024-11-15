@@ -10,7 +10,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Lembrete
 from django.http import JsonResponse
 from .models import Lembrete
+def listar_lembretes(request):
+    lembretes = Lembrete.objects.all()
 
+    lembretes = lembretes.order_by('data')
+
+    return render(request, 'lembrete.html', {'object_list': lembretes})
 def editar_lembrete(request, id):
     if request.method == 'POST':
         lembrete = Lembrete.objects.get(id=id)

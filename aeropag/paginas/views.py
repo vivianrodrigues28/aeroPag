@@ -8,7 +8,16 @@ from tarifas.models import Tarifa
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
-
+# View para a busca
+def search(request):
+    query = request.GET.get('query', '')  # Obtém a consulta da barra de pesquisa
+    
+    if query:
+        results = Aviao.objects.filter(nome__icontains=query)  # Filtra pelo campo 'nome'
+    else:
+        results = Aviao.objects.all()  # Se não houver consulta, retorna todos os registros
+    
+    return render(request, 'search_results.html', {'query': query, 'results': results})
 
 # View para listar lembretes com filtros de data
 def listar_lembretes(request):

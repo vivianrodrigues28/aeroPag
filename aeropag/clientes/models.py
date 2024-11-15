@@ -7,8 +7,7 @@ class Cliente(models.Model):
     cli_nome = models.CharField(max_length=255)
     cli_email = models.EmailField(max_length=255)
     cli_telefone = models.CharField(max_length=50)
-    cli_avi_codigo = models.ForeignKey(Aviao, on_delete=models.CASCADE, related_name='clientes')
-    
+    cli_avi_codigo = models.ForeignKey(Aviao, on_delete=models.CASCADE, related_name='clientes', null=True)
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):

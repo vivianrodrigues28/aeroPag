@@ -1,0 +1,14 @@
+{% extends 'modelo.html' %}
+{% load static %}
+{% block content %}
+    <h2>Resultados para: "{{ query }}"</h2>
+    {% if results %}
+        <ul>
+            {% for item in results %}
+                <li>{{ item.nome }}</li>  <!-- Substitua com os campos corretos -->
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhum resultado encontrado.</p>
+    {% endif %}
+{% endblock %}

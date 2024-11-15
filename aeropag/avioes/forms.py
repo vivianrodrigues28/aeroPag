@@ -10,4 +10,3 @@ class AviaoForm(forms.ModelForm):
             'avi_toneladas': 'Toneladas',
             'avi_grupo': 'Grupo',
         }
- 

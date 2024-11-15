@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         /* Estilos Gerais */
@@ -148,12 +149,12 @@
         }
     
         .input-group-append .btn {
-            border-radius: 50%;
+            border-radius: 0; /* Remove a borda arredondada para ficar quadrada */
             padding: 8px;
             background-color: transparent;
             border: none;
             cursor: pointer;
-        }
+}
     
         .input-group-append .btn:hover {
             background-color: #f8f9fa; /* Efeito de hover suave */
@@ -188,7 +189,47 @@
         #theme-toggle:hover {
             transform: scale(1.1);
         }
-        
+        main.container {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+}
+/* Alinha ícones e textos de forma vertical no centro */
+.nav-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* Remove o sublinhado do link */
+    color: white; /* Garantir que o texto tenha a cor certa */
+}
+
+.nav-item a i {
+    margin-right: 5px; /* Ajusta o espaço entre o ícone e o texto */
+}
+
+
+.search-container {
+    width: 100%;
+    max-width: 600px; /* Defina um limite máximo, se necessário */
+    margin: auto;
+}
+
+@media (min-width: 768px) {
+    .search-container {
+        max-width: 75%;
+    }
+}
+
+@media (min-width: 992px) {
+    .search-container {
+        max-width: 50%;
+    }
+}
+.bi-search {
+    color: white; /* Define a cor do ícone como branco */
+}
+
+
     </style>
     
 </head>
@@ -203,15 +244,16 @@
             <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
         </div>
     
-        <div class="search-container">
-            <!-- Barra de Pesquisa -->
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Pesquisar">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="bi bi-search"></i> <!-- Ícone de Pesquisa -->
-                    </button>
-                </div>
+        <form method="GET" action="{% url 'search' %}" class="input-group w-75 w-md-65 w-lg-40">
+            <input type="text" class="form-control" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary ms-2" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+        
+                
             </div>
         </div>
     
@@ -245,6 +287,7 @@
 <nav class="sidebar" id="sidebar">
     <ul class="nav flex-column">
         <!-- Item Início com ícone de casa -->
+         <br>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard' %}">
                 <i class="bi bi-house-door"></i> Início
@@ -278,7 +321,6 @@
                 <i class="bi bi-airplane-engines"></i> Aviões
             </a>
         </li>
-
         <!-- Opção Sair sem botão -->
         <li class="nav-item">
             <a class="nav-link" href="{% url 'inicio' %}">
