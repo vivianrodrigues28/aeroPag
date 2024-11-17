@@ -37,8 +37,8 @@
 .theme-icons {
     display: flex;
     align-items: center;
-    justify-content: flex-end;  /* Alinha os ícones à direita */
-    margin-left: auto;  /* Garante que os ícones fiquem à direita */
+    justify-content: flex-end;
+    margin-left: auto;
 }
 
 /* Ícones de tema */
@@ -47,227 +47,149 @@
     height: 24px;
     cursor: pointer;
     transition: transform 0.3s ease;
-    margin-left: 10px; /* Adiciona espaçamento entre os ícones */
+    margin-left: 10px;
 }
 
-/* Estilo de hover para os ícones de tema */
+/* Efeito hover nos ícones */
 #theme-toggle:hover {
     transform: scale(1.1);
 }
 
-        /* Estilos Gerais */
-        body {
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-            flex-direction: column;
-            background-color: white;
-            font-family: Arial, sans-serif;
-            margin: 0;
-        }
+/* Estilos Gerais */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+    flex-direction: column;
+    background-color: white;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        /* Barra do Cabeçalho */
-        .header-bar {
-            width: 100%;
-            background-color: rgb(41, 43, 145);
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            z-index: 999;
-            height: 60px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+/* Temas claro e escuro */
+body.light {
+    background-color: #ffffff;
+    color: #000000;
+}
 
-        /* Ícone do Menu */
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-        }
+body.dark {
+    background-color: #121212;
+    color: #ffffff;
+}
 
-        /* Estilo do Menu Lateral */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: rgb(41, 43, 145);
-            color: white;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            transition: left 0.3s ease;
-            padding-top: 60px;
-            z-index: 998;
-        }
+body.dark #moon-icon {
+    display: block;
+}
 
-        /* Distância entre os itens do menu */
-        .sidebar .nav-item {
-            margin-bottom: 15px; /* Distância entre os itens */
-        }
+body.dark #sun-icon {
+    display: none;
+}
 
-        /* Hover nos itens do menu */
-        .sidebar .nav-item .nav-link:hover {
-            background-color: white;
-            padding-left: 15px; /* Aumenta o padding à esquerda no hover */
-        }
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: rgb(41, 43, 145);
+    color: white;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+    z-index: 998;
+}
 
-        /* Modificação no menu ao estar aberto */
-        .sidebar.open {
-            left: 0;
-        }
+.sidebar.open {
+    left: 0;
+}
 
-        /* Conteúdo Principal */
-        .content {
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-            padding: 20px;
-            margin-top: 60px;
-        }
+.sidebar .nav-item {
+    margin-bottom: 15px;
+}
 
-        .content.shifted {
-            margin-left: 250px;
-        }
+.sidebar .nav-item .nav-link:hover {
+    background-color: white;
+    padding-left: 15px;
+}
 
-        /* Ícone de tema */
-        #theme-toggle {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 24px;
-            height: 24px;
-        }
+/* Conteúdo Principal */
+.content {
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+    padding: 20px;
+    margin-top: 60px;
+}
 
-        /* Transições para o tema */
-        .dark-mode {
-            background-color: #121212;
-            color: #ffffff;
-            transition: background-color 0.3s, color 0.3s;
-        }
+.content.shifted {
+    margin-left: 250px;
+}
 
-        /* Contêiner para o botão de menu e a logomarca */
-        .menu-logo-container {
-            display: flex;
-            align-items: center;
-        }
+/* Barra de pesquisa */
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
 
-        /* Estilo do botão de menu */
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            margin-right: 30px;
-        }
+@media (min-width: 768px) {
+    .search-container {
+        max-width: 75%;
+    }
+}
 
-        /* Estilo da logomarca */
-        .logo {
-            width: 130px; /* Ajuste do tamanho da logo */
-            height: auto;
-            margin-right: 20px; /* Ajusta o espaçamento entre a logo e o botão de menu */
-            padding-top: 10px; /* Adiciona um pequeno deslocamento para baixo */
-            
-        }
+@media (min-width: 992px) {
+    .search-container {
+        max-width: 50%;
+    }
+}
 
-        /* Estilos da barra de navegação */
-        .navbar {
-            padding: 0.5rem 1rem; /* Ajuste de padding para manter o layout discreto */
-        }
+.form-control {
+    border-radius: 20px;
+    padding-left: 30px;
+}
 
-        .form-inline {
-            display: flex;
-            align-items: center;
-        }
+.form-control:focus {
+    box-shadow: none;
+    border-color: #007bff;
+}
 
-        .input-group {
-            width: 450px; /* Tamanho fixo para a barra de pesquisa */
-        }
+/* Botão de menu */
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 30px;
+}
 
-        .form-control {
-            border-radius: 20px;
-            padding-left: 30px;  /* Espaço para o ícone */
-        }
+/* Logo */
+.logo {
+    width: 130px;
+    height: auto;
+    margin-right: 20px;
+    padding-top: 10px;
+}
 
-        .input-group-append .btn {
-            border-radius: 0; /* Remove a borda arredondada para ficar quadrada */
-            padding: 8px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
+/* Ajuste de ícones e links */
+.nav-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
 
-        .input-group-append .btn:hover {
-            background-color: #f8f9fa; /* Efeito de hover suave */
-        }
+.nav-item a i {
+    margin-right: 5px;
+}
+/* Centralizar o conteúdo principal da página */
+main.container.my-4 {
+    padding: 0; /* Remove espaçamento interno */
+    display: flex; /* Define como flex container */
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+    flex-direction: column; /* Organiza os elementos em coluna */
+}
 
-        .bi-search {
-            font-size: 18px; /* Tamanho do ícone */
-            color: #6c757d;
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #007bff;
-        }
-
-        /* Ajustes nos ícones de tema */
-        #sun-icon, #moon-icon {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        /* Ajuste para o ícone de lua e sol */
-        #theme-toggle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Efeito de hover nos ícones de tema */
-        #theme-toggle:hover {
-            transform: scale(1.1);
-        }
-        main.container {
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        /* Alinha ícones e textos de forma vertical no centro */
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            text-decoration: none; /* Remove o sublinhado do link */
-            color: white; /* Garantir que o texto tenha a cor certa */
-        }
-
-        .nav-item a i {
-            margin-right: 5px; /* Ajusta o espaço entre o ícone e o texto */
-        }
-
-        .search-container {
-            width: 100%;
-            max-width: 600px; /* Defina um limite máximo, se necessário */
-            margin: auto;
-        }
-
-        @media (min-width: 768px) {
-            .search-container {
-                max-width: 75%;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .search-container {
-                max-width: 50%;
-            }
-        }
-
-        .bi-search {
-            color: white; /* Define a cor do ícone como branco */
-        }
-    </style>
+</style>
 </head>
 <body>
 
@@ -288,8 +210,8 @@
             </div>
         </form>
     
-        <!-- Contêiner dos ícones de tema à direita -->
         <div class="theme-icons">
+            <!-- Ícone do Sol -->
             <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -301,7 +223,8 @@
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-
+    
+            <!-- Ícone da Lua -->
             <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon">
                 <path d="M21 12.79A9 9 0 0 1 11.21 3 7.5 7.5 0 1 0 21 12.79z"></path>
             </svg>
@@ -425,8 +348,42 @@
             moonIcon.style.display = "none";
             localStorage.setItem("theme", "light");
         }
+    }   
+    document.addEventListener('DOMContentLoaded', () => {
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    const body = document.body;
+
+    // Inicializar tema com base no localStorage
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.classList.add(currentTheme);
+
+    if (currentTheme === 'dark') {
+        moonIcon.style.display = 'block';
+        sunIcon.style.display = 'none';
+    } else {
+        moonIcon.style.display = 'none';
+        sunIcon.style.display = 'block';
     }
 
+    // Alternar para tema escuro
+    sunIcon.addEventListener('click', () => {
+        body.classList.replace('light', 'dark');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+        localStorage.setItem('theme', 'dark');
+    });
+
+    // Alternar para tema claro
+    moonIcon.addEventListener('click', () => {
+        body.classList.replace('dark', 'light');
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+        localStorage.setItem('theme', 'light');
+    });
+});
+
+    
     // Adicionando event listener para o clique no ícone de tema
     document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 </script>

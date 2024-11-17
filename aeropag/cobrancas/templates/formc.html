@@ -1,0 +1,99 @@
+{% extends 'modelo.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="container py-5" style="max-width: 400px;">
+    <div class="card border-0">
+        <div class="card-header text-center bg-light">
+            <h3 class="mb-0 text-dark">Criar Nova Cobrança</h3>
+        </div>
+        
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Campo Código do Avião -->
+                <div class="mb-3">
+                    <label for="avi_codigo" class="form-label">Código do Avião</label>
+                    <input type="text" id="avi_codigo" name="avi_codigo" value="{{ form.avi_codigo.value|default:'' }}" class="form-control">
+                </div>
+
+                <!-- Campo Código da Tarifa -->
+                <div class="mb-3">
+                    <label for="tar_codigo" class="form-label">Código da Tarifa</label>
+                    <input type="text" id="tar_codigo" name="tar_codigo" value="{{ form.tar_codigo.value|default:'' }}" class="form-control">
+                </div>
+
+                <!-- Campo Quantidade de Horas -->
+                <div class="mb-3">
+                    <label for="quantidade_horas" class="form-label">Quantidade de Horas</label>
+                    <input type="number" id="quantidade_horas" name="quantidade_horas" value="{{ form.quantidade_horas.value|default:'' }}" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="valor_total" class="form-label">Valor Total</label>
+                    <input type="text" id="valor_total" name="valor_total" value="{{ form.valor_total.value|default:'' }}" class="form-control">
+                </div>
+                
+
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Campos do formulário -->
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar_cobrancas' %}" class="btn btn-danger">Cancelar</a>
+                </form>
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 4px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #333;
+        box-shadow: none;
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Ajuste adicional para centralizar e dar mais espaçamento */
+    .d-flex {
+        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+    }
+
+    .btn {
+        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+    }
+</style>
+
+{% endblock %}

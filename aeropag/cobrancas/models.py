@@ -42,12 +42,22 @@ class Cobranca(models.Model):
             return self.quantidade_horas * self.tar.valor_internacional
 
     def save(self, *args, **kwargs):
-       
-        if not (self.tar.ton_min <= self.avi.tonelada<= self.tar.ton_max):
-            raise ValueError('A tonelagem do avião está fora dos limites permitidos para esta tarifa.')
+        try:
+        # Obter a instância de Tarifa e Aviao a partir dos códigos
+            self.tar = Tarifa.objects.get(tar_codigo=self.tar_codigo)
+            self.avi = Aviao.objects.get(avi_codigo=self.avi_codigo)
 
-   
-        self.valor_total = self.calcular_valor()
-        super().save(*args, **kwargs)
+        # Verificar se a tonelagem do avião está dentro dos limites da tarifa
+            if not (self.tar.tar_ton_min <= self.avi.avi_toneladas <= self.tar.tar_ton_max):
+                raise ValueError('A tonelagem do avião está fora dos limites permitidos para esta tarifa.')
+
+        # Calcular o valor total da cobrança
+            self.valor_total = self.calcular_valor()
+
+        # Chamar o método save do modelo para salvar os dados
+            super().save(*args, **kwargs)
+
+        except ObjectDoesNotExist as e:
+            raise ValueError(f'Erro ao encontrar o objeto: {e}')
 
 # Create your models here.
