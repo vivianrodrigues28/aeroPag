@@ -5,17 +5,74 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Lembrete
 from django.contrib.auth.decorators import login_required
-# lembretes/views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Lembrete
 from django.http import JsonResponse
-from .models import Lembrete
+from datetime import date, timedelta
+from django.shortcuts import render
+from datetime import datetime
+from django.utils import timezone
+
+def cadastrar_lembrete(request):
+    if request.method == "POST":
+        titulo = request.POST.get("titulo")
+        descricao = request.POST.get("descricao")
+        data_str = request.POST.get("data")
+        relevancia = request.POST.get("relevancia", 1)
+        obs = request.POST.get("obs", "")
+
+        # Converte a data recebida para um objeto 'date'
+        data = datetime.strptime(data_str, "%Y-%m-%d").date()
+
+        # Cria e salva o lembrete no banco de dados
+        Lembrete.objects.create(
+            titulo=titulo,
+            descricao=descricao,
+            obs=obs,
+            relevancia=relevancia,
+            data=data,
+            usuario=request.user  # Associa o lembrete ao usuário logado
+        )
+
+        return redirect('listar_lembretes')  # Redireciona para a página de lista de lembretes
+
+    return render(request, 'cadastro_lembrete.html', {'form': form})
+
+
 def listar_lembretes(request):
-    lembretes = Lembrete.objects.all()
+    filtro_data = request.GET.get('filtro_data', 'tudo')
+    mensagem = "Todos os lembretes"
 
-    lembretes = lembretes.order_by('data')
+    if filtro_data == 'hoje':
+        hoje = timezone.now().date()
+        lembretes = Lembrete.objects.filter(data=hoje)
+        mensagem = "Lembretes de hoje"
+    elif filtro_data == 'prox_semana':
+        inicio_semana = timezone.now().date() + datetime.timedelta(days=(7 - timezone.now().weekday()))
+        fim_semana = inicio_semana + datetime.timedelta(days=6)
+        lembretes = Lembrete.objects.filter(data__range=[inicio_semana, fim_semana])
+        mensagem = "Lembretes dessa semana"
+    elif filtro_data == 'ante_semana':
+        inicio_ante_semana = timezone.now().date() - datetime.timedelta(days=(timezone.now().weekday() + 7))
+        fim_ante_semana = inicio_ante_semana + datetime.timedelta(days=6)
+        lembretes = Lembrete.objects.filter(data__range=[inicio_ante_semana, fim_ante_semana])
+        mensagem = "Lembretes da semana passada"
+    elif filtro_data == 'ante_tudo':
+        lembretes = Lembrete.objects.filter(data__lt=timezone.now().date())
+        mensagem = "Lembretes passados"
+    elif filtro_data == 'prox_mes':
+        primeiro_dia_mes = timezone.now().replace(day=1)
+        ultimo_dia_mes = (primeiro_dia_mes.replace(month=primeiro_dia_mes.month + 1) - datetime.timedelta(days=1)).date()
+        lembretes = Lembrete.objects.filter(data__range=[primeiro_dia_mes.date(), ultimo_dia_mes])
+        mensagem = "Lembretes desse mês"
+    else:
+        lembretes = Lembrete.objects.all()
 
-    return render(request, 'lembrete.html', {'object_list': lembretes})
+    context = {
+        'object_list': lembretes,
+        'mensagem': mensagem
+    }
+    return render(request, 'listar_lembretes.html', context)
+
 def editar_lembrete(request, id):
     if request.method == 'POST':
         lembrete = Lembrete.objects.get(id=id)
@@ -51,7 +108,7 @@ class LembreteCreate(LoginRequiredMixin, CreateView):
 class LembreteUpdate(LoginRequiredMixin, UpdateView):
     model = Lembrete
     fields = ['titulo', 'descricao', 'obs', 'relevancia', 'data']
-    template_name = 'form.html'
+    template_name = 'lembrete/cadastrar_lembrete.html'
     success_url = reverse_lazy('listar-lembretes')
 
     def get_object(self):

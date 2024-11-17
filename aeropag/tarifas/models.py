@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -13,12 +14,15 @@ class Tarifa(models.Model):
     
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
-
     def clean(self):
-        if self.tar_ton_min > self.tar_ton_max:
-            raise ValidationError('O valor mínimo de tonelagem não pode ser maior que o valor máximo.')
-        if self.tar_ton_max < self.tar_ton_min:
-            raise ValidationError('O valor máximo de tonelagem não pode ser menor que o valor mínimo.')
+        # Verifique se os campos de tonelagem não são None
+        if self.tar_ton_min is not None and self.tar_ton_max is not None:
+            if self.tar_ton_min > self.tar_ton_max:
+                raise ValidationError('O valor mínimo de tonelagem não pode ser maior que o valor máximo.')
+            if self.tar_ton_max < self.tar_ton_min:
+                raise ValidationError('O valor máximo de tonelagem não pode ser menor que o valor mínimo.')
+        else:
+            raise ValidationError('Ambos os campos de tonelagem devem ser preenchidos corretamente.')
 
     def __str__(self):
         return self.tar_tipo

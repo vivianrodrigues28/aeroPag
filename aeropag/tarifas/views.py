@@ -8,28 +8,22 @@ from .forms import TarifaForm
 from django.http import JsonResponse
 
 
-def listar_tarifas(request):
-    # Filtra as tarifas do usuário logado
-    tarifas = Tarifa.objects.filter(usuario=request.user)
-    return render(request, 'lista_tarifas.html', {'tarifas': tarifas})
-
-
 def criar_tarifa(request):
     if request.method == 'POST':
         form = TarifaForm(request.POST)
         if form.is_valid():
-            tarifa = form.save(commit=False)
-            tarifa.usuario = request.user  # Associa a tarifa ao usuário atual
-            tarifa.save()
-            # Retorna os dados da tarifa recém-criada para atualizar a tabela via AJAX
-            return JsonResponse({
-                'pk': tarifa.pk,
-                'descricao': tarifa.descricao,
-                'valor': tarifa.valor,
-            })
+            # Salva a tarifa no banco de dados
+            form.save()
+            # Redireciona para a listagem de tarifas
+            return redirect('listar-tarifas')  # Substitua 'listar-tarifas' pelo nome correto da URL
     else:
         form = TarifaForm()
-    return render(request, 'cadastrar_tarifa.html', {'form': form})
+
+    return render(request, 'tarifas/criar_tarifa.html', {'form': form})
+
+def listar_tarifas(request):
+    tarifas = Tarifa.objects.all()
+    return render(request, 'tarifas/listar_tarifas.html', {'tarifas': tarifas})
 
 
 def excluir_tarifa(request, tarifa_id):
@@ -70,7 +64,7 @@ class TarifaCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Tarifa
     form_class = TarifaForm
-    template_name = 'form.html'
+    template_name = 'formas.html'
     success_url = reverse_lazy('listar-tarifas')
 
     def form_valid(self, form):
@@ -82,7 +76,7 @@ class TarifaUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = Tarifa
     form_class = TarifaForm
-    template_name = 'form.html'
+    template_name = 'formas.html'
     success_url = reverse_lazy('listar-tarifas')
 
     def form_valid(self, form):

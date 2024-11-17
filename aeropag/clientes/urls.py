@@ -14,5 +14,4 @@ urlpatterns = [
     # Excluir cliente
     path('clientes/<int:pk>/delete/', ClienteDelete.as_view(), name='excluir-cliente'),
 
-   
 ]

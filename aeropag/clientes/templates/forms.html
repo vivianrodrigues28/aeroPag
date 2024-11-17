@@ -1,0 +1,95 @@
+{% extends 'modelo.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="container py-5" style="max-width: 400px;">
+    <div class="card border-0">
+        <div class="card-header text-center bg-light">
+            <h3 class="mb-0 text-dark">{% if object %}Editar Cliente{% else %}Adicionar Cliente{% endif %}</h3>
+        </div>
+        
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Campo Nome do Cliente -->
+                <div class="mb-3">
+                    <label for="cli_nome" class="form-label">Nome do Cliente</label>
+                    <input type="text" id="cli_nome" name="cli_nome" value="{{ form.cli_nome.value|default:'' }}" class="form-control">
+                </div>
+
+                <!-- Campo E-mail -->
+                <div class="mb-3">
+                    <label for="cli_email" class="form-label">E-mail</label>
+                    <input type="email" id="cli_email" name="cli_email" value="{{ form.cli_email.value|default:'' }}" class="form-control">
+                </div>
+
+                <!-- Campo Telefone -->
+                <div class="mb-3">
+                    <label for="cli_telefone" class="form-label">Telefone</label>
+                    <input type="tel" id="cli_telefone" name="cli_telefone" value="{{ form.cli_telefone.value|default:'' }}" class="form-control">
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-between">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}  <!-- Isso vai renderizar todos os campos automaticamente -->
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </form>
+                    <a href="{% url 'listar-clientes' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 4px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #333;
+        box-shadow: none;
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Ajuste adicional para centralizar e dar mais espaçamento */
+    .d-flex {
+        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+    }
+
+    .btn {
+        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+    }
+</style>
+
+{% endblock %}

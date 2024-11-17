@@ -72,24 +72,28 @@
                 <i class="fas fa-bars"></i> <!-- Ícone de três traços -->
             </button>
             <ul class="dropdown-menu" id="dropdownMenu" style="display: none;">
-                <li><a class="dropdown-item" href="?filtro_data=hoje">De hoje</a></li>
-                <li><a class="dropdown-item" href="?filtro_data=prox_semana">Dessa semana</a></li>
-                <li><a class="dropdown-item" href="?filtro_data=ante_semana">Da Semana Passada</a></li>
-                <li><a class="dropdown-item" href="?filtro_data=ante_tudo">Lembretes Passados</a></li>
-                <li><a class="dropdown-item" href="?filtro_data=prox_mes">Desse mês</a></li>
-                <li><a class="dropdown-item" href="?filtro_data=tudo">Todos</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=hoje">De hoje</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=prox_semana">Dessa semana</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=ante_semana">Da Semana Passada</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=ante_tudo">Lembretes Passados</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=prox_mes">Desse mês</a></li>
+                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=tudo">Todos</a></li>
             </ul>
         </div>
     
-    
+        {% if object_list %}
+        <h2>{{ mensagem }}</h2>
     <div class="table-responsive">
+        
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Título</th>
                     <th scope="col">OBS</th>
                     <th scope="col">Data</th>
+                    <th scope="col">Relevância</th>
                     <th scope="col">Ações</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -97,7 +101,8 @@
                 <tr>
                     <td>{{ lembrete.titulo }}</td>
                     <td>{{ lembrete.obs }}</td>
-                    <td>{{ lembrete.data }}</td>
+                    <td>{{ lembrete.data|date:"d/m/Y" }}</td>
+                    <td>{{ lembrete.relevancia }}</td>
                     <td>
                         <!-- Botão de Editar -->
                         <button class="btn btn-warning btn-sm" title="Editar" data-lembrete-id="{{ lembrete.pk }}" data-lembrete-titulo="{{ lembrete.titulo }}" data-lembrete-obs="{{ lembrete.obs }}" id="editar-lembrete-{{ lembrete.pk }}">Editar</button>
@@ -106,12 +111,13 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">Nenhum lembrete registrado.</td>
-                </tr>
+                
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p>Nenhum lembrete encontrado para o filtro "{{ mensagem }}".</p>
+        {% endif %}
     </div>
 
     <div class="text-end mt-3">
@@ -175,94 +181,130 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    // Excluir Lembrete
-    $('button[id^="excluir-lembrete-"]').click(function() {
+    
+$(document).ready(function () {
+    // Função para filtrar lembretes ao clicar nas opções do dropdown
+    $(document).ready(function () {
+    // Função para filtrar lembretes ao clicar nas opções do dropdown
+    $('.dropdown-item').click(function (event) {
+        event.preventDefault(); // Previne o comportamento padrão de navegação
+
+        // Pega o filtro selecionado
+        var filtro = $(this).attr('href').split('=')[1];
+        console.log("Filtro selecionado: " + filtro); // Exibe o filtro no console
+
+        // Verifica se o filtro foi encontrado
+        if (!filtro || filtro.trim() === "") { // Verifica se o filtro é uma string vazia ou nula
+            console.log("Filtro inválido ou não encontrado"); // Adicionando log para verificar no console
+            return; // Se o filtro for inválido, não faz a requisição AJAX
+        }
+
+        // Faz uma requisição AJAX para obter os lembretes filtrados
+        $.ajax({
+            url: '/filtrar-lembretes/', // Endereço no backend para processar os filtros
+            type: 'GET',
+            data: { filtro_data: filtro }, // Envia o filtro selecionado
+            success: function (response) {
+                console.log("Resposta recebida: ", response); // Verifica o que o servidor retornou
+
+                // Atualiza o conteúdo da tabela com os lembretes filtrados
+                $('#tabela-lembretes').html(response.tabela); // Assumindo que o servidor retorna uma tabela renderizada
+                $('#mensagem').text(response.mensagem); // Atualiza a mensagem de status, se aplicável
+            },
+            
+        });
+    });
+
+    // Outros códigos para excluir e editar lembretes continuam aqui...
+});
+
+
+    // Excluir lembrete
+    $('button[id^="excluir-lembrete-"]').click(function () {
         var lembreteId = $(this).data('lembrete-id');
-        
+
         // Exibe a modal de confirmação
         $('#modalExcluir').modal('show');
-        
+
         // Ao confirmar a exclusão
-        $('#confirmar-exclusao').click(function() {
+        $('#confirmar-exclusao').click(function () {
             // Faz a requisição AJAX para excluir o lembrete
             $.ajax({
-                url: '/excluir-lembrete/' + lembreteId + '/',  // URL para a exclusão
+                url: '/excluir-lembrete/' + lembreteId + '/', // URL para exclusão
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                 },
-                success: function(response) {
+                success: function (response) {
                     // Se a exclusão for bem-sucedida, remove a linha da tabela
                     $('#excluir-lembrete-' + lembreteId).closest('tr').remove();
                     $('#modalExcluir').modal('hide'); // Fecha a modal
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
+                    console.log("Erro no AJAX de exclusão: ", error); // Exibe o erro no console
                     alert('Erro ao excluir o lembrete');
                 }
             });
         });
     });
 
-    // Editar Lembrete
-    $('button[id^="editar-lembrete-"]').click(function() {
-    var lembreteId = $(this).data('lembrete-id');
-    var titulo = $(this).data('lembrete-titulo');
-    var obs = $(this).data('lembrete-obs');
-    var data = $(this).closest('tr').find('td').eq(2).text();
+    // Editar lembrete
+    $('button[id^="editar-lembrete-"]').click(function () {
+        var lembreteId = $(this).data('lembrete-id');
+        var titulo = $(this).data('lembrete-titulo');
+        var obs = $(this).data('lembrete-obs');
+        var data = $(this).closest('tr').find('td').eq(2).text();
 
         // Preenche os campos do formulário de edição com os dados do lembrete
         $('#titulo').val(titulo);
-    $('#obs').val(obs);
-    $('#data').val(data);
-    $('#lembrete-id').val(lembreteId);
+        $('#obs').val(obs);
+        $('#data').val(data);
+        $('#lembrete-id').val(lembreteId);
 
         // Exibe a modal de edição
         $('#modalEditar').modal('show');
     });
 
     // Enviar o formulário de edição
-    $('#form-editar-lembrete').submit(function(event) {
-    event.preventDefault();
+    $('#form-editar-lembrete').submit(function (event) {
+        event.preventDefault();
 
-    var lembreteId = $('#lembrete-id').val();
-    var titulo = $('#titulo').val();
-    var obs = $('#obs').val();
-    var data = $('#data').val();
+        var lembreteId = $('#lembrete-id').val();
+        var titulo = $('#titulo').val();
+        var obs = $('#obs').val();
+        var data = $('#data').val();
 
-    $.ajax({
-        url: '/editar-lembrete/' + lembreteId + '/', // URL para edição
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-            'titulo': titulo,
-            'obs': obs,
-            'data': data
+        $.ajax({
+            url: '/editar-lembrete/' + lembreteId + '/', // URL para edição
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'titulo': titulo,
+                'obs': obs,
+                'data': data
             },
-            success: function(response) {
+            success: function (response) {
                 var row = $('button[id="editar-lembrete-' + lembreteId + '"]').closest('tr');
-            row.find('td').eq(0).text(titulo);
-            row.find('td').eq(1).text(obs);
-            row.find('td').eq(2).text(data);
-            $('#modalEditar').modal('hide');
+                row.find('td').eq(0).text(titulo);
+                row.find('td').eq(1).text(obs);
+                row.find('td').eq(2).text(data);
+                $('#modalEditar').modal('hide');
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
+                console.log("Erro no AJAX de edição: ", error); // Exibe o erro no console
                 alert('Erro ao editar o lembrete');
             }
         });
     });
-});
- // Alternar o dropdown
- document.getElementById("dropdownButton").addEventListener("click", function() {
-        var dropdownMenu = document.getElementById("dropdownMenu");
-        
-        // Verificar se o menu está visível
-        if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
-            dropdownMenu.style.display = "block";  // Exibir o menu
-        } else {
-            dropdownMenu.style.display = "none";  // Ocultar o menu
-        }
+
+    // Alternar o dropdown
+    $('#dropdownButton').click(function () {
+        var dropdownMenu = $('#dropdownMenu');
+        dropdownMenu.toggle(); // Alterna a exibição do menu
     });
+});
+
+
 </script>
 
 {% endblock %}

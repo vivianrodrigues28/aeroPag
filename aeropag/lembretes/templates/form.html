@@ -1,24 +1,91 @@
 {% extends 'modelo.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
-
 {% block titulo %}
-    Cadastro
+    Cadastro de Lembretes
 {% endblock %}
 
 {% block conteudo %}
-<div class="container" style="width:500px">
-    <h3>Cadastro</h3>
-    <p class="lead">Preencha todos os campos obrigatórios:</p>
+<div class="container py-5" style="max-width: 600px;">
+    <div class="card border-0">
+        <div class="card-header text-center bg-light">
+            <h3 class="mb-0 text-dark">Cadastro de Lembretes</h3>
+        </div>
+        <div class="card-body">
+            <form action="{% url 'cadastrar-lembrete' %}" method="POST" novalidate>
+                {% csrf_token %}
 
-    <hr>
+                <!-- Campo Título -->
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título</label>
+                    <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Digite o título" required>
+                </div>
 
-    <form action="" method="POST">
-        {% csrf_token %}
+                <!-- Campo Descrição -->
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea id="descricao" name="descricao" class="form-control" rows="3" placeholder="Digite a descrição" required></textarea>
+                </div>
 
-        {{ form|crispy }}
+                <!-- Campo OBS -->
+                <div class="mb-3">
+                    <label for="obs" class="form-label">Observação</label>
+                    <input type="text" id="obs" name="obs" class="form-control" placeholder="Observações adicionais">
+                </div>
 
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </form>
+                <!-- Campo Relevância -->
+                <div class="mb-3">
+                    <label for="relevancia" class="form-label">Relevância</label>
+                    <select id="relevancia" name="relevancia" class="form-select">
+                        <option value="1">1 - Baixa</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 - Alta</option>
+                    </select>
+                </div>
+
+                <!-- Campo Data -->
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data</label>
+                    <input type="date" id="data" name="data" class="form-control" required>
+                </div>
+
+                <!-- Botão de Enviar -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-dark">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<style>
+    .card {
+        box-shadow: none;
+    }
+
+    .btn-dark {
+        background-color: #333;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #555;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 4px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #333;
+        box-shadow: none;
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+    }
+</style>
 {% endblock %}
