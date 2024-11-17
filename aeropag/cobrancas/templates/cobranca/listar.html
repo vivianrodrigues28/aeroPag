@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Cobranças</title>
+    <style>
+        /* Resetando estilos padrão do navegador */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #3498db;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        td {
+            background-color: #fff;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover td {
+            background-color: #ecf0f1;
+        }
+
+        /* Estilos para links da tabela */
+        a {
+            color: #3498db;
+            font-weight: normal;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Listar Cobranças</h1>
+    <a href="{% url 'criar_cobranca' %}">Nova Cobrança</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Avião</th>
+                <th>Tabela de Tarifas</th>
+                <th>Quantidade de Horas</th>
+                <th>Valor Total</th>
+                <th>Detalhes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cobranca in cobrancas %}
+            <tr>
+                <td>{{ cobranca.avi.codigo }}</td>
+                <td>{{ cobranca.tar.codigo }}</td>
+                <td>{{ cobranca.quantidade_horas }}</td>
+                <td>R$ {{ cobranca.valor_total }}</td>
+                <td><a href="{% url 'detalhes_cobranca' cobranca.id %}">Ver Detalhes</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

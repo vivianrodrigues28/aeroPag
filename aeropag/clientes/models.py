@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from avioes.models import Aviao
 
 class Cliente(models.Model):
     cli_nome = models.CharField(max_length=255)

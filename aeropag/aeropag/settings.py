@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'tarifas.apps.TarifasConfig',
     'avioes.apps.AvioesConfig',
+    'cobrancas.apps.CobrancasConfig',
     'clientes.apps.ClientesConfig',
     'crispy_forms',
     'crispy_bootstrap4',
