@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cobranca
 from .forms import CobrancaForm
-
+def listar_cobrancas(request):
+    # Lógica para listar cobranças
+    return render(request, 'listar_cobrancas.html')
 # Função para listar as cobranças
 def CobrancaList(request):
     cobrancas = Cobranca.objects.all()

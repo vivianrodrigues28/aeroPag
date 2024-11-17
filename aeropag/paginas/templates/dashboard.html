@@ -14,7 +14,7 @@
                 <div class="card text-center shadow custom-card-level bg-primary text-white">
                     <div class="card-body">
                         <i class="fas fa-plane-departure fa-3x mb-3"></i> <!-- Ícone maior para chamar atenção -->
-                        <h5 class="card-title">Total de Aviões</h5>
+                        <h5 class="card-title"style="color: white;">Total de Aviões</h5>
                         <p class="display-6 font-weight-bold">{{ total_avioes|default:"0" }}</p>
                         <small>Registrados na base de dados</small>
                     </div>
@@ -28,7 +28,7 @@
                 <div class="card text-center shadow custom-card-level bg-success text-white">
                     <div class="card-body">
                         <i class="fas fa-bell fa-3x mb-3"></i> <!-- Ícone maior -->
-                        <h5 class="card-title">Lembretes</h5>
+                        <h5 class="card-title"style="color: white;">Lembretes</h5>
                         <p id="totalLembretesCard" class="display-6 font-weight-bold">{{ total_lembretes|default:"0" }}</p>
                         <small>Lembretes ativos</small>
                     </div>
@@ -42,7 +42,7 @@
                 <div class="card text-center shadow custom-card-level bg-warning text-white">
                     <div class="card-body">
                         <i class="fas fa-money-bill-wave fa-3x mb-3 text-white"></i>
-                        <h5 class="card-title">Cobranças</h5>
+                        <h5 class="card-title"style="color: white;">Cobranças</h5>
                         <p class="display-6 font-weight-bold">{{ total_cobrancas|default:"0" }}</p>
                         <small class="text-white">Cobranças ativas</small>
                     </div>
@@ -60,7 +60,7 @@
                 <div class="card text-center shadow custom-card-level bg-info text-white">
                     <div class="card-body">
                         <i class="fas fa-users fa-3x mb-3"></i> <!-- Ícone maior -->
-                        <h5 class="card-title">Clientes Cadastrados</h5>
+                        <h5 class="card-title"style="color: white;">Clientes Cadastrados</h5>
                         <p class="display-6 font-weight-bold">{{ total_clientes|default:"0" }}</p>
                         <small>Clientes ativos</small>
                     </div>
@@ -74,13 +74,30 @@
                 <div class="card text-center shadow custom-card-level bg-danger text-white">
                     <div class="card-body">
                         <i class="fas fa-dollar-sign fa-3x mb-3"></i> <!-- Ícone maior -->
-                        <h5 class="card-title">Tarifas Ativas</h5>
+                        <h5 class="card-title" style="color: white;">Tarifas Ativas</h5>
                         <p class="display-6 font-weight-bold">{{ total_tarifas|default:"0" }}</p>
-                        <small>Tarifas registradas</small>
+                        <small style="color: white;">Tarifas registradas</small>
                     </div>
                 </div>
             </a>
         </div>
+
+        <!-- Card 6: Sair para Login -->
+<div class="col">
+    <a href="{% url 'login' %}" class="text-decoration-none">
+        <div class="card text-center shadow custom-card-level bg-danger text-white">
+            <div class="card-body">
+                <i class="fas fa-sign-out-alt fa-3x mb-3"></i> <!-- Ícone de sair com cor personalizada -->
+                <p class="display-6 font-weight-bold">Sair</p>
+                <br>
+                <small style="color: white;">Desconecte-se e volte para o login</small>
+            </div>
+        </div>
+    </a>
+</div>
+
+
+
     </div>
 </div>
 
@@ -91,7 +108,8 @@
 <style>
     /* Efeito de Nivelamento de Fundo nos Cards */
     .custom-card-level {
-        background: linear-gradient(145deg, #6c757d, #343a40);
+        background: linear-gradient(145deg, #4c647c, #476c91);
+
         border-radius: 10px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Suaviza a borda e melhora o efeito de sombra */
