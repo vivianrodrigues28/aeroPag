@@ -51,9 +51,9 @@
                     <td>{{ cliente.cli_telefone }}</td>
                     <td>
                         <!-- Botão de Editar -->
-                        <button class="btn btn-warning btn-sm" title="Editar" data-cliente-id="{{ cliente.pk }}" data-cliente-nome="{{ cliente.nome }}" data-cliente-email="{{ cliente.email }}" data-cliente-telefone="{{ cliente.telefone }}" id="editar-cliente-{{ cliente.pk }}">Editar</button>
+                        <button class="btn btn-warning btn-sm" title="Editar" data-cliente-id="{{ cliente.id }}" data-cliente-nome="{{ cliente.id }}" data-cliente-email="{{ cliente.email }}" data-cliente-telefone="{{ cliente.telefone }}" id="editar-cliente-{{ cliente.id }}">Editar</button>
                         <!-- Botão de Excluir -->
-                        <button class="btn btn-danger btn-sm" title="Excluir" data-cliente-id="{{ cliente.pk }}" id="excluir-cliente-{{ cliente.pk }}">Excluir</button>
+                        <button class="btn btn-danger btn-sm" title="Excluir" data-cliente-id="{{ cliente.id }}" id="excluir-cliente-{{ cliente.id }}">Excluir</button>
                     </td>
                 </tr>
                 {% empty %}

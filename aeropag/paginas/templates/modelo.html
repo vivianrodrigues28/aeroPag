@@ -20,7 +20,7 @@
 /* Barra do Cabeçalho */
 .header-bar {
     width: 100%;
-    background-color: rgb(41, 43, 145);
+    background-color: rgb(80, 81, 97);
     color: white;
     padding: 10px 20px;
     display: flex;
@@ -90,7 +90,7 @@ body.dark #sun-icon {
 .sidebar {
     width: 250px;
     height: 100vh;
-    background-color: rgb(41, 43, 145);
+    background-color: rgb(80, 81, 97);
     color: white;
     position: fixed;
     top: 0;
@@ -201,14 +201,7 @@ main.container.my-4 {
             <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
         </div>
     
-        <form method="GET" action="{% url 'search' %}" class="input-group w-75 w-md-65 w-lg-40">
-            <input type="text" class="form-control" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary ms-2" type="submit">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </form>
+       
     
         <div class="theme-icons">
             <!-- Ícone do Sol -->

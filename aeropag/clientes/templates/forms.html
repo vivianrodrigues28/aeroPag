@@ -33,8 +33,7 @@
                 <!-- Botões -->
                 <div class="d-flex justify-content-between">
                     <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}  <!-- Isso vai renderizar todos os campos automaticamente -->
+                         <!-- Isso vai renderizar todos os campos automaticamente -->
                         <button type="submit" class="btn btn-success">Salvar</button>
                     </form>
                     <a href="{% url 'listar-clientes' %}" class="btn btn-danger">Cancelar</a>

@@ -99,4 +99,4 @@ class ClienteList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         # Lista apenas os clientes do usuário logado
-        return Cliente.objects.filter(usuario=self.request.user)
+        return Cliente.objects.filter(id=self.request.user.id)

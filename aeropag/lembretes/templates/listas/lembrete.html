@@ -45,47 +45,29 @@
         width: 100%; /* Faz o botão de filtro ocupar toda a largura disponível */
         display: block; /* Faz o grupo de botões ocupar a largura inteira */
     }
-    .dropdown-menu {
-        min-width: 200px; /* Garante que o dropdown tenha largura suficiente */
-    }
-    /* Garantir que o menu do dropdown se expanda completamente */
-.dropdown-menu {
-    max-height: none;     /* Remove a limitação de altura */
-    overflow-y: visible;  /* Impede a rolagem interna */
-    min-width: 200px;     /* Define uma largura mínima, caso necessário */
-}
-@media (max-width: 576px) {
-    .dropdown-menu {
-        max-height: none; /* Garante que o menu vai se expandir completamente em telas pequenas */
-        overflow-y: visible;
-    }
-}
+    
 
 </style>
 
 <div class="container">
     <h3>Lista de Lembretes Registrados</h3>
     
-        <!-- Botão de dropdown -->
-        <div class="btn-group me-0" style="position: relative; display: inline-block;">
-            <button type="button" id="dropdownButton" class="btn btn-minimalista dropdown-toggle p-0" style="font-size: 20px; border: none; background: transparent;">
-                <i class="fas fa-bars"></i> <!-- Ícone de três traços -->
-            </button>
-            <ul class="dropdown-menu" id="dropdownMenu" style="display: none;">
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=hoje">De hoje</a></li>
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=prox_semana">Dessa semana</a></li>
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=ante_semana">Da Semana Passada</a></li>
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=ante_tudo">Lembretes Passados</a></li>
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=prox_mes">Desse mês</a></li>
-                <li><a class="dropdown-item" href="/listar/lembretes/?filtro_data=tudo">Todos</a></li>
-            </ul>
+    <!-- Campo de Pesquisa e Filtro -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="search-lembrete" placeholder="Pesquisar por título ou observação...">
         </div>
-    
-        {% if object_list %}
-        <h2>{{ mensagem }}</h2>
+        <div class="col-md-4">
+            <input type="date" class="form-control" id="filter-date" placeholder="Filtrar por data">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-secondary w-100" id="clear-filters">Limpar Filtros</button>
+        </div>
+    </div>
+
+    <!-- Tabela de Lembretes -->
     <div class="table-responsive">
-        
-        <table class="table">
+        <table class="table" id="lembrete-table">
             <thead>
                 <tr>
                     <th scope="col">Título</th>
@@ -93,15 +75,14 @@
                     <th scope="col">Data</th>
                     <th scope="col">Relevância</th>
                     <th scope="col">Ações</th>
-                    
                 </tr>
             </thead>
             <tbody>
                 {% for lembrete in object_list %}
                 <tr>
-                    <td>{{ lembrete.titulo }}</td>
-                    <td>{{ lembrete.obs }}</td>
-                    <td>{{ lembrete.data|date:"d/m/Y" }}</td>
+                    <td class="titulo">{{ lembrete.titulo }}</td>
+                    <td class="obs">{{ lembrete.obs }}</td>
+                    <td class="data">{{ lembrete.data|date:"Y-m-d" }}</td>
                     <td>{{ lembrete.relevancia }}</td>
                     <td>
                         <!-- Botão de Editar -->
@@ -111,15 +92,13 @@
                     </td>
                 </tr>
                 {% empty %}
-                
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum lembrete registrado.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% else %}
-        <p>Nenhum lembrete encontrado para o filtro "{{ mensagem }}".</p>
-        {% endif %}
     </div>
-
     <div class="text-end mt-3">
         <a href="{% url 'cadastrar-lembrete' %}" class="btn btn-primary">Cadastrar Novo Lembrete</a>
     </div>
@@ -181,7 +160,37 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    
+     document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('search-lembrete');
+        const filterDate = document.getElementById('filter-date');
+        const clearFilters = document.getElementById('clear-filters');
+        const table = document.getElementById('lembrete-table');
+        const rows = table.querySelectorAll('tbody tr');
+
+        function filterTable() {
+            const searchText = searchInput.value.toLowerCase();
+            const selectedDate = filterDate.value;
+
+            rows.forEach(row => {
+                const title = row.querySelector('.titulo').textContent.toLowerCase();
+                const obs = row.querySelector('.obs').textContent.toLowerCase();
+                const date = row.querySelector('.data').textContent;
+
+                const matchesSearch = title.includes(searchText) || obs.includes(searchText);
+                const matchesDate = !selectedDate || date === selectedDate;
+
+                row.style.display = matchesSearch && matchesDate ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterTable);
+        filterDate.addEventListener('change', filterTable);
+        clearFilters.addEventListener('click', () => {
+            searchInput.value = '';
+            filterDate.value = '';
+            filterTable();
+        });
+    });
 $(document).ready(function () {
     // Função para filtrar lembretes ao clicar nas opções do dropdown
     $(document).ready(function () {
