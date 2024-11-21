@@ -12,28 +12,28 @@
             <form method="post">
                 {% csrf_token %}
 
-                <!-- Campo Nome do Cliente -->
+                
                 <div class="mb-3">
                     <label for="cli_nome" class="form-label">Nome do Cliente</label>
                     <input type="text" id="cli_nome" name="cli_nome" value="{{ form.cli_nome.value|default:'' }}" class="form-control">
                 </div>
 
-                <!-- Campo E-mail -->
+                
                 <div class="mb-3">
                     <label for="cli_email" class="form-label">E-mail</label>
                     <input type="email" id="cli_email" name="cli_email" value="{{ form.cli_email.value|default:'' }}" class="form-control">
                 </div>
 
-                <!-- Campo Telefone -->
+                
                 <div class="mb-3">
                     <label for="cli_telefone" class="form-label">Telefone</label>
                     <input type="tel" id="cli_telefone" name="cli_telefone" value="{{ form.cli_telefone.value|default:'' }}" class="form-control">
                 </div>
 
-                <!-- Botões -->
+                
                 <div class="d-flex justify-content-between">
                     <form method="post">
-                         <!-- Isso vai renderizar todos os campos automaticamente -->
+                        
                         <button type="submit" class="btn btn-success">Salvar</button>
                     </form>
                     <a href="{% url 'listar-clientes' %}" class="btn btn-danger">Cancelar</a>
@@ -81,13 +81,13 @@
         font-family: Arial, sans-serif;
     }
 
-    /* Ajuste adicional para centralizar e dar mais espaçamento */
+    
     .d-flex {
-        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+        gap: 10px; 
     }
 
     .btn {
-        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+        width: 48%; 
     }
 </style>
 

@@ -15,7 +15,7 @@
             <form method="post">
                 {% csrf_token %}
                 
-                <!-- Campo Tipo da Tarifa -->
+                
                 <div class="mb-3">
                     <label for="tar_tipo" class="form-label">Tipo da Tarifa</label>
                     <select id="tar_tipo" name="tar_tipo" class="form-select">
@@ -24,19 +24,19 @@
                     </select>
                 </div>
             
-                <!-- Campo Valor Doméstico -->
+                
                 <div class="mb-3">
                     <label for="tar_valor_domestico" class="form-label">Valor Doméstico*</label>
                     <input type="number" id="tar_valor_domestico" name="tar_valor_domestico" value="{{ form.tar_valor_domestico.value }}" class="form-control" required>
                 </div>
             
-                <!-- Campo Valor Internacional -->
+                
                 <div class="mb-3">
                     <label for="tar_valor_internacional" class="form-label">Valor Internacional*</label>
                     <input type="number" id="tar_valor_internacional" name="tar_valor_internacional" value="{{ form.tar_valor_internacional.value }}" class="form-control" required>
                 </div>
             
-                <!-- Campo Grupo -->
+                
                 <div class="mb-3">
                     <label for="tar_grupo" class="form-label">Grupo*</label>
                     <select id="tar_grupo" name="tar_grupo" class="form-select" required>
@@ -45,19 +45,19 @@
                     </select>
                 </div>
             
-                <!-- Campo Tonelada Mínima -->
+                
                 <div class="mb-3">
                     <label for="tar_ton_min" class="form-label">Tonelada Mínima*</label>
                     <input type="number" id="tar_ton_min" name="tar_ton_min" value="{{ form.tar_ton_min.value }}" class="form-control" required>
                 </div>
             
-                <!-- Campo Tonelada Máxima -->
+                
                 <div class="mb-3">
                     <label for="tar_ton_max" class="form-label">Tonelada Máxima*</label>
                     <input type="number" id="tar_ton_max" name="tar_ton_max" value="{{ form.tar_ton_max.value }}" class="form-control" required>
                 </div>
             
-                <!-- Botões -->
+                
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Salvar</button>
                     <a href="{% url 'listar-tarifas' %}" class="btn btn-danger">Cancelar</a>
@@ -106,13 +106,13 @@
         font-family: Arial, sans-serif;
     }
 
-    /* Ajuste adicional para centralizar e dar mais espaçamento */
+    
     .d-flex {
-        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+        gap: 10px;
     }
 
     .btn {
-        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+        width: 48%; 
     }
 </style>
 

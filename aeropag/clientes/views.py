@@ -6,28 +6,32 @@ from .forms import ClienteForm
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cliente
 from django.http import JsonResponse
-from avioes.models import Aviao
+from django.views.decorators.csrf import csrf_exempt
+
+
 def listar_clientes(request):
-    # Filtra os clientes do usuário logado
+    
     clientes = Cliente.objects.filter(usuario=request.user)
     return render(request, 'lista_clientes.html', {'clientes': clientes})
 
-def cadastrar_cliente(request):
-    avioes = Aviao.objects.all()  # Busca todos os aviões cadastrados
-    form = SeuFormularioDeCliente()  # Substitua pelo formulário correto
 
+def criar_cliente(request):
     if request.method == 'POST':
-        form = SeuFormularioDeCliente(request.POST)
+        form = ClienteForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Redireciona ou exibe mensagem de sucesso
-            return redirect('lista-clientes')
-
-    context = {
-        'form': form,
-        'avioes': avioes,  # Envia os aviões para o template
-    }
-    return render(request, 'cadastrar_cliente.html', context)
+            cliente = form.save(commit=False)
+            cliente.usuario = request.user  
+            cliente.save()
+            
+            return JsonResponse({
+                'pk': cliente.pk,
+                'nome': cliente.nome,
+                'email': cliente.email,
+                'telefone': cliente.telefone
+            })
+    else:
+        form = ClienteForm()
+    return render(request, 'cadastrar_cliente.html', {'form': form})
 
 
 def excluir_cliente(request, cliente_id):
@@ -48,7 +52,7 @@ def editar_cliente(request, cliente_id):
             email = request.POST.get('email')
             telefone = request.POST.get('telefone')
 
-            # Atualiza os dados do cliente
+            
             cliente.nome = nome
             cliente.email = email
             cliente.telefone = telefone
@@ -67,7 +71,7 @@ class ClienteCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listar-clientes')
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user  # Associa o cliente ao usuário atual
+        form.instance.usuario = self.request.user  
         return super().form_valid(form)
 
 
@@ -79,7 +83,7 @@ class ClienteUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('listar-clientes')
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Cliente, pk=self.kwargs['pk'], usuario=self.request.user)  # Filtra pelo cliente do usuário
+        return get_object_or_404(Cliente, pk=self.kwargs['pk'], usuario=self.request.user)  
 
 
 class ClienteDelete(LoginRequiredMixin, DeleteView):
@@ -89,7 +93,7 @@ class ClienteDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('listar-clientes')
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Cliente, pk=self.kwargs['pk'], usuario=self.request.user)  # Filtra pelo cliente do usuário
+        return get_object_or_404(Cliente, pk=self.kwargs['pk'], usuario=self.request.user)  
 
 
 class ClienteList(LoginRequiredMixin, ListView):
@@ -98,5 +102,5 @@ class ClienteList(LoginRequiredMixin, ListView):
     template_name = 'listas/cliente.html'
 
     def get_queryset(self):
-        # Lista apenas os clientes do usuário logado
-        return Cliente.objects.filter(id=self.request.user.id)
+        
+        return Cliente.objects.filter(usuario=self.request.user)

@@ -8,12 +8,12 @@
 <div class="container-fluid mt-5">
     <div class="row row-cols-1 row-cols-md-3 g-4">
         
-        <!-- Card 1: Quantidade total de aviões -->
+        
         <div class="col">
             <a href="{% url 'listar-avioes' %}" class="text-decoration-none">
                 <div class="card text-center shadow custom-card-level bg-primary text-white">
                     <div class="card-body">
-                        <i class="fas fa-plane-departure fa-3x mb-3"></i> <!-- Ícone maior para chamar atenção -->
+                        <i class="fas fa-plane-departure fa-3x mb-3"></i> 
                         <h5 class="card-title"style="color: white;">Total de Aviões</h5>
                         <p class="display-6 font-weight-bold">{{ total_avioes|default:"0" }}</p>
                         <small>Registrados na base de dados</small>
@@ -22,12 +22,12 @@
             </a>
         </div>
 
-        <!-- Card 2: Quantidade de lembretes -->
+        
         <div class="col">
             <a href="{% url 'listar-lembretes' %}" class="text-decoration-none">
                 <div class="card text-center shadow custom-card-level bg-success text-white">
                     <div class="card-body">
-                        <i class="fas fa-bell fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <i class="fas fa-bell fa-3x mb-3"></i>
                         <h5 class="card-title"style="color: white;">Lembretes</h5>
                         <p id="totalLembretesCard" class="display-6 font-weight-bold">{{ total_lembretes|default:"0" }}</p>
                         <small>Lembretes ativos</small>
@@ -36,7 +36,7 @@
             </a>
         </div>
 
-        <!-- Card 3: Cobranças -->
+       
         <div class="col">
             <a href="{% url 'listar_cobrancas' %}" class="text-decoration-none">
                 <div class="card text-center shadow custom-card-level bg-warning text-white">
@@ -51,15 +51,15 @@
         </div>
     </div>
 
-    <!-- Linha para os cards de baixo, centralizados -->
+    
     <div class="row justify-content-center g-4 mt-4">
         
-        <!-- Card 4: Clientes cadastrados -->
+        
         <div class="col-md-4">
             <a href="{% url 'listar-clientes' %}" class="text-decoration-none">
                 <div class="card text-center shadow custom-card-level bg-info text-white">
                     <div class="card-body">
-                        <i class="fas fa-users fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <i class="fas fa-users fa-3x mb-3"></i> 
                         <h5 class="card-title"style="color: white;">Clientes Cadastrados</h5>
                         <p class="display-6 font-weight-bold">{{ total_clientes|default:"0" }}</p>
                         <small>Clientes ativos</small>
@@ -68,12 +68,12 @@
             </a>
         </div>
 
-        <!-- Card 5: Tarifas Ativas -->
+        
         <div class="col-md-4">
             <a href="{% url 'listar-tarifas' %}" class="text-decoration-none">
                 <div class="card text-center shadow custom-card-level bg-danger text-white">
                     <div class="card-body">
-                        <i class="fas fa-dollar-sign fa-3x mb-3"></i> <!-- Ícone maior -->
+                        <i class="fas fa-dollar-sign fa-3x mb-3"></i> 
                         <h5 class="card-title" style="color: white;">Tarifas Ativas</h5>
                         <p class="display-6 font-weight-bold">{{ total_tarifas|default:"0" }}</p>
                         <small style="color: white;">Tarifas registradas</small>
@@ -82,12 +82,12 @@
             </a>
         </div>
 
-        <!-- Card 6: Sair para Login -->
+        
 <div class="col">
     <a href="{% url 'login' %}" class="text-decoration-none">
         <div class="card text-center shadow custom-card-level bg-danger text-white">
             <div class="card-body">
-                <i class="fas fa-sign-out-alt fa-3x mb-3"></i> <!-- Ícone de sair com cor personalizada -->
+                <i class="fas fa-sign-out-alt fa-3x mb-3"></i>
                 <p class="display-6 font-weight-bold">Sair</p>
                 <br>
                 <small style="color: white;">Desconecte-se e volte para o login</small>
@@ -101,53 +101,53 @@
     </div>
 </div>
 
-<!-- Font Awesome -->
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 {% block extra_css %}
 <style>
     
-    /* Efeito de Nivelamento de Fundo nos Cards */
+    
     .custom-card-level {
         background: linear-gradient(145deg, #394957, #476c91);
 
         border-radius: 10px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Suaviza a borda e melhora o efeito de sombra */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
     }
 
     .custom-card-level:hover {
         transform: translateY(-10px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Efeito de elevação */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
     }
 
-    /* Efeito de Hover nos Ícones */
+    
     .card-body:hover i {
-        transform: scale(1.2); /* Aumenta o ícone ao passar o mouse */
+        transform: scale(1.2); 
         transition: transform 0.3s ease;
     }
 
-    /* Estilo de Hover para os Cards */
+    
     .card-body {
         transition: background-color 0.3s ease;
     }
 
     .card:hover .card-body {
-        background-color: rgba(0, 0, 0, 0.05); /* Mudança suave na cor de fundo */
+        background-color: rgba(0, 0, 0, 0.05); 
     }
 
-    /* Fonte personalizada para os títulos dos cards */
+
     .card-title {
         font-family: 'Poppins', sans-serif;
         font-weight: bold;
     }
     
-    /* Ajuste de tamanho dos ícones */
+  
     .fa-3x {
         font-size: 3rem;
     }
 
-    /* Importando a fonte Poppins do Google Fonts */
+
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 </style>
 {% endblock %}

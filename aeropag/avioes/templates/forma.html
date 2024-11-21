@@ -15,14 +15,14 @@
             <form method="post">
                 {% csrf_token %}
 
-                <!-- Campo Prefixo do Avião -->
+                
                 <div class="mb-3">
                     <label for="avi_prefixo_do_aviao" class="form-label">Prefixo do Avião</label>
                     <input type="text" id="avi_prefixo_do_aviao" name="avi_prefixo_do_aviao" value="{{ form.avi_prefixo_do_aviao.value|default:'' }}" class="form-control">
 
                 </div>
 
-                <!-- Campo Grupo (Grupo 1 ou Grupo 2) -->
+                
                 <div class="mb-3">
                     <label for="avi_grupo" class="form-label">Grupo</label>
                     <select id="avi_grupo" name="avi_grupo" class="form-select">
@@ -31,13 +31,13 @@
                     </select>
                 </div>
 
-                <!-- Campo Tonelada -->
+               
                 <div class="mb-3">
                     <label for="avi_toneladas" class="form-label">Tonelada</label>
                     <input type="number" id="avi_toneladas" name="avi_toneladas" value="{{ form.avi_toneladas.value }}" class="form-control">
                 </div>
 
-                <!-- Botões -->
+             
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Salvar</button>
                     <a href="{% url 'listar-avioes' %}" class="btn btn-danger">Cancelar</a>
@@ -85,13 +85,13 @@
         font-family: Arial, sans-serif;
     }
 
-    /* Ajuste adicional para centralizar e dar mais espaçamento */
+    
     .d-flex {
-        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+        gap: 10px; 
     }
 
     .btn {
-        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+        width: 48%; 
     }
 </style>
 

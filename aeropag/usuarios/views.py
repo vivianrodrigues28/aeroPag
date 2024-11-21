@@ -1,12 +1,18 @@
+from django.contrib.auth.models import User 
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from .forms import UsuarioForm
-from django.shortcuts import render  # Adicione essa linha para importar render
+from django.contrib.auth.forms import UserCreationForm
 
 def recuperacao_view(request):
-    return render(request, 'recuperacao.html')  # Agora a função render está disponível
+    return render(request, 'recuperacao.html')
 
 class UsuarioCreate(CreateView):
-    form_class = UsuarioForm
-    template_name = 'form.html'
-    success_url = reverse_lazy('login')
+    model = User 
+    form_class = UsuarioForm  
+    template_name = 'formr.html'
+    success_url = reverse_lazy('login')  
+
+    def form_valid(self, form):
+       
+        return super().form_valid(form)

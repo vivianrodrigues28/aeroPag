@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block conteudo %}
-<!-- Importação do CSS do Bootstrap -->
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -15,35 +15,49 @@
         text-align-last: center;
     }
     body {
-        background-color: #e9eaeb; /* Cor de fundo suave */
+        background-color: #e9eaeb;
     }
     .container {
-        margin-top: 30px; /* Margem superior para espaçamento */
-        padding: 20px; /* Padding para a área do container */
-        border-radius: 8px; /* Bordas arredondadas */
-        background-color: white; /* Cor de fundo branca para o container */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        margin-top: 30px; 
+        padding: 20px; 
+        border-radius: 8px;
+        background-color: white; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
     h3 {
-        color: #343a40; /* Cor do título */
-        margin-bottom: 20px; /* Espaçamento abaixo do título */
+        color: #343a40; 
+        margin-bottom: 20px; 
     }
-    /* Estilo para o botão minimalista */
+    
     .btn-minimalista {
-        background: transparent; /* Fundo transparente */
-        border: none; /* Sem borda */
-        padding: 0; /* Sem padding */
-        color: #343a40; /* Cor do ícone */
-        font-size: 1.2rem; /* Aumenta o tamanho do ícone */
+        background: transparent; 
+        border: none; 
+        padding: 0; 
+        color: #343a40;
+        font-size: 1.2rem;
     }
     .btn-minimalista:hover {
-        color: #007bff; /* Cor ao passar o mouse */
-        text-decoration: none; /* Remove underline ao passar o mouse */
+        color: #007bff; 
+        text-decoration: none; 
     }
-    /* Ajuste para garantir que o filtro dropdown não fique cortado */
+   
     .btn-group {
-        width: 100%; /* Faz o botão de filtro ocupar toda a largura disponível */
-        display: block; /* Faz o grupo de botões ocupar a largura inteira */
+        width: 100%; 
+        display: block; 
+    }
+    #search-lembrete,
+    #filter-date {
+        font-size: 0.875rem; 
+        padding: 0.25rem 0.5rem; 
+    }
+
+    .btn-sm {
+        font-size: 0.8rem; 
+        padding: 0.3rem 0.5rem; 
+    }
+
+    .bi-search {
+        font-size: 1rem; 
     }
     
 
@@ -51,21 +65,24 @@
 
 <div class="container">
     <h3>Lista de Lembretes Registrados</h3>
+   
+<div class="d-flex justify-content-between align-items-center mb-3">
     
-    <!-- Campo de Pesquisa e Filtro -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <input type="text" class="form-control" id="search-lembrete" placeholder="Pesquisar por título ou observação...">
-        </div>
-        <div class="col-md-4">
-            <input type="date" class="form-control" id="filter-date" placeholder="Filtrar por data">
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-secondary w-100" id="clear-filters">Limpar Filtros</button>
-        </div>
+    <div class="input-group" style="max-width: 20%;">
+        <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
+        <button class="btn btn-outline-secondary btn-sm" type="button">
+            <i class="bi bi-search"></i>
+        </button>
     </div>
 
-    <!-- Tabela de Lembretes -->
+    
+    <div class="d-flex align-items-center" style="gap: 0.5rem;">
+        <input type="date" class="form-control form-control-sm" id="filter-date" style="max-width: 150px;">
+        <button class="btn btn-outline-danger btn-sm" id="clear-filters">Limpar</button>
+    </div>
+</div>
+
+    
     <div class="table-responsive">
         <table class="table" id="lembrete-table">
             <thead>
@@ -85,9 +102,9 @@
                     <td class="data">{{ lembrete.data|date:"Y-m-d" }}</td>
                     <td>{{ lembrete.relevancia }}</td>
                     <td>
-                        <!-- Botão de Editar -->
+                        
                         <button class="btn btn-warning btn-sm" title="Editar" data-lembrete-id="{{ lembrete.pk }}" data-lembrete-titulo="{{ lembrete.titulo }}" data-lembrete-obs="{{ lembrete.obs }}" id="editar-lembrete-{{ lembrete.pk }}">Editar</button>
-                        <!-- Botão de Excluir -->
+                        
                         <button class="btn btn-danger btn-sm" title="Excluir" data-lembrete-id="{{ lembrete.pk }}" id="excluir-lembrete-{{ lembrete.pk }}">Excluir</button>
                     </td>
                 </tr>
@@ -104,7 +121,7 @@
     </div>
 </div>
 
-<!-- Modal de Confirmação de Exclusão -->
+
 <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -123,7 +140,7 @@
     </div>
 </div>
 
-<!-- Modal de Edição -->
+
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -155,7 +172,7 @@
     </div>
 </div>
 
-<!-- Importação do JavaScript do Bootstrap -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -192,89 +209,85 @@
         });
     });
 $(document).ready(function () {
-    // Função para filtrar lembretes ao clicar nas opções do dropdown
+    
     $(document).ready(function () {
-    // Função para filtrar lembretes ao clicar nas opções do dropdown
+   
     $('.dropdown-item').click(function (event) {
-        event.preventDefault(); // Previne o comportamento padrão de navegação
-
-        // Pega o filtro selecionado
+        event.preventDefault(); 
+        
         var filtro = $(this).attr('href').split('=')[1];
-        console.log("Filtro selecionado: " + filtro); // Exibe o filtro no console
-
-        // Verifica se o filtro foi encontrado
-        if (!filtro || filtro.trim() === "") { // Verifica se o filtro é uma string vazia ou nula
-            console.log("Filtro inválido ou não encontrado"); // Adicionando log para verificar no console
-            return; // Se o filtro for inválido, não faz a requisição AJAX
+        console.log("Filtro selecionado: " + filtro); 
+       
+        if (!filtro || filtro.trim() === "") { 
+            console.log("Filtro inválido ou não encontrado"); 
+            return;
         }
 
-        // Faz uma requisição AJAX para obter os lembretes filtrados
+        
         $.ajax({
-            url: '/filtrar-lembretes/', // Endereço no backend para processar os filtros
+            url: '/filtrar-lembretes/', 
             type: 'GET',
-            data: { filtro_data: filtro }, // Envia o filtro selecionado
+            data: { filtro_data: filtro }, 
             success: function (response) {
-                console.log("Resposta recebida: ", response); // Verifica o que o servidor retornou
+                console.log("Resposta recebida: ", response); 
 
-                // Atualiza o conteúdo da tabela com os lembretes filtrados
-                $('#tabela-lembretes').html(response.tabela); // Assumindo que o servidor retorna uma tabela renderizada
-                $('#mensagem').text(response.mensagem); // Atualiza a mensagem de status, se aplicável
+                
+                $('#tabela-lembretes').html(response.tabela); 
+                $('#mensagem').text(response.mensagem); 
             },
             
         });
     });
 
-    // Outros códigos para excluir e editar lembretes continuam aqui...
+   
 });
 
 
-    // Excluir lembrete
+   
     $('button[id^="excluir-lembrete-"]').click(function () {
         var lembreteId = $(this).data('lembrete-id');
 
-        // Exibe a modal de confirmação
+        
         $('#modalExcluir').modal('show');
 
-        // Ao confirmar a exclusão
+       
         $('#confirmar-exclusao').click(function () {
-            // Faz a requisição AJAX para excluir o lembrete
+            
             $.ajax({
-                url: '/excluir-lembrete/' + lembreteId + '/', // URL para exclusão
+                url: '/excluir-lembrete/' + lembreteId + '/', 
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                 },
                 success: function (response) {
-                    // Se a exclusão for bem-sucedida, remove a linha da tabela
+                    
                     $('#excluir-lembrete-' + lembreteId).closest('tr').remove();
-                    $('#modalExcluir').modal('hide'); // Fecha a modal
+                    $('#modalExcluir').modal('hide'); 
                 },
-                error: function (xhr, status, error) {
-                    console.log("Erro no AJAX de exclusão: ", error); // Exibe o erro no console
-                    alert('Erro ao excluir o lembrete');
-                }
+                
+                
             });
         });
     });
 
-    // Editar lembrete
+    
     $('button[id^="editar-lembrete-"]').click(function () {
         var lembreteId = $(this).data('lembrete-id');
         var titulo = $(this).data('lembrete-titulo');
         var obs = $(this).data('lembrete-obs');
         var data = $(this).closest('tr').find('td').eq(2).text();
 
-        // Preenche os campos do formulário de edição com os dados do lembrete
+        
         $('#titulo').val(titulo);
         $('#obs').val(obs);
         $('#data').val(data);
         $('#lembrete-id').val(lembreteId);
 
-        // Exibe a modal de edição
+        
         $('#modalEditar').modal('show');
     });
 
-    // Enviar o formulário de edição
+    
     $('#form-editar-lembrete').submit(function (event) {
         event.preventDefault();
 
@@ -284,7 +297,7 @@ $(document).ready(function () {
         var data = $('#data').val();
 
         $.ajax({
-            url: '/editar-lembrete/' + lembreteId + '/', // URL para edição
+            url: '/editar-lembrete/' + lembreteId + '/', 
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
@@ -300,16 +313,16 @@ $(document).ready(function () {
                 $('#modalEditar').modal('hide');
             },
             error: function (xhr, status, error) {
-                console.log("Erro no AJAX de edição: ", error); // Exibe o erro no console
+                console.log("Erro no AJAX de edição: ", error); 
                 alert('Erro ao editar o lembrete');
             }
         });
     });
 
-    // Alternar o dropdown
+    
     $('#dropdownButton').click(function () {
         var dropdownMenu = $('#dropdownMenu');
-        dropdownMenu.toggle(); // Alterna a exibição do menu
+        dropdownMenu.toggle(); 
     });
 });
 

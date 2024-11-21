@@ -7,8 +7,7 @@ class LembreteFilter(django_filters.FilterSet):
 
     class Meta:
         model = Lembrete
-        fields = []  # Inclua apenas o filtro personalizado
-
+        fields = [] 
     def filter_by_date(self, queryset, name, value):
         hoje = date.today()
 

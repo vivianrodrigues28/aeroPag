@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Tarifa(models.Model):
-    
     tar_codigo = models.AutoField(primary_key=True)
     tar_tipo = models.CharField(max_length=255)
     tar_valor_domestico = models.DecimalField(max_digits=10, decimal_places=2)
@@ -11,11 +10,10 @@ class Tarifa(models.Model):
     tar_grupo = models.IntegerField()
     tar_ton_min = models.IntegerField()
     tar_ton_max = models.IntegerField()
-    
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def clean(self):
-        # Verifique se os campos de tonelagem não são None
+        
         if self.tar_ton_min is not None and self.tar_ton_max is not None:
             if self.tar_ton_min > self.tar_ton_max:
                 raise ValidationError('O valor mínimo de tonelagem não pode ser maior que o valor máximo.')

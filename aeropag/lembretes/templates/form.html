@@ -14,25 +14,25 @@
             <form action="{% url 'cadastrar-lembrete' %}" method="POST" novalidate>
                 {% csrf_token %}
 
-                <!-- Campo Título -->
+                
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título</label>
                     <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Digite o título" required>
                 </div>
 
-                <!-- Campo Descrição -->
+                
                 <div class="mb-3">
                     <label for="descricao" class="form-label">Descrição</label>
                     <textarea id="descricao" name="descricao" class="form-control" rows="3" placeholder="Digite a descrição" required></textarea>
                 </div>
 
-                <!-- Campo OBS -->
+                
                 <div class="mb-3">
                     <label for="obs" class="form-label">Observação</label>
                     <input type="text" id="obs" name="obs" class="form-control" placeholder="Observações adicionais">
                 </div>
 
-                <!-- Campo Relevância -->
+                
                 <div class="mb-3">
                     <label for="relevancia" class="form-label">Relevância</label>
                     <select id="relevancia" name="relevancia" class="form-select">
@@ -44,13 +44,13 @@
                     </select>
                 </div>
 
-                <!-- Campo Data -->
+                
                 <div class="mb-3">
                     <label for="data" class="form-label">Data</label>
                     <input type="date" id="data" name="data" class="form-control" required>
                 </div>
 
-                <!-- Botão de Enviar -->
+                
                 <div class="d-grid">
                     <button type="submit" class="btn btn-dark">Cadastrar</button>
                 </div>

@@ -38,41 +38,6 @@ def cadastrar_lembrete(request):
     return render(request, 'cadastro_lembrete.html', {'form': form})
 
 
-def listar_lembretes(request):
-    filtro_data = request.GET.get('filtro_data', 'tudo')
-    mensagem = "Todos os lembretes"
-
-    if filtro_data == 'hoje':
-        hoje = timezone.now().date()
-        lembretes = Lembrete.objects.filter(data=hoje)
-        mensagem = "Lembretes de hoje"
-    elif filtro_data == 'prox_semana':
-        inicio_semana = timezone.now().date() + datetime.timedelta(days=(7 - timezone.now().weekday()))
-        fim_semana = inicio_semana + datetime.timedelta(days=6)
-        lembretes = Lembrete.objects.filter(data__range=[inicio_semana, fim_semana])
-        mensagem = "Lembretes dessa semana"
-    elif filtro_data == 'ante_semana':
-        inicio_ante_semana = timezone.now().date() - datetime.timedelta(days=(timezone.now().weekday() + 7))
-        fim_ante_semana = inicio_ante_semana + datetime.timedelta(days=6)
-        lembretes = Lembrete.objects.filter(data__range=[inicio_ante_semana, fim_ante_semana])
-        mensagem = "Lembretes da semana passada"
-    elif filtro_data == 'ante_tudo':
-        lembretes = Lembrete.objects.filter(data__lt=timezone.now().date())
-        mensagem = "Lembretes passados"
-    elif filtro_data == 'prox_mes':
-        primeiro_dia_mes = timezone.now().replace(day=1)
-        ultimo_dia_mes = (primeiro_dia_mes.replace(month=primeiro_dia_mes.month + 1) - datetime.timedelta(days=1)).date()
-        lembretes = Lembrete.objects.filter(data__range=[primeiro_dia_mes.date(), ultimo_dia_mes])
-        mensagem = "Lembretes desse mês"
-    else:
-        lembretes = Lembrete.objects.all()
-
-    context = {
-        'object_list': lembretes,
-        'mensagem': mensagem
-    }
-    return render(request, 'listar_lembretes.html', context)
-
 def editar_lembrete(request, id):
     if request.method == 'POST':
         lembrete = Lembrete.objects.get(id=id)

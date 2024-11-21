@@ -17,7 +17,7 @@
     <style>
 
 
-/* Barra do Cabeçalho */
+
 .header-bar {
     width: 100%;
     background-color: rgb(80, 81, 97);
@@ -33,7 +33,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Ícones de tema alinhados à direita */
+
 .theme-icons {
     display: flex;
     align-items: center;
@@ -41,7 +41,7 @@
     margin-left: auto;
 }
 
-/* Ícones de tema */
+
 #sun-icon, #moon-icon {
     width: 24px;
     height: 24px;
@@ -50,12 +50,12 @@
     margin-left: 10px;
 }
 
-/* Efeito hover nos ícones */
+
 #theme-toggle:hover {
     transform: scale(1.1);
 }
 
-/* Estilos Gerais */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -67,7 +67,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Temas claro e escuro */
+
 body.light {
     background-color: #ffffff;
     color: #000000;
@@ -86,7 +86,7 @@ body.dark #sun-icon {
     display: none;
 }
 
-/* Sidebar */
+
 .sidebar {
     width: 250px;
     height: 100vh;
@@ -113,7 +113,7 @@ body.dark #sun-icon {
     padding-left: 15px;
 }
 
-/* Conteúdo Principal */
+
 .content {
     margin-left: 0;
     transition: margin-left 0.3s ease;
@@ -125,7 +125,7 @@ body.dark #sun-icon {
     margin-left: 250px;
 }
 
-/* Barra de pesquisa */
+
 .search-container {
     width: 100%;
     max-width: 600px;
@@ -154,14 +154,14 @@ body.dark #sun-icon {
     border-color: #007bff;
 }
 
-/* Botão de menu */
+
 .menu-icon {
     font-size: 24px;
     cursor: pointer;
     margin-right: 30px;
 }
 
-/* Logo */
+
 .logo {
     width: 130px;
     height: auto;
@@ -169,7 +169,7 @@ body.dark #sun-icon {
     padding-top: 10px;
 }
 
-/* Ajuste de ícones e links */
+
 .nav-item a {
     display: flex;
     align-items: center;
@@ -180,13 +180,13 @@ body.dark #sun-icon {
 .nav-item a i {
     margin-right: 5px;
 }
-/* Centralizar o conteúdo principal da página */
+
 main.container.my-4 {
-    padding: 0; /* Remove espaçamento interno */
-    display: flex; /* Define como flex container */
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    align-items: center; /* Centraliza os itens verticalmente */
-    flex-direction: column; /* Organiza os elementos em coluna */
+    padding: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
 }
 
 </style>
@@ -195,16 +195,16 @@ main.container.my-4 {
 
     <header class="header-bar">
         <div class="menu-logo-container">
-            <!-- Botão de Menu -->
+            
             <span class="menu-icon" onclick="toggleSidebar()">☰</span>
-            <!-- Logomarca -->
+            
             <img src="{% static 'img/copia02.png' %}" alt="Logo" class="logo" />
         </div>
     
        
     
         <div class="theme-icons">
-            <!-- Ícone do Sol -->
+           
             <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -217,7 +217,7 @@ main.container.my-4 {
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
     
-            <!-- Ícone da Lua -->
+            
             <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon">
                 <path d="M21 12.79A9 9 0 0 1 11.21 3 7.5 7.5 0 1 0 21 12.79z"></path>
             </svg>
@@ -225,7 +225,7 @@ main.container.my-4 {
     </header>
     
 
-<!-- Menu Lateral -->
+
 <nav class="sidebar" id="sidebar">
     <ul class="nav flex-column">
         <br>
@@ -272,7 +272,7 @@ main.container.my-4 {
         </li>
     </ul>
 </nav>
-<!-- Conteúdo Principal -->
+
 <div class="content" id="content">
     {% block conteudo %}
     
@@ -282,19 +282,18 @@ main.container.my-4 {
   </main>
 
   <script>
-    // Função para alternar o menu lateral com base no tamanho da tela
+
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('content');
 
-        // Adiciona ou remove a classe 'open' no menu lateral
+
         sidebar.classList.toggle('open');
         
-        // Adiciona ou remove a classe 'shifted' no conteúdo principal
+
         content.classList.toggle('shifted');
     }
-    
-    // Função para abrir o menu automaticamente em telas maiores (>= 1948px)
+
     function checkScreenSize() {
         var sidebar = document.getElementById("sidebar");
         var content = document.getElementById("content");
@@ -308,11 +307,11 @@ main.container.my-4 {
         }
     }
 
-    // Executa a verificação do tamanho da tela ao carregar a página e ao redimensionar
+
     document.addEventListener("DOMContentLoaded", checkScreenSize);
     window.addEventListener("resize", checkScreenSize);
 
-    // Carregar o tema salvo no localStorage
+
     document.addEventListener("DOMContentLoaded", function() {
         if (localStorage.getItem("theme") === "dark") {
             document.body.classList.add("dark-mode");
@@ -324,7 +323,7 @@ main.container.my-4 {
         }
     });
 
-    // Função para alternar o tema
+
     function toggleTheme() {
         var body = document.body;
         var sunIcon = document.getElementById("sun-icon");
@@ -347,7 +346,7 @@ main.container.my-4 {
     const moonIcon = document.getElementById('moon-icon');
     const body = document.body;
 
-    // Inicializar tema com base no localStorage
+
     const currentTheme = localStorage.getItem('theme') || 'light';
     body.classList.add(currentTheme);
 
@@ -359,7 +358,7 @@ main.container.my-4 {
         sunIcon.style.display = 'block';
     }
 
-    // Alternar para tema escuro
+
     sunIcon.addEventListener('click', () => {
         body.classList.replace('light', 'dark');
         sunIcon.style.display = 'none';
@@ -367,7 +366,6 @@ main.container.my-4 {
         localStorage.setItem('theme', 'dark');
     });
 
-    // Alternar para tema claro
     moonIcon.addEventListener('click', () => {
         body.classList.replace('dark', 'light');
         sunIcon.style.display = 'block';
@@ -377,7 +375,7 @@ main.container.my-4 {
 });
 
     
-    // Adicionando event listener para o clique no ícone de tema
+
     document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 </script>
 

@@ -7,25 +7,25 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>AeroPag</title>
-    <!-- Favicon-->
+    
     <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
-    <!-- Font Awesome icons (free version)-->
+   
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
+    
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 </head>
 <style>
-    /* Aumenta o tamanho da imagem e adiciona animação */
+    
     .masthead-avatar {
         width: 350px !important;
         height: auto !important;
         animation: float 3s ease-in-out infinite;
     }
 
-    /* Animação para o movimento de subir e descer */
+    
     @keyframes float {
         0%, 100% {
             transform: translateY(0);
@@ -35,21 +35,21 @@
         }
     }
 
-    /* Estilo para o subtítulo */
+    
     .masthead-subtitle {
         font-size: 1.25rem;
         font-weight: 300;
         color: #fff;
     }
 
-    /* Animação dos cards (Fade-in e Scale-up) */
+    
     .card {
         opacity: 0;
         transform: scale(0.9);
         animation: fadeInUp 0.8s ease-in-out forwards;
     }
 
-    /* Cria o efeito de Fade-In e Scale-Up */
+   
     @keyframes fadeInUp {
         to {
             opacity: 1;
@@ -57,7 +57,7 @@
         }
     }
 
-    /* Animação de delay para cada card, criando uma sequência */
+    
     .col-md-4:nth-child(1) .card {
         animation-delay: 0.3s;
     }
@@ -67,26 +67,26 @@
     .col-md-4:nth-child(3) .card {
         animation-delay: 0.7s;
     }
-    /* Animação de hover para os cards */
+    
 .card:hover {
-    transform: scale(1.05); /* Aumenta o tamanho do card */
-    transition: transform 0.3s ease-in-out; /* Transição suave */
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra */
-}
-/* Move o header para cima */
-header.masthead {
-    margin-top: -50px; /* Ajuste conforme necessário */
+    transform: scale(1.05); 
+    transition: transform 0.3s ease-in-out; 
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Se quiser mover o conteúdo interno, ajuste o padding ou o top */
+header.masthead {
+    margin-top: -50px; 
+}
+
+
 .masthead .container {
     position: relative;
-    top: -30px; /* Ajuste conforme necessário */
+    top: -30px; 
 }
 
 </style>
 <body id="page-top">
-    <!-- Navigation-->
+  
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
         <div class="container">
             <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ header.masthead {
         </div>
     </nav>
 
-    <!-- Masthead-->
+
     <header class="masthead bg-primary text-white text-center">
         <div class="container d-flex align-items-center flex-column">
             <img class="masthead-avatar mb-5" src="{% static 'img/copia.png' %}" alt="..." />
@@ -116,7 +116,7 @@ header.masthead {
         </div>
     </header>
 
-    <!-- Seção de Cards com Funcionalidades -->
+    
     <section id="funcionalidades" class="container text-center my-5">
         <h2 class="text-uppercase text-secondary">Tudo sobre o AeroPag</h2>
         <div class="divider-custom my-4">
@@ -125,7 +125,7 @@ header.masthead {
             <div class="divider-custom-line"></div>
         </div>
         <div class="row">
-            <!-- Card 1 -->
+            
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -135,7 +135,7 @@ header.masthead {
                     </div>
                 </div>
             </div>
-            <!-- Card 2 -->
+         
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -145,7 +145,7 @@ header.masthead {
                     </div>
                 </div>
             </div>
-            <!-- Card 3 -->
+            
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -155,7 +155,7 @@ header.masthead {
                     </div>
                 </div>
             </div>
-            <!-- Card 4 -->
+            
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -165,7 +165,7 @@ header.masthead {
                     </div>
                 </div>
             </div>
-            <!-- Card 5 -->
+          
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -175,7 +175,7 @@ header.masthead {
                     </div>
                 </div>
             </div>
-            <!-- Card 6 -->
+            
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -189,9 +189,9 @@ header.masthead {
         
  
 
-    <!-- Bootstrap core JS-->
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
+    
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

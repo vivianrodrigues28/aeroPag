@@ -8,44 +8,18 @@ from tarifas.models import Tarifa
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
-# View para a busca
+
 def search(request):
-    query = request.GET.get('query', '')  # Obtém a consulta da barra de pesquisa
+    query = request.GET.get('query', '')  
     
     if query:
-        results = Aviao.objects.filter(nome__icontains=query)  # Filtra pelo campo 'nome'
+        results = Aviao.objects.filter(nome__icontains=query)  
     else:
-        results = Aviao.objects.all()  # Se não houver consulta, retorna todos os registros
+        results = Aviao.objects.all()  
     
     return render(request, 'search_results.html', {'query': query, 'results': results})
 
-# View para listar lembretes com filtros de data
-def listar_lembretes(request):
-    filtro_data = request.GET.get('filtro_data', 'tudo')
-    hoje = datetime.today().date()
-    inicio_semana = hoje - timedelta(days=hoje.weekday())
-    fim_semana = inicio_semana + timedelta(days=6)
-    inicio_mes = hoje.replace(day=1)
-    fim_mes = (inicio_mes.replace(month=inicio_mes.month + 1) - timedelta(days=1)) if inicio_mes.month < 12 else datetime(hoje.year + 1, 1, 1) - timedelta(days=1)
 
-    if filtro_data == 'hoje':
-        lembretes = Lembrete.objects.filter(data__date=hoje)
-    elif filtro_data == 'prox_semana':
-        lembretes = Lembrete.objects.filter(data__date__range=[inicio_semana, fim_semana])
-    elif filtro_data == 'ante_semana':
-        semana_passada_inicio = inicio_semana - timedelta(days=7)
-        semana_passada_fim = fim_semana - timedelta(days=7)
-        lembretes = Lembrete.objects.filter(data__date__range=[semana_passada_inicio, semana_passada_fim])
-    elif filtro_data == 'ante_tudo':
-        lembretes = Lembrete.objects.filter(data__date__lt=hoje)
-    elif filtro_data == 'prox_mes':
-        lembretes = Lembrete.objects.filter(data__date__range=[inicio_mes, fim_mes])
-    else:
-        lembretes = Lembrete.objects.all()
-
-    return render(request, 'listar_lembretes.html', {'lembretes': lembretes})
-
-# View para excluir lembrete via AJAX
 def excluir_lembrete(request, id):
     if request.method == "POST":
         lembrete = get_object_or_404(Lembrete, id=id)
@@ -73,7 +47,7 @@ def excluir_tarifa(request, id):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
 
-# View para o dashboard
+
 def dashboard(request):
     total_avioes = Aviao.objects.count()
     lista_avioes = Aviao.objects.all()
@@ -96,7 +70,7 @@ def dashboard(request):
     }
     return render(request, 'paginas/dashboard.html', context)
 
-# Dashboard com classe baseada em TemplateView
+
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
@@ -112,7 +86,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['total_tarifas'] = Tarifa.objects.count()
         return context
 
-# View para a página inicial
+
 class IndexView(TemplateView):
     login_url = reverse_lazy('login')
     template_name = "index.html"

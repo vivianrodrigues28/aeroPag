@@ -29,7 +29,15 @@
 
 <div class="container">
     <h3>Lista de Aviões Registrados</h3>
-    
+     
+     <div class="mb-3">
+        <div class="input-group" style="max-width: 200px;"> 
+            <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
+            <button class="btn btn-outline-secondary btn-sm" type="button">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -46,7 +54,7 @@
                     <td>{{ aviao.avi_prefixo_do_aviao }}</td>
                     <td>{{ aviao.avi_toneladas }}</td>
                     <td>{{ aviao.avi_grupo }}</td>
-                    <!-- Coluna Ações dentro da mesma linha -->
+                    
                     <td>
                         <button class="btn btn-warning btn-sm" title="Editar" data-aviao-id="{{ aviao.pk }}" data-prefixo="{{ aviao.avi_prefixo_do_aviao }}" data-grupo="{{ aviao.avi_grupo }}" data-toneladas="{{ aviao.avi_toneladas }}" id="editar-aviao-{{ aviao.pk }}">Editar</button>
                         <button class="btn btn-danger btn-sm" title="Excluir" data-aviao-id="{{ aviao.pk }}" id="excluir-aviao-{{ aviao.pk }}">Excluir</button>
@@ -66,7 +74,7 @@
     </div>
 </div>
 
-<!-- Modal de Exclusão -->
+
 <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -85,7 +93,7 @@
     </div>
 </div>
 
-<!-- Modal de Edição -->
+
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,17 +127,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script> 
-
+<script>
     $(document).ready(function() {
-        // Excluir Avião
+        
+        $('#search-lembrete').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $("table tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        
         $('button[id^="excluir-aviao-"]').click(function() {
             var aviaoId = $(this).data('aviao-id');
             
-            // Exibe a modal de confirmação
             $('#modalExcluir').modal('show');
             
-            // Ao confirmar a exclusão
+           
             $('#confirmar-exclusao').click(function() {
                 $.ajax({
                     url: '/avioes/' + aviaoId + '/delete/',  
@@ -147,8 +161,8 @@
                 });
             });
         });
-    
-        // Editar Avião
+
+        
         $('button[id^="editar-aviao-"]').click(function() {
             var aviaoId = $(this).data('aviao-id');
             var prefixo = $(this).data('prefixo');
@@ -163,7 +177,7 @@
             $('#modalEditar').modal('show');
         });
     
-        // Enviar o formulário de edição
+        
         $('#form-editar-aviao').submit(function(event) {
             event.preventDefault(); 
     
@@ -194,4 +208,5 @@
         });
     });
 </script>
+
 {% endblock %}

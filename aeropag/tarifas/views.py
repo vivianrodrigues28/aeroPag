@@ -6,24 +6,37 @@ from django.urls import reverse_lazy
 from .models import Tarifa
 from .forms import TarifaForm
 from django.http import JsonResponse
+from django.contrib import messages
+
+
+def listar_tarifas(request):
+    
+    tarifas = Tarifa.objects.filter(usuario=request.user)
+    return render(request, 'lista_tarifas.html', {'tarifas': tarifas})
 
 
 def criar_tarifa(request):
     if request.method == 'POST':
         form = TarifaForm(request.POST)
         if form.is_valid():
-            # Salva a tarifa no banco de dados
-            form.save()
-            # Redireciona para a listagem de tarifas
-            return redirect('listar-tarifas')  # Substitua 'listar-tarifas' pelo nome correto da URL
+            tarifa = form.save(commit=False)
+            tarifa.usuario = request.user
+            tarifa.save()
+            return redirect('listar-tarifas')  
     else:
         form = TarifaForm()
+    return render(request, 'cadastrar_tarifa.html', {'form': form})
 
-    return render(request, 'tarifas/criar_tarifa.html', {'form': form})
-
-def listar_tarifas(request):
-    tarifas = Tarifa.objects.all()
-    return render(request, 'tarifas/listar_tarifas.html', {'tarifas': tarifas})
+def editar_tarifa(request, tarifa_id):
+    tarifa = get_object_or_404(Tarifa, pk=tarifa_id, usuario=request.user)
+    if request.method == 'POST':
+        form = TarifaForm(request.POST, instance=tarifa)
+        if form.is_valid():
+            form.save()
+            return redirect('listar-tarifas')  
+    else:
+        form = TarifaForm(instance=tarifa)
+    return render(request, 'editar_tarifa.html', {'form': form})
 
 
 def excluir_tarifa(request, tarifa_id):
@@ -36,28 +49,7 @@ def excluir_tarifa(request, tarifa_id):
             return JsonResponse({'status': 'error', 'message': 'Tarifa não encontrada'}, status=404)
 
 
-def editar_tarifa(request, tarifa_id):
-    if request.method == 'POST':
-        tarifa = get_object_or_404(Tarifa, pk=tarifa_id)
-        tarifa.tar_tipo = request.POST.get('tipo')
-        tarifa.tar_valor_domestico = request.POST.get('valor_domestico')
-        tarifa.tar_valor_internacional = request.POST.get('valor_internacional')
-        tarifa.tar_grupo = request.POST.get('grupo')
-        tarifa.tar_ton_min = request.POST.get('ton_min')
-        tarifa.tar_ton_max = request.POST.get('ton_max')
-        tarifa.save()
 
-        # Resposta JSON com os dados atualizados
-        return JsonResponse({
-            'status': 'success',
-            'tipo': tarifa.tar_tipo,
-            'valor_domestico': tarifa.tar_valor_domestico,
-            'valor_internacional': tarifa.tar_valor_internacional,
-            'grupo': tarifa.tar_grupo,
-            'ton_min': tarifa.tar_ton_min,
-            'ton_max': tarifa.tar_ton_max
-        })
-    return JsonResponse({'status': 'error', 'message': 'Método inválido'}, status=400)
 
 
 class TarifaCreate(LoginRequiredMixin, CreateView):
@@ -68,9 +60,9 @@ class TarifaCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listar-tarifas')
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user  # Associa a tarifa ao usuário atual
+        form.instance.usuario = self.request.user
+        messages.success(self.request, "Tarifa criada com sucesso!")
         return super().form_valid(form)
-
 
 class TarifaUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
@@ -81,8 +73,8 @@ class TarifaUpdate(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.usuario = self.request.user
+        messages.success(self.request, "Tarifa atualizada com sucesso!")
         return super().form_valid(form)
-
 
 
 class TarifaDelete(LoginRequiredMixin, DeleteView):
@@ -92,8 +84,7 @@ class TarifaDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('listar-tarifas')
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Tarifa, pk=self.kwargs['pk'], usuario=self.request.user)  # Filtra pela tarifa do usuário
-
+        return get_object_or_404(Tarifa, pk=self.kwargs['pk'], usuario=self.request.user)  
 
 class TarifaList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
@@ -101,6 +92,6 @@ class TarifaList(LoginRequiredMixin, ListView):
     template_name = 'listas/tarifa.html'
 
     def get_queryset(self):
-        # Lista apenas as tarifas do usuário logado
+        
         return Tarifa.objects.filter(usuario=self.request.user)
 

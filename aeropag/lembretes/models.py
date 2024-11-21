@@ -10,8 +10,7 @@ class Lembrete(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
-        ordering = ['-relevancia']  # Ordem padrão: maior relevância primeiro
-
+        ordering = ['-relevancia'] 
     def __str__(self):
         return "{} ({}) - {}".format(self.titulo, self.obs, self.data)
 
