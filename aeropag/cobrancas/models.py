@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ObjectDoesNotExist
+from tarifas.models import Tarifa
 
 class Aviao(models.Model):
     avi_codigo = models.AutoField(primary_key=True)
@@ -27,37 +28,23 @@ class Tarifa(models.Model):
         return self.tar_tipo
 
 
+
+
 class Cobranca(models.Model):
-    cob_codigo = models.CharField(max_length=20)
-    tar_codigo = models.CharField(max_length=20)
-    quantidade_horas = models.IntegerField()
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-    data = models.DateField()
-    avi_codigo = models.CharField(max_length=20)
+    cob_codigo = models.CharField(max_length=10)
+    avi_codigo = models.CharField(max_length=10)
+    tar_codigo = models.ForeignKey(Tarifa, on_delete=models.CASCADE )
+    quantidade_horas = models.PositiveIntegerField()
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
-    def calcular_valor(self):
-        if self.tar.tipo_voo == 'domestico':
-            return self.quantidade_horas * self.tar.valor_domestico
-        else:
-            return self.quantidade_horas * self.tar.valor_internacional
-
+    def __str__(self):
+        return f"Cobrança {self.cob_codigo}"
     def save(self, *args, **kwargs):
-        try:
-        
-            self.tar = Tarifa.objects.get(tar_codigo=self.tar_codigo)
-            self.avi = Aviao.objects.get(avi_codigo=self.avi_codigo)
+    #cálculo do valor total com base em tarifa e horas
+        tarifa = 100  # Substitua pelo valor correto ou busque da tabela de tarifas
+        self.valor_total = self.quantidade_horas * tarifa
+        super().save(*args, **kwargs)
 
-        
-            if not (self.tar.tar_ton_min <= self.avi.avi_toneladas <= self.tar.tar_ton_max):
-                raise ValueError('A tonelagem do avião está fora dos limites permitidos para esta tarifa.')
 
-       
-            self.valor_total = self.calcular_valor()
-
-        
-            super().save(*args, **kwargs)
-
-        except ObjectDoesNotExist as e:
-            raise ValueError(f'Erro ao encontrar o objeto: {e}')
 
 

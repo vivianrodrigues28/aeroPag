@@ -23,4 +23,4 @@ class Tarifa(models.Model):
             raise ValidationError('Ambos os campos de tonelagem devem ser preenchidos corretamente.')
 
     def __str__(self):
-        return self.tar_tipo
+        return f"{self.tar_codigo} - {self.tar_tipo}"

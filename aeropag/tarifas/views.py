@@ -1,7 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Tarifa
 from .forms import TarifaForm
@@ -9,44 +9,6 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 
-def listar_tarifas(request):
-    
-    tarifas = Tarifa.objects.filter(usuario=request.user)
-    return render(request, 'lista_tarifas.html', {'tarifas': tarifas})
-
-
-def criar_tarifa(request):
-    if request.method == 'POST':
-        form = TarifaForm(request.POST)
-        if form.is_valid():
-            tarifa = form.save(commit=False)
-            tarifa.usuario = request.user
-            tarifa.save()
-            return redirect('listar-tarifas')  
-    else:
-        form = TarifaForm()
-    return render(request, 'cadastrar_tarifa.html', {'form': form})
-
-def editar_tarifa(request, tarifa_id):
-    tarifa = get_object_or_404(Tarifa, pk=tarifa_id, usuario=request.user)
-    if request.method == 'POST':
-        form = TarifaForm(request.POST, instance=tarifa)
-        if form.is_valid():
-            form.save()
-            return redirect('listar-tarifas')  
-    else:
-        form = TarifaForm(instance=tarifa)
-    return render(request, 'editar_tarifa.html', {'form': form})
-
-
-def excluir_tarifa(request, tarifa_id):
-    if request.method == 'POST':
-        try:
-            tarifa = Tarifa.objects.get(pk=tarifa_id, usuario=request.user)
-            tarifa.delete()
-            return JsonResponse({'status': 'success'})
-        except Tarifa.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Tarifa não encontrada'}, status=404)
 
 
 

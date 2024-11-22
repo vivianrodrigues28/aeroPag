@@ -2,30 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cobranca
 from .forms import CobrancaForm
 from django.shortcuts import render
- 
 
-def criar_cobranca(request):
-    if request.method == 'POST':
-        form = CobrancaForm(request.POST)
-        if form.is_valid():
-            form.save()  
-            return redirect('listar_cobrancas') 
-    else:
-        form = CobrancaForm()
-    
-    return render(request, 'formc.html', {'form': form})
+
 def CobrancaList(request):
     cobrancas = Cobranca.objects.all()
-    return render(request, 'cobranca_list.html', {'object_list': cobrancas})
-
-
-def detalhes_cobranca(request, cobranca_id):
-    cobranca = Cobranca.objects.get(id=cobranca_id)
-    return render(request, 'detalhes_cobranca.html', {'cobranca': cobranca})
-
-def listar_cobrancas(request):
-    
-    return render(request, 'listar_cobrancas.html')
+    return render(request, 'cobranca/listar.html', {'cobrancas': cobrancas})
 
 
 def CobrancaCreate(request):
@@ -34,13 +15,18 @@ def CobrancaCreate(request):
         if form.is_valid():
             try:
                 cobranca = form.save(commit=False)
+                # Adicione lógica adicional se necessário
                 cobranca.save()
                 return redirect('listar_cobrancas')
             except Exception as e:
                 form.add_error(None, f"Erro ao salvar a cobrança: {str(e)}")
+        else:
+            print("Erros no formulário:", form.errors)
     else:
         form = CobrancaForm()
     return render(request, 'formc.html', {'form': form})
+
+
 
 
 def CobrancaUpdate(request, id):
@@ -64,6 +50,7 @@ def CobrancaDelete(request, id):
         cobranca.delete()
         return redirect('listar_cobrancas')
     return render(request, 'templates/confirmar_exclusão.html', {'cobranca': cobranca})
+
 
 def CobrancaDetails(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)

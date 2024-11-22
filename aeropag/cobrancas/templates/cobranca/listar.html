@@ -117,8 +117,8 @@
         <tbody>
             {% for cobranca in cobrancas %}
             <tr>
-                <td>{{ cobranca.avi.codigo }}</td>
-                <td>{{ cobranca.tar.codigo }}</td>
+                <td>{{ cobranca.avi_codigo }}</td>
+                <td>{{ cobranca.tar_codigo }}</td>
                 <td>{{ cobranca.quantidade_horas }}</td>
                 <td>R$ {{ cobranca.valor_total }}</td>
                 <td><a href="{% url 'detalhes_cobranca' cobranca.id %}">Ver Detalhes</a></td>
