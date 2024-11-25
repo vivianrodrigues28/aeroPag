@@ -50,9 +50,7 @@ def editar_cliente(request, cliente_id):
             cliente = Cliente.objects.get(pk=cliente_id, usuario=request.user)
             nome = request.POST.get('nome')
             email = request.POST.get('email')
-            telefone = request.POST.get('telefone')
-
-            
+            telefone = request.POST.get('telefone')          
             cliente.nome = nome
             cliente.email = email
             cliente.telefone = telefone
