@@ -75,23 +75,30 @@
 
         
         <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="Digite sua senha" required>
-            <small class="form-text text-muted">
-                Sua senha precisa ter pelo menos 8 caracteres e não pode ser inteiramente numérica.
-            </small>
+            <label for="password1" class="form-label">Senha</label>
+            <input type="password" name="password1" class="form-control" id="password1" placeholder="Digite sua senha" required>
         </div>
-
         
         <div class="mb-3">
-            <label for="confirm_password" class="form-label">Confirmar Senha</label>
-            <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirme sua senha" required>
-            <small class="form-text text-muted">Informe a mesma senha informada anteriormente.</small>
+            <label for="password2" class="form-label">Confirmar Senha</label>
+            <input type="password" name="password2" class="form-control" id="password2" placeholder="Confirme sua senha" required>
         </div>
+        
 
         
         <button type="submit" class="btn btn-primary">Cadastrar</button>
     </form>
+
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field, errors in form.errors.items %}
+                <li><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 </div>
 
 

@@ -20,34 +20,6 @@ def search(request):
     return render(request, 'search_results.html', {'query': query, 'results': results})
 
 
-def excluir_lembrete(request, id):
-    if request.method == "POST":
-        lembrete = get_object_or_404(Lembrete, id=id)
-        lembrete.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
-def excluir_aviao(request, aviao_id):
-    if request.method == "POST":
-        aviao = get_object_or_404(Aviao, pk=aviao_id)
-        aviao.delete()
-        return JsonResponse({'status': 'sucesso'})
-    return JsonResponse({'status': 'erro'}, status=400)
-
-def excluir_cliente(request, id):
-    if request.method == "POST":
-        cliente = get_object_or_404(Cliente, id=id)
-        cliente.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
-
-def excluir_tarifa(request, id):
-    if request.method == "POST":
-        tarifa = get_object_or_404(Tarifa, id=id)
-        tarifa.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
-
-
 def dashboard(request):
     total_avioes = Aviao.objects.count()
     lista_avioes = Aviao.objects.all()

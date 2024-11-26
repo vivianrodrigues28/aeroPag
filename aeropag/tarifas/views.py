@@ -9,9 +9,12 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 5ae58618286d9f87d062080df0a06599536216ff
 
 
 class TarifaCreate(LoginRequiredMixin, CreateView):
@@ -54,6 +57,5 @@ class TarifaList(LoginRequiredMixin, ListView):
     template_name = 'listas/tarifa.html'
 
     def get_queryset(self):
-        
         return Tarifa.objects.filter(usuario=self.request.user)
 
