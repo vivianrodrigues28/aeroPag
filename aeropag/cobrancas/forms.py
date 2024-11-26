@@ -8,5 +8,7 @@ class CobrancaForm(forms.ModelForm):
         fields = ['cob_codigo', 'quantidade_horas', 'valor_total','avi_codigo']
 
     def __init__(self, *args, **kwargs):
-        self.usuario = kwargs.pop('user') 
-        super().__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
+        # Filtra os aviões cadastrados pelo usuário logado (se necessário)
+            self.fields['avi_codigo'].queryset = Aviao.objects.all()
+     

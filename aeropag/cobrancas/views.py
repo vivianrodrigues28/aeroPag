@@ -11,14 +11,13 @@ def CobrancaList(request):
 
 def CobrancaCreate(request):
     if request.method == 'POST':
-        form = CobrancaForm(initial={'user': request.user})
+        form = CobrancaForm(request.POST)
         if form.is_valid():
             cobranca = form.save(commit=False)
             cobranca.save()
             return redirect('listar_cobrancas')
     else:
         form = CobrancaForm()
-        form = CobrancaForm(initial={'user': request.user})
     return render(request, 'formc.html', {'form': form})
 
 

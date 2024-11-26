@@ -1,28 +1,46 @@
-<h2>Criar Nova Cobrança</h2>
-<form method="POST">
-    {% csrf_token %}
-    <div>
-        <label for="id_avi_codigo">Avião:</label>
-        {{ form.avi_codigo }} <!-- Dropdown com os aviões cadastrados -->
-    </div>
-    <div>
-        <label for="id_tar_codigo">Tarifa:</label>
-        {{ form.tar_codigo }}
-    </div>
-    <div>
-        <label for="id_quantidade_horas">Quantidade de Horas:</label>
-        {{ form.quantidade_horas }}
-    </div>
-    <div>
-        <label for="id_valor_total">Valor Total:</label>
-        {{ form.valor_total }}
-    </div>
-    <button type="submit">Salvar</button>
-    <a href="{% url 'listar_cobrancas' %}">Cancelar</a>
-</form>
+{% extends 'modelo.html' %}
+{% load static %}
 
+{% block conteudo %}
+<div class="container py-5" style="max-width: 400px;">
+    <div class="card border-0">
+        <div class="card-header text-center bg-light">
+            <h3 class="mb-0 text-dark">Criar Nova Cobrança</h3>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
 
+                
+                <div class="mb-3">
+                    <label for="id_avi_codigo" class="form-label">Avião</label>
+                    {{ form.avi_codigo }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_tar_codigo" class="form-label">Tarifa</label>
+                    {{ form.tar_codigo }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_quantidade_horas" class="form-label">Quantidade de Horas</label>
+                    {{ form.quantidade_horas }}
+                </div>
 
+                <div class="mb-3">
+                    <label for="id_valor_total" class="form-label">Valor Total</label>
+                    {{ form.valor_total }}
+                </div>
+                
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar_cobrancas' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <style>
     .card {
@@ -62,14 +80,12 @@
         font-family: Arial, sans-serif;
     }
 
-    
     .d-flex {
-        gap: 10px; 
+        gap: 10px;
     }
 
     .btn {
-        width: 48%; 
+        width: 48%;
     }
 </style>
-
 {% endblock %}
