@@ -9,13 +9,6 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 5ae58618286d9f87d062080df0a06599536216ff
-
 
 class TarifaCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
