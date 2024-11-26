@@ -11,21 +11,15 @@ def CobrancaList(request):
 
 def CobrancaCreate(request):
     if request.method == 'POST':
-        form = CobrancaForm(request.POST)
+        form = CobrancaForm(initial={'user': request.user})
         if form.is_valid():
-            try:
-                cobranca = form.save(commit=False)
-                # Adicione lógica adicional se necessário
-                cobranca.save()
-                return redirect('listar_cobrancas')
-            except Exception as e:
-                form.add_error(None, f"Erro ao salvar a cobrança: {str(e)}")
-        else:
-            print("Erros no formulário:", form.errors)
+            cobranca = form.save(commit=False)
+            cobranca.save()
+            return redirect('listar_cobrancas')
     else:
         form = CobrancaForm()
+        form = CobrancaForm(initial={'user': request.user})
     return render(request, 'formc.html', {'form': form})
-
 
 
 

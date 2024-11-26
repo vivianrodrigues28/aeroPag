@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 
-
 class TarifaCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Tarifa
