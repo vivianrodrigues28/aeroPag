@@ -16,13 +16,13 @@ def recuperacao_view(request):
         email = request.POST.get('email')
         # Aqui você verifica se o e-mail existe no sistema.
         # Substitua pelo seu modelo de usuário.
-        user_exists = True  # Exemplo estático; substitua por uma consulta ao banco.
+        user_exists = User.objects.filter(email=email).exists()
         
         if user_exists:
             send_mail(
                 'Recuperação de Senha',
-                'Clique no link abaixo para redefinir sua senha:\nhttp://seusite.com/redefinir-senha',
-                'noreply@seusite.com',
+                'Clique no link abaixo para redefinir sua senha:\nhttp://AeroPag.com/password-reset',
+                'noreply@aeropag.com',
                 [email],
             )
             messages.success(request, 'Instruções enviadas para o seu e-mail.')
