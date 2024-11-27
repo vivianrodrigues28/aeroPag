@@ -12,52 +12,47 @@
             <h3 class="mb-0 text-dark">{% if object %}Editar Tarifa{% else %}Adicionar Tarifa{% endif %}</h3>
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" id="tarifa-form">
                 {% csrf_token %}
                 
+                <!-- Seletor de Grupo -->
+                <select id="tar_grupo" name="tar_grupo" class="form-select" required>
+                    <option value="1" {% if form.tar_grupo.value == 1 %}selected{% endif %}>Grupo 1</option>
+                    <option value="2" {% if form.tar_grupo.value == 2 %}selected{% endif %}>Grupo 2</option>
+                </select>
+                
+            
+                <!-- Seletor de Tipo da Tarifa -->
+
                 
                 <div class="mb-3">
                     <label for="tar_tipo" class="form-label">Tipo da Tarifa</label>
-                    <select id="tar_tipo" name="tar_tipo" class="form-select">
-                        <option value="domestico" {% if form.tar_tipo.value == 'domestico' %}selected{% endif %}>Doméstico</option>
-                        <option value="internacional" {% if form.tar_tipo.value == 'internacional' %}selected{% endif %}>Internacional</option>
+                    <select id="tar_tipo" name="tar_tipo" class="form-select" required>
+                        <option value="" disabled selected hidden>Escolha um grupo primeiro</option>
                     </select>
                 </div>
-            
                 
-                <div class="mb-3">
+                <!-- Campos de Valor e Tonelada -->
+                <div class="mb-3" id="valor-domestico-container">
                     <label for="tar_valor_domestico" class="form-label">Valor Doméstico*</label>
                     <input type="number" id="tar_valor_domestico" name="tar_valor_domestico" value="{{ form.tar_valor_domestico.value }}" class="form-control" required>
                 </div>
             
-                
-                <div class="mb-3">
+                <div class="mb-3" id="valor-internacional-container">
                     <label for="tar_valor_internacional" class="form-label">Valor Internacional*</label>
                     <input type="number" id="tar_valor_internacional" name="tar_valor_internacional" value="{{ form.tar_valor_internacional.value }}" class="form-control" required>
                 </div>
             
-                
-                <div class="mb-3">
-                    <label for="tar_grupo" class="form-label">Grupo*</label>
-                    <select id="tar_grupo" name="tar_grupo" class="form-select" required>
-                        <option value="1" {% if form.tar_grupo.value == 1 %}selected{% endif %}>Grupo 1</option>
-                        <option value="2" {% if form.tar_grupo.value == 2 %}selected{% endif %}>Grupo 2</option>
-                    </select>
-                </div>
-            
-                
-                <div class="mb-3">
+                <div class="mb-3" id="tonelada-container">
                     <label for="tar_ton_min" class="form-label">Tonelada Mínima*</label>
                     <input type="number" id="tar_ton_min" name="tar_ton_min" value="{{ form.tar_ton_min.value }}" class="form-control" required>
                 </div>
             
-                
-                <div class="mb-3">
+                <div class="mb-3" id="tonelada-max-container">
                     <label for="tar_ton_max" class="form-label">Tonelada Máxima*</label>
                     <input type="number" id="tar_ton_max" name="tar_ton_max" value="{{ form.tar_ton_max.value }}" class="form-control" required>
                 </div>
-            
-                
+
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Salvar</button>
                     <a href="{% url 'listar-tarifas' %}" class="btn btn-danger">Cancelar</a>
@@ -68,52 +63,53 @@
     </div>
 </div>
 
-<style>
-    .card {
-        box-shadow: none;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-        border: none;
-    }
-
-    .btn-success:hover {
-        background-color: #218838;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-
-    .form-control,
-    .form-select {
-        border-radius: 4px;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        border-color: #333;
-        box-shadow: none;
-    }
-
-    .container {
-        font-family: Arial, sans-serif;
-    }
-
+<script>
     
-    .d-flex {
-        gap: 10px;
-    }
 
-    .btn {
-        width: 48%; 
-    }
-</style>
+    document.getElementById('tar_grupo').addEventListener('change', function() {
+        var grupo = this.value;
+        var tipoSelect = document.getElementById('tar_tipo');
+        
+        // Limpar opções anteriores
+        tipoSelect.innerHTML = '';
+        
+        // Criar a opção padrão apenas se nenhum grupo for selecionado
+        if (grupo === "") {
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Escolha um grupo primeiro';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            defaultOption.hidden = true;
+            tipoSelect.appendChild(defaultOption);
+        }
+        
+        // Exibir tipos de tarifas específicos para cada grupo
+        var tiposTarifa = [];
+        if (grupo == '1') {
+            tiposTarifa = [
+                { value: 'Embarque', text: 'Embarque' },
+                { value: 'Conexao', text: 'Conexão' },
+                { value: 'Pouso', text: 'Pouso (por tonelada)' },
+                { value: 'Permanencia', text: 'Permanência (por tonelada-hora)' }
+            ];
+        } else if (grupo == '2') {
+            tiposTarifa = [
+                { value: 'Unificada', text: 'Tarifa Unificada de Embarque e Pouso' },
+                { value: 'PatioManobras', text: 'Tarifa Pátio de Manobras (MAN)' },
+                { value: 'AreaEstadia', text: 'Tarifa Área de Estadia' }
+            ];
+        }
+        
+        // Adicionar as opções dinâmicas de acordo com o grupo selecionado
+        tiposTarifa.forEach(function(tipo) {
+            var option = document.createElement('option');
+            option.value = tipo.value;
+            option.textContent = tipo.text;
+            tipoSelect.appendChild(option);
+        });
+    });
+</script>
+
 
 {% endblock %}

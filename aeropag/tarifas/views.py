@@ -17,9 +17,16 @@ class TarifaCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listar-tarifas')
 
     def form_valid(self, form):
+        print("Form is valid!")
         form.instance.usuario = self.request.user
         messages.success(self.request, "Tarifa criada com sucesso!")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Form is invalid:", form.errors)
+        return super().form_invalid(form)
+
+  
 
 class TarifaUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
@@ -32,6 +39,10 @@ class TarifaUpdate(LoginRequiredMixin, UpdateView):
         form.instance.usuario = self.request.user
         messages.success(self.request, "Tarifa atualizada com sucesso!")
         return super().form_valid(form)
+
+
+
+
 
 
 class TarifaDelete(LoginRequiredMixin, DeleteView):
@@ -50,4 +61,7 @@ class TarifaList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Tarifa.objects.filter(usuario=self.request.user)
-
+        
+def listar_tarifas(request):
+    tarifas = Tarifa.objects.all()
+    return render(request, 'listas/tarifa.html', {'object_list': tarifas})

@@ -18,6 +18,7 @@ def CobrancaCreate(request):
             return redirect('listar_cobrancas')
     else:
         form = CobrancaForm()
+    
     return render(request, 'formc.html', {'form': form})
 
 
