@@ -44,8 +44,8 @@
                 <tr>
                     <th>Prefixo</th>
                     <th>Toneladas</th>
-                    <th>Grupo</th>
                     <th>Ações</th>
+                    <th>Cliente</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@
                 <tr>
                     <td>{{ aviao.avi_prefixo_do_aviao }}</td>
                     <td>{{ aviao.avi_toneladas }}</td>
-                    <td>{{ aviao.avi_grupo }}</td>
+                    <td>{{ aviao.cliente.cli_nome }}</td>
                     
                     <td>
                         <button class="btn btn-warning btn-sm" title="Editar" data-aviao-id="{{ aviao.pk }}" data-prefixo="{{ aviao.avi_prefixo_do_aviao }}" data-grupo="{{ aviao.avi_grupo }}" data-toneladas="{{ aviao.avi_toneladas }}" id="editar-aviao-{{ aviao.pk }}">Editar</button>
@@ -109,8 +109,12 @@
                         <input type="text" class="form-control" id="prefixo" name="prefixo" required>
                     </div>
                     <div class="mb-3">
-                        <label for="grupo" class="form-label">Grupo</label>
-                        <input type="text" class="form-control" id="grupo" name="grupo" required>
+                        <label for="cliente" class="form-label">Cliente</label>
+                        <select class="form-select" id="cliente" name="cliente" required>
+                            {% for cliente in clientes %}
+                            <option value="{{ cliente.id }}">{{ cliente.cli_nome }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="toneladas" class="form-label">Toneladas</label>
@@ -166,13 +170,14 @@
         $('button[id^="editar-aviao-"]').click(function() {
             var aviaoId = $(this).data('aviao-id');
             var prefixo = $(this).data('prefixo');
-            var grupo = $(this).data('grupo');
             var toneladas = $(this).data('toneladas');
+            var clienteId = $(this).data('cliente-id');
+
     
             $('#prefixo').val(prefixo);
-            $('#grupo').val(grupo);
             $('#toneladas').val(toneladas);
             $('#aviao-id').val(aviaoId);
+            $('#cliente').val(clienteId);
     
             $('#modalEditar').modal('show');
         });
@@ -183,8 +188,8 @@
     
             var aviaoId = $('#aviao-id').val();
             var prefixo = $('#prefixo').val();
-            var grupo = $('#grupo').val();
             var toneladas = $('#toneladas').val();
+            var clienteId = $('#cliente').val();
     
             $.ajax({
                 url: '/avioes/' + aviaoId + '/edit/',
@@ -192,8 +197,8 @@
                 data: {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                     'prefixo': prefixo,
-                    'grupo': grupo,
                     'toneladas': toneladas,
+                    'cliente': clienteId,
                 },
                 success: function(response) {
                     $('button[id="editar-aviao-' + aviaoId + '"]').closest('tr').find('td').eq(0).text(prefixo);
