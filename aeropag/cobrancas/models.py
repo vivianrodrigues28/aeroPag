@@ -18,8 +18,8 @@ class Cobranca(models.Model):
     
 
     def save(self, *args, **kwargs):
-    #cálculo do valor total com base em tarifa e horas
-        tarifa = 100  # Substitua pelo valor correto ou busque da tabela de tarifas
+   
+        tarifa = 100  
         self.valor_total = self.quantidade_horas * tarifa
         super().save(*args, **kwargs)
 
