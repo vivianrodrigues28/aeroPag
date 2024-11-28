@@ -13,3 +13,5 @@ class TarifaForm(forms.ModelForm):
             'tar_ton_min': 'Tonelada Mínima*',
             'tar_ton_max': 'Tonelada Máxima*',
         }
+
+      

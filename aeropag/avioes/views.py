@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import Aviao
 from .forms import AviaoForm
+<<<<<<< HEAD
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 
@@ -13,7 +14,16 @@ def lista_avioes(request):
     
     avioes = Aviao.objects.filter(usuario=request.user) 
     return render(request, 'lista_avioes.html', {'object_list': avioes})
+=======
+from django.shortcuts import render
+from .models import Aviao
+from clientes.models import Cliente
+>>>>>>> b17d301ab4a8a810ee75e581beebafbb8aa10dcd
 
+
+def lista_avioes(request):
+    avioes = Aviao.objects.filter(usuario=request.user).select_related('cliente') 
+    return render(request, 'lista_avioes.html', {'object_list': avioes})
 
 
 def editar_aviao(request, pk):
@@ -46,7 +56,7 @@ class AviaoCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listar-avioes')
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user 
+        form.instance.usuario = self.request.user  
         return super().form_valid(form)
 
 
@@ -58,7 +68,7 @@ class AviaoUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('listar-avioes')
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Aviao, pk=self.kwargs['pk'], usuario=self.request.user) 
+        return get_object_or_404(Aviao, pk=self.kwargs['pk'], usuario=self.request.user)  
 
 
 class AviaoDelete(LoginRequiredMixin, DeleteView):
@@ -79,8 +89,7 @@ class AviaoList(LoginRequiredMixin, ListView):
         return Aviao.objects.filter(usuario=self.request.user)  
 
 
-
 def get_avioes(request):
-    avioes = Aviao.objects.filter(usuario=request.user).values('prefixo', 'grupo', 'toneladas') 
+    avioes = Aviao.objects.filter(usuario=request.user).values('prefixo', 'toneladas') 
     return JsonResponse({'avioes': list(avioes)})
 

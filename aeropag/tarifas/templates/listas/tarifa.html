@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block titulo %}
-    <h1>Tarifas</h1>
+    Tarifas
 {% endblock %}
 
 {% block conteudo %}
@@ -102,12 +102,62 @@
     </div>
 </div>
 <script>
+<<<<<<< HEAD
     // Função para filtrar a tabela com base no texto do campo de busca
     function filterTable() {
         let input = document.getElementById('search-tarifa');  // Usando o ID correto para o campo de busca
         let filter = input.value.toLowerCase();
         let table = document.getElementById('tarifas-table');
         let rows = table.getElementsByTagName('tr');
+=======
+    
+
+
+
+     $(document).ready(function() {
+        
+        $("#search-lembrete").on("keyup", function() {
+            var value = $(this).val().toLowerCase(); 
+            $("table tbody tr").filter(function() {
+                $(this).toggle(
+                    $(this).find(".tipo").text().toLowerCase().includes(value) ||
+                    $(this).find(".valor-domestico").text().toLowerCase().includes(value) ||
+                    $(this).find(".valor-internacional").text().toLowerCase().includes(value) ||
+                    $(this).find(".grupo").text().toLowerCase().includes(value) ||
+                    $(this).find(".ton-min").text().toLowerCase().includes(value) ||
+                    $(this).find(".ton-max").text().toLowerCase().includes(value)
+                );
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        
+        $('button[id^="excluir-tarifa-"]').click(function() {
+            var tarifaId = $(this).data('tarifa-id');
+            
+            
+            $('#modalExcluir').modal('show');
+            
+            
+            $('#confirmar-exclusao').click(function() {
+                $.ajax({
+                    url: '/tarifas/' + tarifaId + '/delete/',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    },
+                    success: function(response) {
+                        $('#excluir-tarifa-' + tarifaId).closest('tr').remove();
+                        $('#modalExcluir').modal('hide'); 
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erro ao excluir a tarifa');
+                    }
+                });
+            });
+        });
+>>>>>>> b17d301ab4a8a810ee75e581beebafbb8aa10dcd
     
         // Percorre as linhas da tabela
         for (let i = 1; i < rows.length; i++) { // Começa de 1 para ignorar o cabeçalho

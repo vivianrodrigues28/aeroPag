@@ -122,10 +122,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seu_email@gmail.com'
-EMAIL_HOST_PASSWORD = 'sua_senha_de_app'  # Utilize a senha de app, não a senha pessoal
-DEFAULT_FROM_EMAIL = 'noreply@seusite.com'
+EMAIL_HOST_USER = 'aeropagpag@gmail.com'
+EMAIL_HOST_PASSWORD = 'Pagaero2024'
+DEFAULT_FROM_EMAIL = 'noreply@aeropag.com'
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

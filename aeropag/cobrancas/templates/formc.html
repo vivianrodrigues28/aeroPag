@@ -9,6 +9,7 @@
         </div>
         
         <div class="card-body">
+<<<<<<< HEAD
             <form method="post">
                 {% csrf_token %}
                 
@@ -48,6 +49,36 @@
 
                 <button type="submit" class="btn btn-success">Salvar</button>
                 <a href="{% url 'listar_cobrancas' %}" class="btn btn-danger">Cancelar</a>
+=======
+            <form method="POST">
+                {% csrf_token %}
+
+                
+                <div class="mb-3">
+                    <label for="id_avi_codigo" class="form-label">Avião</label>
+                    {{ form.avi_codigo }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_tar_codigo" class="form-label">Tarifa</label>
+                    {{ form.tar_codigo }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_quantidade_horas" class="form-label">Quantidade de Horas</label>
+                    {{ form.quantidade_horas }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_valor_total" class="form-label">Valor Total</label>
+                    {{ form.valor_total }}
+                </div>
+                
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar_cobrancas' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+>>>>>>> b17d301ab4a8a810ee75e581beebafbb8aa10dcd
             </form>
         </div>
     </div>
@@ -99,5 +130,4 @@
         width: 48%;
     }
 </style>
-
 {% endblock %}
