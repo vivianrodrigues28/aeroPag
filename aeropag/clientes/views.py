@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 def listar_clientes(request):
     
     clientes = Cliente.objects.filter(usuario=request.user)
-    return render(request, 'lista_clientes.html', {'clientes': clientes})
+    return render(request, 'cliente.html', {'clientes': clientes})
 
 
 def criar_cliente(request):
@@ -34,15 +34,12 @@ def criar_cliente(request):
     return render(request, 'cadastrar_cliente.html', {'form': form})
 
 
-def excluir_cliente(request, cliente_id):
-    if request.method == 'POST':
-        try:
-            cliente = Cliente.objects.get(pk=cliente_id, usuario=request.user)
-            cliente.delete()
-            return JsonResponse({'status': 'success'})
-        except Cliente.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Cliente não encontrado'}, status=404)
 
+def excluir_cliente(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == 'POST':
+        cliente.delete()
+        return redirect('clientes')
 
 def editar_cliente(request, cliente_id):
     if request.method == 'POST':

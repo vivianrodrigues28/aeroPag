@@ -1,41 +1,50 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Cobranca
+from .models import Cobranca, Aviao, Tarifa
 from .forms import CobrancaForm
-from django.shortcuts import render
-
 
 def CobrancaList(request):
-    cobrancas = Cobranca.objects.all()
-    return render(request, 'cobranca/listar.html', {'cobrancas': cobrancas})
+    cobrancas = Cobranca.objects.all()  # Busca todas as cobranças
+    return render(request, 'cobranca_list.html', {'cobrancas': cobrancas})
 
 
 def CobrancaCreate(request):
+    avioes = Aviao.objects.all()  # Busca todos os aviões
+    tarifas = Tarifa.objects.all()  # Busca todas as tarifas
+
     if request.method == 'POST':
-        form = CobrancaForm(initial={'user': request.user})
+        form = CobrancaForm(request.POST)
         if form.is_valid():
             cobranca = form.save(commit=False)
             cobranca.save()
             return redirect('listar_cobrancas')
     else:
         form = CobrancaForm()
-        form = CobrancaForm(initial={'user': request.user})
-    return render(request, 'formc.html', {'form': form})
 
+    return render(request, 'formc.html', {
+        'form': form,
+        'avioes': avioes,  # Passando aviões para o template
+        'tarifas': tarifas  # Passando tarifas para o template
+    })
 
 
 def CobrancaUpdate(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
+    avioes = Aviao.objects.all()  # Busca todos os aviões
+    tarifas = Tarifa.objects.all()  # Busca todas as tarifas
+
     if request.method == 'POST':
         form = CobrancaForm(request.POST, instance=cobranca)
         if form.is_valid():
-            try:
-                form.save()
-                return redirect('listar_cobrancas')
-            except Exception as e:
-                form.add_error(None, f"Erro ao atualizar a cobrança: {str(e)}")
+            form.save()
+            return redirect('listar_cobrancas')
     else:
         form = CobrancaForm(instance=cobranca)
-    return render(request, 'templates/formc.html', {'form': form})
+
+    return render(request, 'formc.html', {
+        'form': form,
+        'avioes': avioes,  # Passando aviões para o template
+        'tarifas': tarifas  # Passando tarifas para o template
+    })
 
 
 def CobrancaDelete(request, id):
@@ -43,7 +52,7 @@ def CobrancaDelete(request, id):
     if request.method == 'POST':
         cobranca.delete()
         return redirect('listar_cobrancas')
-    return render(request, 'templates/confirmar_exclusão.html', {'cobranca': cobranca})
+    return render(request, 'confirmar_exclusão.html', {'cobranca': cobranca})
 
 
 def CobrancaDetails(request, id):

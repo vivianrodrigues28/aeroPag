@@ -13,5 +13,5 @@ urlpatterns = [
     path('tarifas/<int:pk>/edit/', TarifaUpdate.as_view(), name='editar-tarifa'),
     
    
-    path('tarifas/<int:pk>/delete/', TarifaDelete.as_view(), name='deletar-tarifa'),
+    path('tarifas/<int:pk>/excluir/', TarifaDelete.as_view(), name='excluir-tarifa'),
 ]

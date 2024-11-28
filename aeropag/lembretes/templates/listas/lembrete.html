@@ -59,69 +59,65 @@
     .bi-search {
         font-size: 1rem; 
     }
-    
-
 </style>
 
 <div class="container">
     <h3>Lista de Lembretes Registrados</h3>
-   
-<div class="d-flex justify-content-between align-items-center mb-3">
-    
-    <div class="input-group" style="max-width: 20%;">
-        <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
-        <button class="btn btn-outline-secondary btn-sm" type="button">
-            <i class="bi bi-search"></i>
-        </button>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="input-group" style="max-width: 20%;">
+            <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
+            <button class="btn btn-outline-secondary btn-sm" type="button">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+            <input type="date" class="form-control form-control-sm" id="filter-date" style="max-width: 150px;">
+            <button class="btn btn-outline-danger btn-sm" id="clear-filters">Limpar</button>
+        </div>
     </div>
 
+    <table class="table" id="lembrete-table">
+        <thead>
+            <tr>
+                <th scope="col">Título</th>
+                <th scope="col">OBS</th>
+                <th scope="col">Data</th>
+                <th scope="col">Relevância</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lembrete in object_list %}
+            <tr>
+                <td class="titulo">{{ lembrete.titulo }}</td>
+                <td class="obs">{{ lembrete.obs }}</td>
+                <td class="data">{{ lembrete.data|date:"Y-m-d" }}</td>
+                <td>{{ lembrete.relevancia }}</td>
+                <td>
+                    <a href="{% url 'editar-lembrete' pk=lembrete.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{% url 'excluir-lembrete' lembrete.pk %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" title="Excluir">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">Nenhum lembrete registrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     
-    <div class="d-flex align-items-center" style="gap: 0.5rem;">
-        <input type="date" class="form-control form-control-sm" id="filter-date" style="max-width: 150px;">
-        <button class="btn btn-outline-danger btn-sm" id="clear-filters">Limpar</button>
-    </div>
-</div>
-
-    
-    <div class="table-responsive">
-        <table class="table" id="lembrete-table">
-            <thead>
-                <tr>
-                    <th scope="col">Título</th>
-                    <th scope="col">OBS</th>
-                    <th scope="col">Data</th>
-                    <th scope="col">Relevância</th>
-                    <th scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for lembrete in object_list %}
-                <tr>
-                    <td class="titulo">{{ lembrete.titulo }}</td>
-                    <td class="obs">{{ lembrete.obs }}</td>
-                    <td class="data">{{ lembrete.data|date:"Y-m-d" }}</td>
-                    <td>{{ lembrete.relevancia }}</td>
-                    <td>
-                        
-                        <button class="btn btn-warning btn-sm" title="Editar" data-lembrete-id="{{ lembrete.pk }}" data-lembrete-titulo="{{ lembrete.titulo }}" data-lembrete-obs="{{ lembrete.obs }}" id="editar-lembrete-{{ lembrete.pk }}">Editar</button>
-                        
-                        <button class="btn btn-danger btn-sm" title="Excluir" data-lembrete-id="{{ lembrete.pk }}" id="excluir-lembrete-{{ lembrete.pk }}">Excluir</button>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">Nenhum lembrete registrado.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <!-- Botão "Cadastrar Novo Lembrete" abaixo da tabela -->
     <div class="text-end mt-3">
         <a href="{% url 'cadastrar-lembrete' %}" class="btn btn-primary">Cadastrar Novo Lembrete</a>
     </div>
 </div>
 
-
+<!-- Modal para exclusão -->
 <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -140,44 +136,10 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Editar Lembrete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form-editar-lembrete" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="titulo" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="titulo" name="titulo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="obs" class="form-label">Observações</label>
-                        <textarea class="form-control" id="obs" name="obs" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="data" class="form-label">Data</label>
-                        <input type="date" class="form-control" id="data" name="data" required>
-                    </div>
-                    <input type="hidden" id="lembrete-id" name="lembrete_id">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                </form>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-     document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         const searchInput = document.getElementById('search-lembrete');
         const filterDate = document.getElementById('filter-date');
         const clearFilters = document.getElementById('clear-filters');
@@ -208,125 +170,33 @@
             filterTable();
         });
     });
-$(document).ready(function () {
-    
-    $(document).ready(function () {
-   
-    $('.dropdown-item').click(function (event) {
-        event.preventDefault(); 
-        
-        var filtro = $(this).attr('href').split('=')[1];
-        console.log("Filtro selecionado: " + filtro); 
-       
-        if (!filtro || filtro.trim() === "") { 
-            console.log("Filtro inválido ou não encontrado"); 
-            return;
-        }
 
-        
-        $.ajax({
-            url: '/filtrar-lembretes/', 
-            type: 'GET',
-            data: { filtro_data: filtro }, 
-            success: function (response) {
-                console.log("Resposta recebida: ", response); 
-
-                
-                $('#tabela-lembretes').html(response.tabela); 
-                $('#mensagem').text(response.mensagem); 
-            },
-            
-        });
-    });
-
-   
-});
-
-
-   
-    $('button[id^="excluir-lembrete-"]').click(function () {
-        var lembreteId = $(this).data('lembrete-id');
-
-        
-        $('#modalExcluir').modal('show');
-
-       
-        $('#confirmar-exclusao').click(function () {
-            
-            $.ajax({
-                url: '/excluir-lembrete/' + lembreteId + '/', 
-                type: 'POST',
-                data: {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                },
-                success: function (response) {
-                    
-                    $('#excluir-lembrete-' + lembreteId).closest('tr').remove();
-                    $('#modalExcluir').modal('hide'); 
-                },
-                
-                
-            });
-        });
-    });
-
-    
-    $('button[id^="editar-lembrete-"]').click(function () {
-        var lembreteId = $(this).data('lembrete-id');
-        var titulo = $(this).data('lembrete-titulo');
-        var obs = $(this).data('lembrete-obs');
-        var data = $(this).closest('tr').find('td').eq(2).text();
-
-        
-        $('#titulo').val(titulo);
-        $('#obs').val(obs);
-        $('#data').val(data);
-        $('#lembrete-id').val(lembreteId);
-
-        
-        $('#modalEditar').modal('show');
-    });
-
-    
-    $('#form-editar-lembrete').submit(function (event) {
-        event.preventDefault();
-
-        var lembreteId = $('#lembrete-id').val();
-        var titulo = $('#titulo').val();
-        var obs = $('#obs').val();
-        var data = $('#data').val();
-
-        $.ajax({
-            url: '/editar-lembrete/' + lembreteId + '/', 
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                'titulo': titulo,
-                'obs': obs,
-                'data': data
-            },
-            success: function (response) {
-                var row = $('button[id="editar-lembrete-' + lembreteId + '"]').closest('tr');
-                row.find('td').eq(0).text(titulo);
-                row.find('td').eq(1).text(obs);
-                row.find('td').eq(2).text(data);
-                $('#modalEditar').modal('hide');
-            },
-            error: function (xhr, status, error) {
-                console.log("Erro no AJAX de edição: ", error); 
-                alert('Erro ao editar o lembrete');
+    document.querySelectorAll('button[id^="excluir-lembrete-"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const lembreteId = this.getAttribute('data-lembrete-id');
+            const row = this.closest('tr');
+            document.getElementById('modalExcluir').querySelector('#confirmar-exclusao').onclick = function () {
+                row.remove();
+                $('#modalExcluir').modal('hide');
             }
         });
     });
 
-    
-    $('#dropdownButton').click(function () {
-        var dropdownMenu = $('#dropdownMenu');
-        dropdownMenu.toggle(); 
+    document.querySelectorAll('button[id^="editar-lembrete-"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const lembreteId = this.getAttribute('data-lembrete-id');
+            const titulo = this.getAttribute('data-lembrete-titulo');
+            const obs = this.getAttribute('data-lembrete-obs');
+            const data = this.closest('tr').querySelector('.data').textContent;
+
+            document.getElementById('titulo').value = titulo;
+            document.getElementById('obs').value = obs;
+            document.getElementById('data').value = data;
+            document.getElementById('lembrete-id').value = lembreteId;
+
+            new bootstrap.Modal(document.getElementById('modalEditar')).show();
+        });
     });
-});
-
-
 </script>
 
 {% endblock %}

@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block conteudo %}
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -28,21 +27,35 @@
         color: #343a40; 
         margin-bottom: 20px; 
     }
+
+    /* Estilo para o campo de busca */
+    .search-container {
+        margin-bottom: 15px;
+        max-width: 250px; /* Tamanho máximo do campo de busca */
+    }
+
+    /* Alinhar o campo de busca no canto esquerdo da página */
+    .search-container {
+        margin-bottom: 20px;
+        align-items: left;
+    }
+
+    .search-btn i {
+        color: #007bff;
+    }
 </style>
 
 <div class="container">
     <h3>Lista de Clientes</h3>
-    
-    
- <div class="d-flex justify-content-between align-items-center mb-3">
-     
-     <div class="input-group" style="max-width: 20%;">
-         <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
-         <button class="btn btn-outline-secondary btn-sm" type="button">
-             <i class="bi bi-search"></i>
-         </button>
-     </div>
+
+    <div class="input-group" style="max-width: 20%;">
+        <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
+        <button class="btn btn-outline-secondary btn-sm" type="button">
+            <i class="bi bi-search"></i>
+        </button>
     </div>
+    
+    <!-- Tabela com os dados dos clientes -->
     <div class="table-responsive">
         <table class="table" id="clientes-table">
             <thead>
@@ -60,10 +73,12 @@
                     <td class="cli-email">{{ cliente.cli_email }}</td>
                     <td class="cli-telefone">{{ cliente.cli_telefone }}</td>
                     <td>
-                        
-                        <button class="btn btn-warning btn-sm" title="Editar" data-cliente-id="{{ cliente.pk }}" data-cliente-nome="{{ cliente.nome }}" data-cliente-email="{{ cliente.email }}" data-cliente-telefone="{{ cliente.telefone }}" id="editar-cliente-{{ cliente.pk }}">Editar</button>
-                        
-                        <button class="btn btn-danger btn-sm" title="Excluir" data-cliente-id="{{ cliente.pk }}" id="excluir-cliente-{{ cliente.pk }}">Excluir</button>
+                        <a href="{% url 'editar-cliente' cliente.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
+                        <!-- Formulário de Exclusão -->
+                        <form action="{% url 'excluir-cliente' cliente.pk %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" title="Excluir">Excluir</button>
+                        </form>
                     </td>
                 </tr>
                 {% empty %}
@@ -79,151 +94,38 @@
         <a href="{% url 'criar-cliente' %}" class="btn btn-primary">Cadastrar Novo Cliente</a>
     </div>
 </div>
-
-
-<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalExcluirLabel">Confirmar Exclusão</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Você tem certeza de que deseja excluir este cliente?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Editar Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form-editar-cliente" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefone" class="form-label">Telefone</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" required>
-                    </div>
-                    <input type="hidden" id="cliente-id" name="cliente_id">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    $(document).ready(function() {
-        
-        $('#search-lembrete').on('input', function() {
-            var searchTerm = $(this).val().toLowerCase();
-            $('#clientes-table tbody tr').each(function() {
-                var nome = $(this).find('.cli-nome').text().toLowerCase();
-                var email = $(this).find('.cli-email').text().toLowerCase();
-                var telefone = $(this).find('.cli-telefone').text().toLowerCase();
-
-                
-                if (nome.includes(searchTerm) || email.includes(searchTerm) || telefone.includes(searchTerm)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+    // Função para filtrar a tabela com base no texto do campo de busca
+    function filterTable() {
+        let input = document.getElementById('search-lembrete');  // Alterado para usar o ID correto
+        let filter = input.value.toLowerCase();
+        let table = document.getElementById('clientes-table');
+        let rows = table.getElementsByTagName('tr');
+    
+        // Percorre as linhas da tabela
+        for (let i = 1; i < rows.length; i++) { // Começa de 1 para ignorar o cabeçalho
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
+    
+            // Verifica se alguma célula da linha contém o texto digitado no campo de busca
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].textContent.toLowerCase().includes(filter)) {
+                    match = true;
+                    break;
                 }
-            });
-        });
-
-        
-        $('button[id^="excluir-cliente-"]').click(function() {
-            var clienteId = $(this).data('cliente-id');
-            
-           
-            $('#modalExcluir').modal('show');
-            
-           
-            $('#confirmar-exclusao').click(function() {
-                $.ajax({
-                    url: '/clientes/' + clienteId + '/delete/',  
-                    type: 'POST',
-                    data: {
-                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    },
-                    success: function(response) {
-                        $('#excluir-cliente-' + clienteId).closest('tr').remove();
-                        $('#modalExcluir').modal('hide'); 
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Erro ao excluir o cliente');
-                    }
-                });
-            });
-        });
+            }
     
-        
-        $('button[id^="editar-cliente-"]').click(function() {
-            var clienteId = $(this).data('cliente-id');
-            var nome = $(this).data('cliente-nome');
-            var email = $(this).data('cliente-email');
-            var telefone = $(this).data('cliente-telefone');
+            // Exibe ou esconde a linha com base no filtro
+            if (match) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
     
-            $('#nome').val(nome);
-            $('#email').val(email);
-            $('#telefone').val(telefone);
-            $('#cliente-id').val(clienteId);
+    // Adiciona um evento para chamar a função de filtro sempre que o texto for alterado
+    document.getElementById('search-lembrete').addEventListener('keyup', filterTable);  // Alterado para o ID correto
+    </script>
     
-            $('#modalEditar').modal('show');
-        });
-    
-        
-        $('#form-editar-cliente').submit(function(event) {
-            event.preventDefault(); 
-    
-            var clienteId = $('#cliente-id').val();
-            var nome = $('#nome').val();
-            var email = $('#email').val();
-            var telefone = $('#telefone').val();
-    
-            $.ajax({
-                url: '/clientes/' + clienteId + '/edit/',
-                type: 'POST',
-                data: {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'nome': nome,
-                    'email': email,
-                    'telefone': telefone
-                },
-                success: function(response) {
-                    
-                    var row = $('#editar-cliente-' + clienteId).closest('tr');
-                    row.find('.cli-nome').text(nome);
-                    row.find('.cli-email').text(email);
-                    row.find('.cli-telefone').text(telefone);
-                    $('#modalEditar').modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    alert('Erro ao editar cliente');
-                }
-            });
-        });
-    });
-</script>
 {% endblock %}

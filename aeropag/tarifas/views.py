@@ -7,8 +7,18 @@ from .models import Tarifa
 from .forms import TarifaForm
 from django.http import JsonResponse
 from django.contrib import messages
+from django.shortcuts import render
 
-
+def editar_tarifa(request, pk):
+    tarifa = get_object_or_404(Tarifa, pk=pk)
+    if request.method == 'POST':
+        form = TarifaForm(request.POST, instance=tarifa)
+        if form.is_valid():
+            form.save()
+            return redirect('listar-tarifas')  # Redireciona para a lista de tarifas após salvar
+    else:
+        form = TarifaForm(instance=tarifa)
+    return render(request, 'editar_tarifa.html', {'form': form})
 class TarifaCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Tarifa

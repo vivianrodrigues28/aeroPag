@@ -1,0 +1,96 @@
+{% extends 'modelo.html' %}
+{% load static %}
+
+{% block titulo %}
+    Editar Avião
+{% endblock %}
+
+{% block conteudo %}
+<div class="container py-5" style="max-width: 400px;">
+    <div class="card border-0">
+        <div class="card-header text-center bg-light">
+            <h3 class="mb-0 text-dark">Editar Avião</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Campo Prefixo -->
+                <div class="mb-3">
+                    <label for="avi_prefixo_do_aviao" class="form-label">Prefixo do Avião</label>
+                    <input type="text" id="avi_prefixo_do_aviao" name="avi_prefixo_do_aviao" value="{{ form.avi_prefixo_do_aviao.value|default:'' }}" class="form-control">
+                </div>
+                
+                <!-- Campo Grupo -->
+                <div class="mb-3">
+                    <label for="avi_grupo" class="form-label">Grupo</label>
+                    <select id="avi_grupo" name="avi_grupo" class="form-select">
+                        <option value="1" {% if form.avi_grupo.value == '1' %}selected{% endif %}>Grupo 1</option>
+                        <option value="2" {% if form.avi_grupo.value == '2' %}selected{% endif %}>Grupo 2</option>
+                    </select>
+                </div>
+
+                <!-- Campo Toneladas -->
+                <div class="mb-3">
+                    <label for="avi_toneladas" class="form-label">Tonelada</label>
+                    <input type="number" id="avi_toneladas" name="avi_toneladas" value="{{ form.avi_toneladas.value }}" class="form-control"  >
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar-avioes' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 4px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #333;
+        box-shadow: none;
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+    }
+
+    .d-flex {
+        gap: 10px;
+    }
+
+    .btn {
+        width: 48%;
+    }
+</style>
+
+{% endblock %}

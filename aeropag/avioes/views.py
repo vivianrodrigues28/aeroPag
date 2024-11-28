@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import Aviao
 from .forms import AviaoForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 
-from django.shortcuts import render
-from .models import Aviao
 def lista_avioes(request):
     
     avioes = Aviao.objects.filter(usuario=request.user) 
@@ -17,22 +17,25 @@ def lista_avioes(request):
 
 
 def editar_aviao(request, pk):
+    aviao = get_object_or_404(Aviao, pk=pk)
     if request.method == 'POST':
-        aviao = get_object_or_404(Aviao, pk=pk)
-        aviao.prefixo = request.POST.get('prefixo')
-        aviao.grupo = request.POST.get('grupo')  
-        aviao.toneladas = request.POST.get('toneladas')
-        aviao.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
+        form = AviaoForm(request.POST, instance=aviao)
+        if form.is_valid():
+            form.save()
+            return redirect('listar-avioes')  # Substitua pelo nome correto da URL de lista
+    else:
+        form = AviaoForm(instance=aviao)
+    return render(request, 'editar_aviao.html', {'form': form})
 
 
-def excluir_aviao(request, pk):
+def excluir_aviao(request, pk):  # Corrigido: hífen substituído por sublinhado
     if request.method == 'POST':
         aviao = get_object_or_404(Aviao, pk=pk)
         aviao.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
+        messages.success(request, "Avião excluído com sucesso!")
+        return redirect('listar-avioes')  # Substitua pelo nome correto da URL de lista
+    return redirect('listar-avioes')  # Em caso de GET, redireciona sem excluir
+
 
 
 class AviaoCreate(LoginRequiredMixin, CreateView):
@@ -80,3 +83,4 @@ class AviaoList(LoginRequiredMixin, ListView):
 def get_avioes(request):
     avioes = Aviao.objects.filter(usuario=request.user).values('prefixo', 'grupo', 'toneladas') 
     return JsonResponse({'avioes': list(avioes)})
+

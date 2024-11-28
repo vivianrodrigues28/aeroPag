@@ -10,6 +10,6 @@ urlpatterns = [
 
     path('clientes/<int:pk>/edit/', views.editar_cliente, name='editar-cliente'),
     
-    path('clientes/<int:pk>/delete/', ClienteDelete.as_view(), name='excluir-cliente'),
+    path('clientes/<int:pk>/excluir/', ClienteDelete.as_view(), name='excluir-cliente'),
 
 ]

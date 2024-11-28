@@ -1,65 +1,52 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Lembrete
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
-from datetime import date, timedelta
-from django.shortcuts import render
-from datetime import datetime
-from django.utils import timezone
+from .forms import LembreteForm  
 
+def editar_lembrete(request, lembrete_id):
+    lembrete = get_object_or_404(Lembrete, pk=lembrete_id)
+    if request.method == 'POST':
+        form = LembreteForm(request.POST, instance=lembrete)
+        if form.is_valid():
+            form.save()
+            return redirect('listar-lembretes')
+    else:
+        form = LembreteForm(instance=lembrete)
+
+    return render(request, 'editar_lembrete.html', {'form': form, 'lembrete': lembrete})
+
+
+def excluir_lembrete(request, pk):
+    lembrete = get_object_or_404(Lembrete, pk=pk)
+    if request.method == 'POST':
+        lembrete.delete()
+        return redirect('listar-lembretes') 
+
+
+# View para cadastrar lembrete
 def cadastrar_lembrete(request):
     if request.method == "POST":
-        titulo = request.POST.get("titulo")
-        descricao = request.POST.get("descricao")
-        data_str = request.POST.get("data")
-        relevancia = request.POST.get("relevancia", 1)
-        obs = request.POST.get("obs", "")
-
-        # Converte a data recebida para um objeto 'date'
-        data = datetime.strptime(data_str, "%Y-%m-%d").date()
-
-        # Cria e salva o lembrete no banco de dados
-        Lembrete.objects.create(
-            titulo=titulo,
-            descricao=descricao,
-            obs=obs,
-            relevancia=relevancia,
-            data=data,
-            usuario=request.user  # Associa o lembrete ao usuário logado
-        )
-
-        return redirect('listar_lembretes')  # Redireciona para a página de lista de lembretes
+        form = LembreteForm(request.POST)
+        if form.is_valid():
+            lembrete = form.save(commit=False)
+            lembrete.usuario = request.user 
+            lembrete.save()
+            return redirect('listar-lembretes')  # Redireciona para a página de lista de lembretes
+    else:
+        form = LembreteForm()
 
     return render(request, 'cadastro_lembrete.html', {'form': form})
 
-
-def editar_lembrete(request, id):
-    if request.method == 'POST':
-        lembrete = Lembrete.objects.get(id=id)
-        titulo = request.POST.get('titulo')
-        obs = request.POST.get('obs')
-        lembrete.titulo = titulo
-        lembrete.obs = obs
-        lembrete.save()
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'fail'}, status=400)
-
-
+# View para excluir lembrete
 def excluir_lembrete(request, id):
-    # Obtém o lembrete com base no ID fornecido
-    lembrete = get_object_or_404(Lembrete, pk=id)
+    lembrete = get_object_or_404(Lembrete, pk=id)  # Obtém o lembrete pelo ID
+    lembrete.delete()  # Exclui o lembrete
+    return redirect('listar-lembretes')  # Redireciona para a lista de lembretes
 
-    # Exclui o lembrete
-    lembrete.delete()
-
-    # Redireciona para a lista de lembretes após a exclusão
-    return redirect('listar-lembretes')
-
+# View para criar lembrete utilizando a classe CreateView
 class LembreteCreate(LoginRequiredMixin, CreateView):
     model = Lembrete
     fields = ['titulo', 'descricao', 'obs', 'relevancia', 'data']
@@ -70,15 +57,17 @@ class LembreteCreate(LoginRequiredMixin, CreateView):
         form.instance.usuario = self.request.user  # Associando o lembrete ao usuário logado
         return super().form_valid(form)
 
+# View para editar lembrete utilizando a classe UpdateView
 class LembreteUpdate(LoginRequiredMixin, UpdateView):
     model = Lembrete
     fields = ['titulo', 'descricao', 'obs', 'relevancia', 'data']
-    template_name = 'lembrete/cadastrar_lembrete.html'
+    template_name = 'editar_lembrete.html'
     success_url = reverse_lazy('listar-lembretes')
 
     def get_object(self):
         return get_object_or_404(Lembrete, pk=self.kwargs['pk'], usuario=self.request.user)
 
+# View para excluir lembrete utilizando a classe DeleteView
 class LembreteDelete(LoginRequiredMixin, DeleteView):
     model = Lembrete
     template_name = 'form-excluir.html'
@@ -87,11 +76,10 @@ class LembreteDelete(LoginRequiredMixin, DeleteView):
     def get_object(self):
         return get_object_or_404(Lembrete, pk=self.kwargs['pk'], usuario=self.request.user)
 
+# View para listar os lembretes
 class LembreteList(LoginRequiredMixin, ListView):
     model = Lembrete
     template_name = 'listas/lembrete.html'
 
     def get_queryset(self):
         return Lembrete.objects.filter(usuario=self.request.user)  # Filtrando pelos lembretes do usuário logado
-
-
