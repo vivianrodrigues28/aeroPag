@@ -1,8 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cobranca
 from .forms import CobrancaForm
-from .models import Cobranca, Aviao, Tarifa
-from .forms import CobrancaForm
 
 # Função para listar as cobranças
 def CobrancaList(request):

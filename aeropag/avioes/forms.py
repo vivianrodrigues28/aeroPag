@@ -1,14 +1,15 @@
 from django import forms
 from .models import Aviao
-from clientes.models import Cliente
 
 class AviaoForm(forms.ModelForm):
     class Meta:
         model = Aviao
-        fields = ['avi_prefixo_do_aviao', 'avi_toneladas', 'cli_nome']
+        fields = ['avi_prefixo_do_aviao', 'avi_grupo', 'avi_toneladas']
 
     def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-        # Filtra os aviões cadastrados pelo usuário logado (se necessário)
-            self.fields['cli_nome'].queryset = Cliente.objects.all()
-     
+        user = kwargs.pop('user', None)  # Recupera o usuário logado
+        super().__init__(*args, **kwargs)
+
+        if user:
+            # Filtra os aviões do usuário logado
+            self.fields['avi_grupo'].queryset = Aviao.objects.filter(usuario=user)
