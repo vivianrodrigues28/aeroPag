@@ -60,8 +60,9 @@
     <h3>Login</h3>
 
     {% if error_message %}
-        <div class="alert alert-danger mt-3">{{ error_message }}</div>
+    <div class="alert alert-danger mt-3">{{ error_message }}</div>
     {% endif %}
+
     
     <form action="" method="post">
         {% csrf_token %}
@@ -73,11 +74,14 @@
             <label for="password" class="form-label">Senha</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Digite sua senha" required>
         </div>
+
+        <a href="{% url 'registrar' %}">Cadastre-se</a>
+
         <div class="d-flex justify-content-center">
             <a href="{% url 'recuperacao' %}">Esqueceu sua senha?</a>
         </div>
         
-        
+       
         <button type="submit" class="btn btn-primary mt-3">Entrar</button>
     </form>
 </div>

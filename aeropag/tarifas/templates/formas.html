@@ -15,23 +15,15 @@
             <form method="post" id="tarifa-form">
                 {% csrf_token %}
                 
-                <!-- Seletor de Grupo -->
-                <select id="tar_grupo" name="tar_grupo" class="form-select" required>
-                    <option value="1" {% if form.tar_grupo.value == 1 %}selected{% endif %}>Grupo 1</option>
-                    <option value="2" {% if form.tar_grupo.value == 2 %}selected{% endif %}>Grupo 2</option>
-                </select>
-                
-            
                 <!-- Seletor de Tipo da Tarifa -->
-
-                
                 <div class="mb-3">
                     <label for="tar_tipo" class="form-label">Tipo da Tarifa</label>
                     <select id="tar_tipo" name="tar_tipo" class="form-select" required>
-                        <option value="" disabled selected hidden>Escolha um grupo primeiro</option>
+                        <option value="domestico" {% if form.tar_tipo.value == 'domestico' %}selected{% endif %}>Doméstica</option>
+                        <option value="internacional" {% if form.tar_tipo.value == 'internacional' %}selected{% endif %}>Internacional</option>
                     </select>
                 </div>
-                
+
                 <!-- Campos de Valor e Tonelada -->
                 <div class="mb-3" id="valor-domestico-container">
                     <label for="tar_valor_domestico" class="form-label">Valor Doméstico*</label>
@@ -62,54 +54,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    
-
-    document.getElementById('tar_grupo').addEventListener('change', function() {
-        var grupo = this.value;
-        var tipoSelect = document.getElementById('tar_tipo');
-        
-        // Limpar opções anteriores
-        tipoSelect.innerHTML = '';
-        
-        // Criar a opção padrão apenas se nenhum grupo for selecionado
-        if (grupo === "") {
-            var defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.textContent = 'Escolha um grupo primeiro';
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            defaultOption.hidden = true;
-            tipoSelect.appendChild(defaultOption);
-        }
-        
-        // Exibir tipos de tarifas específicos para cada grupo
-        var tiposTarifa = [];
-        if (grupo == '1') {
-            tiposTarifa = [
-                { value: 'Embarque', text: 'Embarque' },
-                { value: 'Conexao', text: 'Conexão' },
-                { value: 'Pouso', text: 'Pouso (por tonelada)' },
-                { value: 'Permanencia', text: 'Permanência (por tonelada-hora)' }
-            ];
-        } else if (grupo == '2') {
-            tiposTarifa = [
-                { value: 'Unificada', text: 'Tarifa Unificada de Embarque e Pouso' },
-                { value: 'PatioManobras', text: 'Tarifa Pátio de Manobras (MAN)' },
-                { value: 'AreaEstadia', text: 'Tarifa Área de Estadia' }
-            ];
-        }
-        
-        // Adicionar as opções dinâmicas de acordo com o grupo selecionado
-        tiposTarifa.forEach(function(tipo) {
-            var option = document.createElement('option');
-            option.value = tipo.value;
-            option.textContent = tipo.text;
-            tipoSelect.appendChild(option);
-        });
-    });
-</script>
-
 
 {% endblock %}

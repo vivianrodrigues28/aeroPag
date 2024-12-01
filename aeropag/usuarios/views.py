@@ -6,6 +6,26 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    error_message = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            error_message = "Usuário ou senha inválidos."
+            print(f"Login failed for user: {username}")  # Depuração
+
+    print(f"Error message being passed: {error_message}")  # Depuração
+    return render(request, 'login.html', {'error_message': error_message})
+
 
 
 #def recuperacao_view(request):

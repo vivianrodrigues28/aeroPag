@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Aviao(models.Model):
     nome = models.CharField(max_length=100)
@@ -61,4 +62,10 @@ class Evento(models.Model):
         return self.nome
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to='profile_images/', default='default.jpg')
+    biography = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.user.username
