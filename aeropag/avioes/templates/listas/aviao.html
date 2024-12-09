@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block titulo %}
-    Lista de Aviões
+    <h1>Aviões</h1>
 {% endblock %}
 
 {% block conteudo %}
@@ -25,47 +25,95 @@
         text-align: center;
         margin-bottom: 20px;
     }
+    .search-container {
+        margin-bottom: 20px;
+        align-items: left;
+        max-width: 20%;
+    }
+    .search-btn i {
+        color: #007bff;
+    }
 </style>
 
 <div class="container">
     <h3>Lista de Aviões Registrados</h3>
-     
-    <div class="mb-3">
-        <div class="input-group" style="max-width: 200px;"> 
-            <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
-            <button class="btn btn-outline-secondary btn-sm" type="button">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
+
+    <!-- Campo de busca -->
+    <div class="input-group search-container">
+        <input type="text" class="form-control form-control-sm" id="search-lembrete" placeholder="Buscar...">
+        <button class="btn btn-outline-secondary btn-sm search-btn" type="button">
+            <i class="bi bi-search"></i>
+        </button>
     </div>
+
+    <!-- Tabela de aviões -->
     <div class="table-responsive">
-        <table class="table">
+        <table class="table" id="avioes-table">
             <thead>
                 <tr>
-                    <th>Prefixo</th>
-                    <th>Toneladas</th>
-                    <th>Grupo</th>
-                
+                    <th scope="col">Prefixo</th>
+                    <th scope="col">Toneladas</th>
+                    <th scope="col">Grupo</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
+                {% for aviao in object_list %}
                 <tr>
-                    <td>{{ aviao.avi_prefixo_do_aviao }}</td>
-                    <td>{{ aviao.avi_toneladas }}</td>
-                    <td>{{ aviao.avi_grupo }}</td>
-                    
+                    <td class="avi-prefixo">{{ aviao.avi_prefixo_do_aviao }}</td>
+                    <td class="avi-toneladas">{{ aviao.avi_toneladas }}</td>
+                    <td class="avi-grupo">{{ aviao.avi_grupo }}</td>
+                    <td>
+                        <a href="{% url 'editar-aviao' aviao.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
+                        <form action="{% url 'excluir_aviao' aviao.pk %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" title="Excluir">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
-      
+                {% empty %}
                 <tr>
                     <td colspan="4" class="text-center">Nenhum avião registrado.</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
+    <!-- Botão de cadastro -->
     <div class="text-end mt-3">
         <a href="{% url 'criar-aviao' %}" class="btn btn-primary">Cadastrar Novo Avião</a>
     </div>
 </div>
+
+<script>
+    // Função para filtrar a tabela com base no texto do campo de busca
+    function filterTable() {
+        let input = document.getElementById('search-lembrete');
+        let filter = input.value.toLowerCase();
+        let table = document.getElementById('avioes-table');
+        let rows = table.getElementsByTagName('tr');
+
+        // Percorre as linhas da tabela
+        for (let i = 1; i < rows.length; i++) { // Ignora o cabeçalho
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Verifica se alguma célula da linha contém o texto digitado no campo de busca
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].textContent.toLowerCase().includes(filter)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Exibe ou oculta a linha com base no filtro
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Adiciona o evento de filtragem ao campo de busca
+    document.getElementById('search-lembrete').addEventListener('keyup', filterTable);
+</script>
 
 {% endblock %}
