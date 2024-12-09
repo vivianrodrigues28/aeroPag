@@ -12,11 +12,11 @@ urlpatterns = [
 
     path('registrar/', UsuarioCreate.as_view(), name='registrar'),
     path('recuperacao/', recuperacao_view, name='recuperacao'),
-    path('reset-password/', 
-         auth_views.PasswordResetView.as_view(template_name='password_reset.html'), 
+    
+    path('recuperacao/', 
+         auth_views.PasswordResetView.as_view(template_name='recuperacao.html'), 
          name='password_reset'),
-         
-    path('reset-password/done/', 
+    path('password_reset_done/', 
          auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), 
          name='password_reset_done'),
     path('reset/<uidb64>/<token>/', 
