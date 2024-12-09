@@ -20,7 +20,7 @@ def CobrancaCreate(request):
                 form.add_error(None, f"Erro ao salvar a cobrança: {str(e)}")
     else:
         form = CobrancaForm()
-    return render(request, 'form.html', {'form': form})
+    return render(request, 'form_cobranca.html', {'form': form})
 
 # Função para atualizar uma cobrança existente
 def CobrancaUpdate(request, id):

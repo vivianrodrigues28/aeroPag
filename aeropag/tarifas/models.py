@@ -7,10 +7,10 @@ class Tarifa(models.Model):
     tar_tipo = models.CharField(max_length=255)
     tar_valor_domestico = models.DecimalField(max_digits=10, decimal_places=2)
     tar_valor_internacional = models.DecimalField(max_digits=10, decimal_places=2)
-    tar_grupo = models.IntegerField()
+    tar_grupo = models.IntegerField( null=True, blank=True)
     tar_ton_min = models.IntegerField()
     tar_ton_max = models.IntegerField()
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
 
     def clean(self):
         

@@ -1,97 +1,71 @@
 {% extends 'modelo.html' %}
 {% load static %}
-
-
-    {% block titulo %}
-    <title>Listar Cobranças</title>
-    {% endblock %}
-
+{% block titulo %}
+    <h1>Cobranças</h1>
+{% endblock %}
 {% block conteudo %}
-    <style>
-        
-        
-        table {
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #3498db;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        td {
-            background-color: #fff;
-            color: #555;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:nth-child(even) td {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover td {
-            background-color: #ecf0f1;
-        }
-
-        
-        a {
-            color: #3498db;
-            font-weight: normal;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #2980b9;
-        }
-
-        
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-            }
-
-            th, td {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
-
-    <h1>Listar Cobranças</h1>
-    <a href="{% url 'criar_cobranca' %}">Nova Cobrança</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Nome do Avião</th>
-                <th>Tabela de Tarifas</th>
-                <th>Quantidade de Horas</th>
-                <th>Valor Total</th>
-                <th>Detalhes</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cobranca in cobrancas %}
-            <tr>
-                <td>{{ cobranca.avi_codigo }}</td>
-                <td>{{ cobranca.tar_codigo }}</td>
-                <td>{{ cobranca.quantidade_horas }}</td>
-                <td>R$ {{ cobranca.valor_total }}</td>
-                <td><a href="{% url 'detalhes_cobranca' cobranca.id %}">Ver Detalhes</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+<!-- Importação do CSS do Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    h3 {
+        text-align: center;
+    }
+    body {
+        background-color: #e9eaeb;
+    }
+    .container {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h3 {
+        color: #343a40;
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <h3>Lista de Cobranças</h3>
+    
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Código do Avião</th>
+                    <th scope="col">Código da Tarifa</th>
+                    <th scope="col">Quantidade de Horas</th>
+                    <th scope="col">Valor Total</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cobranca in object_list %}
+                <tr>
+                    <td>{{ cobranca.avi_codigo }}</td>
+                    <td>{{ cobranca.tar_codigo }}</td>
+                    <td>{{ cobranca.quantidade_horas }}</td>
+                    <td>R$ {{ cobranca.valor_total }}</td>
+                    <td>
+                        <!-- Botão de Editar -->
+                        <a href="{% url 'atualizar_cobranca' cobranca.id %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
+                        <!-- Botão de Excluir -->
+                        <a href="{% url 'excluir_cobranca' cobranca.id %}" class="btn btn-danger btn-sm" title="Excluir">Excluir</a>
+                        <!-- Botão de Detalhes -->
+                        <a href="{% url 'detalhes_cobranca' cobranca.id %}" class="btn btn-info btn-sm" title="Detalhes">Detalhes</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhuma cobrança registrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-end mt-3">
+        <a href="{% url 'criar_cobranca' %}" class="btn btn-primary">Cadastrar Nova Cobrança</a>
+    </div>
+</div>
 {% endblock %}

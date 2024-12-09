@@ -6,9 +6,9 @@
 </head>
 <body>
     <h1>Detalhes da Cobrança</h1>
-    <p>Nome do Avião: {{ cobranca.avi.codigo }}</p>
-    <p>Nome da Tarifa: {{ cobranca.tar.codigo }}</p>
-    <p>Tipo de Voo: {{ cobranca.tar.tipo}}</p>
+    <p>Nome do Avião: {{ cobranca.avi_codigo }}</p>
+    <p>Nome da Tarifa: {{ cobranca.tar_codigo }}</p>
+    <p>Tipo de Voo: {{ cobranca.tar_tipo}}</p>
     <p>Quantidade de Horas: {{ cobranca.quantidade_horas }}</p>
     <p>Valor Total: R$ {{ cobranca.valor_total }}</p>
     <a href="{% url 'listar_cobrancas'.pk %}">Voltar para lista</a>
