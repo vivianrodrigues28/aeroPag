@@ -21,9 +21,9 @@ def login_view(request):
             return redirect('dashboard')
         else:
             error_message = "Usuário ou senha inválidos."
-            print(f"Login failed for user: {username}")  # Depuração
+            print(f"Login failed for user: {username}")  
 
-    print(f"Error message being passed: {error_message}")  # Depuração
+    print(f"Error message being passed: {error_message}")  
     return render(request, 'login.html', {'error_message': error_message})
 
 
@@ -41,7 +41,7 @@ def recuperacao_view(request):
         if user_exists:
             send_mail(
                 'Recuperação de Senha',
-                'Clique no link abaixo para redefinir sua senha:\nhttp://AeroPag.com/password-reset',
+                'Clique no link abaixo para redefinir sua senha:\nhttp://AeroPag.com/password_reset_confirm',
                 'noreply@aeropag.com',
                 [email],
             )
