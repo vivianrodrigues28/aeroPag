@@ -1,52 +1,52 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Cobranca
 from .forms import CobrancaForm
-from django.core.exceptions import ValidationError
 
 # Função para listar as cobranças
 def CobrancaList(request):
     cobrancas = Cobranca.objects.all()
     return render(request, 'cobranca/listar.html', {'cobrancas': cobrancas})
 
+# Função para criar uma nova cobrança
 def CobrancaCreate(request):
     if request.method == 'POST':
-        form = CobrancaForm(request.POST)
+        form = CobrancaForm(request.POST, user=request.user)  # Passando o usuário para o form
         if form.is_valid():
-            try:
-                cobranca = form.save(commit=False)
-                cobranca.save()  # O cálculo do valor total ocorre no método save do modelo
-                return redirect('listar_cobrancas')
-            except Exception as e:
-                form.add_error(None, f"Erro ao salvar a cobrança: {str(e)}")
+            form.save()
+            messages.success(request, "Cobrança criada com sucesso!")
+            return redirect('listar_cobrancas')
+        else:
+            messages.error(request, "Erro ao criar cobrança!")
     else:
-        form = CobrancaForm(user=request.user)
+        form = CobrancaForm(user=request.user)  # Passando o usuário para o form
     return render(request, 'form_cobranca.html', {'form': form})
-
 
 # Função para atualizar uma cobrança existente
 def CobrancaUpdate(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
-        form = CobrancaForm(request.POST, instance=cobranca)
+        form = CobrancaForm(request.POST, instance=cobranca, user=request.user)  # Passando o usuário para o form
         if form.is_valid():
-            try:
-                form.save()
-                return redirect('listar_cobrancas')
-            except Exception as e:
-                form.add_error(None, f"Erro ao atualizar a cobrança: {str(e)}")
+            form.save()
+            messages.success(request, "Cobrança atualizada com sucesso!")
+            return redirect('listar_cobrancas')
+        else:
+            messages.error(request, "Erro ao atualizar cobrança!")
     else:
-        form = CobrancaForm(instance=cobranca)
-    return render(request, 'templates/form.html', {'form': form})
+        form = CobrancaForm(instance=cobranca, user=request.user)
+    return render(request, 'form_cobranca.html', {'form': form})
 
 # Função para excluir uma cobrança
 def CobrancaDelete(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
         cobranca.delete()
+        messages.success(request, "Cobrança excluída com sucesso!")
         return redirect('listar_cobrancas')
-    return render(request, 'templates/confirmar_exclusão.html', {'cobranca': cobranca})
+    return render(request, 'confirmar_exclusao.html', {'cobranca': cobranca})
 
 # Função para ver os detalhes de uma cobrança
 def CobrancaDetails(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
-    return render(request, 'detalhes.html', {'cobranca': cobranca})
+    return render(request, 'detalhes_cobranca.html', {'cobranca': cobranca})

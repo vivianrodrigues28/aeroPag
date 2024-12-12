@@ -33,8 +33,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Código do Avião</th>
-                    <th scope="col">Código da Tarifa</th>
+                    <th scope="col">Prefixo do Avião</th>
+                    <th scope="col">Tipo da Tarifa</th>
                     <th scope="col">Quantidade de Horas</th>
                     <th scope="col">Valor Total</th>
                     <th scope="col">Ações</th>
@@ -43,8 +43,8 @@
             <tbody>
                 {% for cobranca in object_list %}
                 <tr>
-                    <td>{{ cobranca.avi_codigo }}</td>
-                    <td>{{ cobranca.tar_codigo }}</td>
+                    <td>{{ cobranca.avi_codigo.avi_prefixo_do_aviao }}</td>
+                    <td>{{ cobranca.tar_codigo.tar_tipo }}</td>
                     <td>{{ cobranca.quantidade_horas }}</td>
                     <td>R$ {{ cobranca.valor_total }}</td>
                     <td>

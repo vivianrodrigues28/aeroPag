@@ -1,5 +1,6 @@
 {% extends 'modelo.html' %}
 {% load static %}
+
 {% block conteudo %}
 <div class="container py-5" style="max-width: 400px;">
     <div class="card border-0">
@@ -10,37 +11,38 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
+                
                 <!-- Campo Código do Avião -->
                 <div class="mb-3">
                     <label for="avi_codigo" class="form-label">Código do Avião</label>
-                    <input type="text" id="avi_codigo" name="avi_codigo" value="{{ form.avi_codigo.value|default:'' }}" class="form-control">
+                    {{ form.avi_codigo }}  <!-- Renderiza o campo avi_codigo -->
                 </div>
+                
                 <!-- Campo Código da Tarifa -->
                 <div class="mb-3">
                     <label for="tar_codigo" class="form-label">Código da Tarifa</label>
-                    <input type="text" id="tar_codigo" name="tar_codigo" value="{{ form.tar_codigo.value|default:'' }}" class="form-control">
+                    {{ form.tar_codigo }}  <!-- Renderiza o campo tar_codigo -->
                 </div>
+                
                 <!-- Campo Quantidade de Horas -->
                 <div class="mb-3">
                     <label for="quantidade_horas" class="form-label">Quantidade de Horas</label>
-                    <input type="number" id="quantidade_horas" name="quantidade_horas" value="{{ form.quantidade_horas.value|default:'' }}" class="form-control">
+                    {{ form.quantidade_horas }}  <!-- Renderiza o campo quantidade_horas -->
                 </div>
+                
+                <!-- Campo Valor Total -->
                 <div class="mb-3">
                     <label for="valor_total" class="form-label">Valor Total</label>
-                    <input type="text" id="valor_total" name="valor_total" value="{{ form.valor_total.value|default:'' }}" class="form-control">
+                    {{ form.valor_total }}  <!-- Renderiza o campo valor_total -->
                 </div>
                 
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Salvar</button>
-                </form>
-                
-                
+                <!-- Botão de envio -->
+                <button type="submit" class="btn btn-success">Salvar</button>
             </form>
         </div>
     </div>
 </div>
+
 <style>
     .card {
         box-shadow: none;
