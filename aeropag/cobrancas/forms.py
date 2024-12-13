@@ -7,10 +7,8 @@ from tarifas.models import Tarifa
 class CobrancaForm(forms.ModelForm):
     class Meta:
         model = Cobranca
-        fields = ['cob_codigo', 'quantidade_horas', 'valor_total', 'avi_codigo', 'tar_codigo']
-        widgets = {
-            'valor_total': forms.TextInput(attrs={'readonly': 'readonly'}),  # Campo apenas leitura
-        }
+        fields = ['cob_codigo', 'quantidade_horas', 'avi_codigo', 'tar_codigo']
+
 
     def __init__(self, *args, **kwargs):
         self.usuario = kwargs.pop('user', None)
@@ -33,9 +31,5 @@ class CobrancaForm(forms.ModelForm):
             # Realiza o cálculo com base no tipo de tarifa e as informações do avião
             if avi_codigo.avi_toneladas < tar_codigo.tar_ton_min or avi_codigo.avi_toneladas > tar_codigo.tar_ton_max:
                 raise forms.ValidationError("O peso do avião está fora da faixa da tarifa selecionada.")
-
-            # Calculando o valor total da cobrança
-            tarifa = tar_codigo.tar_valor_domestico if avi_codigo.avi_grupo == 1 else tar_codigo.tar_valor_internacional
-            cleaned_data['valor_total'] = round(tarifa * quantidade_horas, 2)  # Calcula o valor total
 
         return cleaned_data

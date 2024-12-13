@@ -5,38 +5,35 @@
 <div class="container py-5" style="max-width: 400px;">
     <div class="card border-0">
         <div class="card-header text-center bg-light">
-            <h3 class="mb-0 text-dark">{% if object %}Editar Cliente{% else %}Adicionar Cliente{% endif %}</h3>
+            <h3 class="mb-0 text-dark">{% if object %}Editar Cobrança{% else %}Adicionar Cobrança{% endif %}</h3>
         </div>
         
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-
                 
+                <!-- Campo Código do Avião -->
                 <div class="mb-3">
-                    <label for="cli_nome" class="form-label">Nome do Cliente</label>
-                    <input type="text" id="cli_nome" name="cli_nome" value="{{ form.cli_nome.value|default:'' }}" class="form-control">
+                    <label for="avi_codigo" class="form-label">Código do Avião</label>
+                    <input type="text" id="avi_codigo" name="avi_codigo" value="{{ form.avi_codigo.value|default:'' }}" class="form-control">
                 </div>
-
                 
+                <!-- Campo Código da Tarifa -->
                 <div class="mb-3">
-                    <label for="cli_email" class="form-label">E-mail</label>
-                    <input type="email" id="cli_email" name="cli_email" value="{{ form.cli_email.value|default:'' }}" class="form-control">
+                    <label for="tar_codigo" class="form-label">Código da Tarifa</label>
+                    <input type="text" id="tar_codigo" name="tar_codigo" value="{{ form.tar_codigo.value|default:'' }}" class="form-control">
                 </div>
-
                 
+                <!-- Campo Quantidade de Horas -->
                 <div class="mb-3">
-                    <label for="cli_telefone" class="form-label">Telefone</label>
-                    <input type="tel" id="cli_telefone" name="cli_telefone" value="{{ form.cli_telefone.value|default:'' }}" class="form-control">
+                    <label for="quantidade_horas" class="form-label">Quantidade de Horas</label>
+                    <input type="time" id="quantidade_horas" name="quantidade_horas" value="{{ form.quantidade_horas.value|default:'' }}" class="form-control" step="3600">
                 </div>
-
                 
+                <!-- Botões de ação -->
                 <div class="d-flex justify-content-between">
-                    <form method="post">
-                        
-                        <button type="submit" class="btn btn-success">Salvar</button>
-                    </form>
-                    <a href="{% url 'listar-clientes' %}" class="btn btn-danger">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar-cobrancas' %}" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -81,13 +78,12 @@
         font-family: Arial, sans-serif;
     }
 
-    
     .d-flex {
-        gap: 10px; 
+        gap: 10px;
     }
 
     .btn {
-        width: 48%; 
+        width: 48%;
     }
 </style>
 
