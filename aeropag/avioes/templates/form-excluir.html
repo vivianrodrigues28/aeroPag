@@ -1,11 +1,7 @@
-{% extends 'modelo.html' %}
-{% load static %}
-
 <h1>Excluir Avião</h1>
-<p>Você tem certeza que deseja excluir o avião "{{ object.avi_prefixo_do_aviao }}"?</p>
-
+<p>Tem certeza de que deseja excluir "{{ object.avi_prefixo_do_aviao }}"?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
-    <a href="{% url 'listar-avioes' %}" class="btn btn-secondary">Cancelar</a>
+    <button type="submit">Confirmar</button>
 </form>
+<a href="{% url 'listar-avioes' %}">Cancelar</a>

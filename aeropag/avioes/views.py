@@ -6,14 +6,14 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import Aviao
 from .forms import AviaoForm
+
 from django.shortcuts import render
 from .models import Aviao
-
-
 def lista_avioes(request):
     
     avioes = Aviao.objects.filter(usuario=request.user) 
     return render(request, 'lista_avioes.html', {'object_list': avioes})
+
 
 
 def editar_aviao(request, pk):

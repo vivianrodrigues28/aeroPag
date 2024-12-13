@@ -5,7 +5,7 @@
 <div class="container py-5" style="max-width: 400px;">
     <div class="card border-0">
         <div class="card-header text-center bg-light">
-            <h3 class="mb-0 text-dark">Criar Nova Cobrança</h3>
+            <h3 class="mb-0 text-dark">{% if object %}Editar Cobrança{% else %}Adicionar Cobrança{% endif %}</h3>
         </div>
         
         <div class="card-body">
@@ -14,24 +14,40 @@
                 
                 <!-- Campo Código do Avião -->
                 <div class="mb-3">
-                    <label for="avi_codigo" class="form-label">Código do Avião</label>
-                    {{ form.avi_codigo }}  <!-- Renderiza o campo avi_codigo -->
+                    <label for="avi_codigo" class="form-label">Prefixo do Avião</label>
+                    <select id="avi_codigo" name="avi_codigo" class="form-control">
+                        {% for option in form.avi_codigo.field.choices %}
+                        <option value="{{ option.0 }}" {% if option.0 == form.avi_codigo.value %}selected{% endif %}>
+                            {{ option.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
                 </div>
+                
                 
                 <!-- Campo Código da Tarifa -->
                 <div class="mb-3">
-                    <label for="tar_codigo" class="form-label">Código da Tarifa</label>
-                    {{ form.tar_codigo }}  <!-- Renderiza o campo tar_codigo -->
+                    <label for="tar_codigo" class="form-label">Tipo da Tarifa</label>
+                    <select id="tar_codigo" name="tar_codigo" class="form-control">
+                        {% for option in form.tar_codigo.field.choices %}
+                        <option value="{{ option.0 }}" {% if option.0 == form.tar_codigo.value %}selected{% endif %}>
+                            {{ option.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
                 </div>
                 
                 <!-- Campo Quantidade de Horas -->
                 <div class="mb-3">
                     <label for="quantidade_horas" class="form-label">Quantidade de Horas</label>
-                    {{ form.quantidade_horas }}  <!-- Renderiza o campo quantidade_horas -->
+                    <input type="time" id="quantidade_horas" name="quantidade_horas" value="{{ form.quantidade_horas.value|default:'' }}" class="form-control" step="3600">
                 </div>
                 
-                <!-- Botão de envio -->
-                <button type="submit" class="btn btn-success">Salvar</button>
+                <!-- Botões de ação -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'listar_cobrancas' %}" class="btn btn-danger">Cancelar</a>
+                </div>
             </form>
         </div>
     </div>
@@ -41,38 +57,47 @@
     .card {
         box-shadow: none;
     }
+
     .btn-success {
         background-color: #28a745;
         border: none;
     }
+
     .btn-success:hover {
         background-color: #218838;
     }
+
     .btn-danger {
         background-color: #dc3545;
         border: none;
     }
+
     .btn-danger:hover {
         background-color: #c82333;
     }
+
     .form-control,
     .form-select {
         border-radius: 4px;
     }
+
     .form-control:focus,
     .form-select:focus {
         border-color: #333;
         box-shadow: none;
     }
+
     .container {
         font-family: Arial, sans-serif;
     }
-    /* Ajuste adicional para centralizar e dar mais espaçamento */
+
     .d-flex {
-        gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+        gap: 10px;
     }
+
     .btn {
-        width: 48%; /* Ajusta a largura dos botões para ocupar mais espaço */
+        width: 48%;
     }
 </style>
+
 {% endblock %}

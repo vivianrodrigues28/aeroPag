@@ -11,7 +11,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-
+                
                 
                 <div class="mb-3">
                     <label for="cli_nome" class="form-label">Nome do Cliente</label>
@@ -27,9 +27,15 @@
                 
                 <div class="mb-3">
                     <label for="cli_telefone" class="form-label">Telefone</label>
-                    <input type="tel" id="cli_telefone" name="cli_telefone" value="{{ form.cli_telefone.value|default:'' }}" class="form-control">
+                    <input type="tel" id="cli_telefone" name="cli_telefone" 
+                           value="{{ form.cli_telefone.value|default:'' }}" 
+                           class="form-control" 
+                           pattern="^[0-9]{8,9}$" 
+                           maxlength="9" 
+                           title="Digite um telefone válido com 8 ou 9 dígitos (somente números)">
                 </div>
-
+                
+                
                 
                 <div class="d-flex justify-content-between">
                     <form method="post">
