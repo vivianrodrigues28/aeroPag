@@ -19,9 +19,9 @@ def lista_avioes(request):
 def editar_aviao(request, pk):
     if request.method == 'POST':
         aviao = get_object_or_404(Aviao, pk=pk)
-        aviao.prefixo = request.POST.get('prefixo')
-        aviao.grupo = request.POST.get('grupo')  
-        aviao.toneladas = request.POST.get('toneladas')
+        aviao.avi_prefixo_do_aviao  = request.POST.get('prefixo')
+        aviao.avi_grupo = request.POST.get('grupo')  
+        aviao.avi_toneladas = request.POST.get('toneladas')
         aviao.save()
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)

@@ -146,7 +146,7 @@
            
             $('#confirmar-exclusao').click(function() {
                 $.ajax({
-                    url: '/avioes/' + aviaoId + '/delete/',  
+                    url: '/avioes/' + aviaoId + '/excluir/',  
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
