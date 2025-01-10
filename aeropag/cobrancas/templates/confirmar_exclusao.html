@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Excluir Cobrança</title>
-</head>
-<body>
-    <h1>Tem certeza que deseja excluir a cobrança {{ cobranca.cob_codigo }}?</h1>
+{% extends 'modelo.html' %}
+{% load static %}
+{% block titulo %}
+    Confirmar exclusão
+{% endblock %}
+{% block conteudo %}
+
+    <h1>Tem certeza que deseja excluir a cobrança: {{ cobranca.cob_codigo }}?</h1>
+    <h1>Detalhes da Cobrança</h1>
+    <p>Prefixo do Avião: {{ cobranca.avi_codigo }}</p>
+    <p>Nome da Tarifa: {{ cobranca.tar_codigo }}</p>
+    <p>Tipo de Voo: {{ cobranca.tar_codigo.tar_tipo}}</p>
+    <p>Quantidade de Horas: {{ cobranca.quantidade_horas }}</p>
+    <p>Valor Total: R$ {{ cobranca.valor_total }}</p>
+    <br>
+    <br>
+    <br>
+
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Confirmar Exclusão</button>
+        <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+        <a href="{% url 'listar_cobrancas' %}">Cancelar</a>
     </form>
-    <a href="{% url 'listar_cobrancas' %}">Cancelar</a>
-</body>
-</html>
+   
+
+{% endblock %}

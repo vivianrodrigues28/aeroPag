@@ -46,7 +46,4 @@ def CobrancaDelete(request, id):
         return redirect('listar_cobrancas')
     return render(request, 'confirmar_exclusao.html', {'cobranca': cobranca})
 
-# Função para ver os detalhes de uma cobrança
-def CobrancaDetails(request, id):
-    cobranca = get_object_or_404(Cobranca, id=id)
-    return render(request, 'detalhes_cobranca.html', {'cobranca': cobranca})
+

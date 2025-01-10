@@ -1,7 +1,7 @@
 {% extends 'modelo.html' %}
 {% load static %}
 {% block titulo %}
-    <h1>Cobranças</h1>
+    Cobranças
 {% endblock %}
 {% block conteudo %}
 <!-- Importação do CSS do Bootstrap -->
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for cobranca in object_list %}
+                {% for cobranca in cobrancas %}
                 <tr>
                     <td>{{ cobranca.avi_codigo.avi_prefixo_do_aviao }}</td>
                     <td>{{ cobranca.tar_codigo.tar_tipo }}</td>
@@ -52,8 +52,6 @@
                         <a href="{% url 'atualizar_cobranca' cobranca.id %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
                         <!-- Botão de Excluir -->
                         <a href="{% url 'excluir_cobranca' cobranca.id %}" class="btn btn-danger btn-sm" title="Excluir">Excluir</a>
-                        <!-- Botão de Detalhes -->
-                        <a href="{% url 'detalhes_cobranca' cobranca.id %}" class="btn btn-info btn-sm" title="Detalhes">Detalhes</a>
                     </td>
                 </tr>
                 {% empty %}

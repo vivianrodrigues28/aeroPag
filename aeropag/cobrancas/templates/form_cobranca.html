@@ -1,5 +1,6 @@
 {% extends 'modelo.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block conteudo %}
 <div class="container py-5" style="max-width: 400px;">
@@ -12,36 +13,7 @@
             <form method="post">
                 {% csrf_token %}
                 
-                <!-- Campo Código do Avião -->
-                <div class="mb-3">
-                    <label for="avi_codigo" class="form-label">Prefixo do Avião</label>
-                    <select id="avi_codigo" name="avi_codigo" class="form-control">
-                        {% for option in form.avi_codigo.field.choices %}
-                        <option value="{{ option.0 }}" {% if option.0 == form.avi_codigo.value %}selected{% endif %}>
-                            {{ option.1 }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                
-                <!-- Campo Código da Tarifa -->
-                <div class="mb-3">
-                    <label for="tar_codigo" class="form-label">Tipo da Tarifa</label>
-                    <select id="tar_codigo" name="tar_codigo" class="form-control">
-                        {% for option in form.tar_codigo.field.choices %}
-                        <option value="{{ option.0 }}" {% if option.0 == form.tar_codigo.value %}selected{% endif %}>
-                            {{ option.1 }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <!-- Campo Quantidade de Horas -->
-                <div class="mb-3">
-                    <label for="quantidade_horas" class="form-label">Quantidade de Horas</label>
-                    <input type="time" id="quantidade_horas" name="quantidade_horas" value="{{ form.quantidade_horas.value|default:'' }}" class="form-control" step="3600">
-                </div>
+                {{ form|crispy }}
                 
                 <!-- Botões de ação -->
                 <div class="d-flex justify-content-between">

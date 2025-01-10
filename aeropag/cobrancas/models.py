@@ -10,7 +10,7 @@ class Cobranca(models.Model):
     valor_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
    
     def __str__(self):
-        return f"Cobrança {self.cob_codigo}"
+        return f"Cobrança: {self.cob_codigo}"
 
     def save(self, *args, **kwargs):
         # Busca o avião e tarifa associada
