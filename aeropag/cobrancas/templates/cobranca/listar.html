@@ -48,9 +48,9 @@
                     <td>{{ cobranca.quantidade_horas }}</td>
                     <td>R$ {{ cobranca.valor_total }}</td>
                     <td>
-                        <!-- Botão de Editar -->
+                        
                         <a href="{% url 'atualizar_cobranca' cobranca.id %}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
-                        <!-- Botão de Excluir -->
+                        
                         <a href="{% url 'excluir_cobranca' cobranca.id %}" class="btn btn-danger btn-sm" title="Excluir">Excluir</a>
                     </td>
                 </tr>

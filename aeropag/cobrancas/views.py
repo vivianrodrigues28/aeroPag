@@ -3,15 +3,15 @@ from django.contrib import messages
 from .models import Cobranca
 from .forms import CobrancaForm
 
-# Função para listar as cobranças
+
 def CobrancaList(request):
     cobrancas = Cobranca.objects.all()
     return render(request, 'cobranca/listar.html', {'cobrancas': cobrancas})
 
-# Função para criar uma nova cobrança
+
 def CobrancaCreate(request):
     if request.method == 'POST':
-        form = CobrancaForm(request.POST, user=request.user)  # Passando o usuário para o form
+        form = CobrancaForm(request.POST, user=request.user)  
         if form.is_valid():
             form.save()
             messages.success(request, "Cobrança criada com sucesso!")
@@ -19,14 +19,14 @@ def CobrancaCreate(request):
         else:
             messages.error(request, "Erro ao criar cobrança!")
     else:
-        form = CobrancaForm(user=request.user)  # Passando o usuário para o form
+        form = CobrancaForm(user=request.user)  
     return render(request, 'form_cobranca.html', {'form': form})
 
-# Função para atualizar uma cobrança existente
+
 def CobrancaUpdate(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
-        form = CobrancaForm(request.POST, instance=cobranca, user=request.user)  # Passando o usuário para o form
+        form = CobrancaForm(request.POST, instance=cobranca, user=request.user)  
         if form.is_valid():
             form.save()
             messages.success(request, "Cobrança atualizada com sucesso!")
@@ -37,7 +37,7 @@ def CobrancaUpdate(request, id):
         form = CobrancaForm(instance=cobranca, user=request.user)
     return render(request, 'form_cobranca.html', {'form': form})
 
-# Função para excluir uma cobrança
+
 def CobrancaDelete(request, id):
     cobranca = get_object_or_404(Cobranca, id=id)
     if request.method == 'POST':
